@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.com.coffeebeans.exception.RepositorioJaExistenteException;
+import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 import br.com.coffeebeans.util.Conexao;
 
 public class RepositorioDAO implements IRepositorioDAO {

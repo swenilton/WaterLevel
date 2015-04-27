@@ -1,4 +1,4 @@
-package br.com.coffeebeans.usuario;
+package br.com.coffeebeans.exception;
 
 public class ListaUsuarioVaziaException extends Exception {
 

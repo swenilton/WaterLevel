@@ -3,6 +3,10 @@ package br.com.coffeebeans.usuario;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.UsuarioJaExistenteException;
+import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
+
 public interface IUsuarioDAO {
 	public void cadastrar(Usuario usuario) throws SQLException,
 			UsuarioJaExistenteException;

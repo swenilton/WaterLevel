@@ -1,4 +1,4 @@
-package br.com.coffeebeans.repositorio;
+package br.com.coffeebeans.exception;
 
 public class RepositorioNaoEncontradoException extends Exception {
 

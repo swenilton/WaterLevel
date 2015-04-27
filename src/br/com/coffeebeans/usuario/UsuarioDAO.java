@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.UsuarioJaExistenteException;
+import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.util.Conexao;
 
 /*-----------------------------------------------------------------------

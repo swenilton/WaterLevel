@@ -1,4 +1,4 @@
-package br.com.coffeebeans.usuario;
+package br.com.coffeebeans.exception;
 
 public class UsuarioJaExistenteException extends Exception {
 	public UsuarioJaExistenteException() {
