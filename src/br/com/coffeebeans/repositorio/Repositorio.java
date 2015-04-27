@@ -32,7 +32,6 @@ public abstract class Repositorio {
 	}
 
 
-
 	public void setIdBomba(int idBomba) {
 		this.idBomba = idBomba;
 	}
