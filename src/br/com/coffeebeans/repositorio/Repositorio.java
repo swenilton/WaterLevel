@@ -12,6 +12,7 @@ public abstract class Repositorio {
 	private Double limiteMaximo;
 	private Double limiteMinimo;
 	private Bomba bomba;
+	private int idBomba;
 
 	// public static final String CIRCULAR = "CIRCULAR";
 	// public static final String RETANGULAR = "RETANGULAR";
@@ -26,9 +27,17 @@ public abstract class Repositorio {
 
 	}
 
-	public Repositorio(int idBomba) {
-
+	public int getIdBomba() {
+		return idBomba;
 	}
+
+
+
+	public void setIdBomba(int idBomba) {
+		this.idBomba = idBomba;
+	}
+
+
 
 	@Override
 	public String toString() {
