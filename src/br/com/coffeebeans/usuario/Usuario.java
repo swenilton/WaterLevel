@@ -8,14 +8,17 @@ public class Usuario {
 	private String email;
 	private String telefone;
 	private String ativo;
+	private String foto;
+	private String perfil;
 
 	public Usuario(String nome, String login, String senha, String email,
-			String ativo) {
+			String ativo, String perfil) {
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
 		this.email = email;
 		this.ativo = ativo;
+		this.perfil = perfil;
 	}
 
 	public int getId() {
@@ -72,6 +75,22 @@ public class Usuario {
 
 	public void setAtivo(String ativo) {
 		this.ativo = ativo;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	@Override
