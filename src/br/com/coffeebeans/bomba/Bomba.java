@@ -4,6 +4,8 @@ public class Bomba {
 	private int codigo;
 	private String descricao;
 	private String status;
+	private Double potencia;
+	private Double vazao;
 
 	public int getCodigo() {
 		return codigo;
@@ -29,9 +31,27 @@ public class Bomba {
 		this.status = status;
 	}
 
-	public Bomba(String descricao, String status) {
+	public Double getPotencia() {
+		return potencia;
+	}
+
+	public void setPotencia(Double potencia) {
+		this.potencia = potencia;
+	}
+
+	public Double getVazao() {
+		return vazao;
+	}
+
+	public void setVazao(Double vazao) {
+		this.vazao = vazao;
+	}
+
+	public Bomba(String descricao, String status, Double potencia, Double vazao) {
 		this.descricao = descricao;
 		this.status = status;
+		this.potencia = potencia;
+		this.vazao = vazao;
 	}
 
 }
