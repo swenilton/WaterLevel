@@ -1,0 +1,104 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+body {
+    background-color: #cccccc;
+}
+div#topo {
+    height: 120px;
+    margin: 0px auto 0px auto;
+    background-color: #85CAED;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+}
+div#topo img#logo {
+    float: left;
+    margin: -30px auto 0px 50px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+header nav.menu {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+header nav.menu ul {
+    text-align: center;
+}
+header nav.menu ul li {
+    font-family: 'Roboto Condensed', sans-serif;
+    margin-top: 40px;
+    background-color: #ffffff;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 10px;
+    width: 100px;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+}
+header nav.menu ul li:hover{
+    color:  #ffffff;
+    text-decoration: none;
+    background-color: #38A8E0;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+    b
+}
+header nav.menu ul a{
+    color: #222222; 
+    text-decoration: none;
+}
+div.usuario-logado {
+    margin: 25px 50px 0px auto;
+    display: block;
+    float: right;
+}
+div.usuario-logado img#perfil {
+    display: block;
+    float: right;
+}
+div.usuario-logado hgroup{
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #ffffff; 
+    display: block;
+    float: left;
+    margin-right: 15px;
+}
+div.usuario-logado h1 {
+    font-size: 15pt;
+    margin-bottom: 0px;
+}
+div.usuario-logado h2 {
+    text-align: right;
+    font-size: 10pt;
+    margin-top: 0px;
+}
+div.usuario-logado a {
+    color: #222222;
+    text-decoration: none;
+}
+div.usuario-logado a:hover {
+    text-decoration: underline;
+}
+div.conteudo {
+    width: 90%;
+    height: 100em;
+    margin: 0px auto 0px auto;
+    border-left: 2px solid #606060;
+    border-right: 2px solid #606060;
+}
+div.conteudo section.caixa {
+    width: 900px;
+    height: 500px;
+    background-color: #cccccc;
+    display: block;
+    float: left;
+    margin-top: 30px;
+    margin-left: 0px;
+}
+div.conteudo table#informacoes {
+    display: block;
+    width: 300px;
+    margin-left: 500px;
+}
+div.conteudo table#informacoes td {
+    border: 2px solid #606060;
+    padding: 5px;
+}

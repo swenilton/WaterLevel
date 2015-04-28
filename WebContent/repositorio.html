@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Repositório - Water Level</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="shortcut icon" href="img/ico.png"/>
+<link rel="stylesheet" type="text/css" href="css/estilo2.css"/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/ControllerMenu.js"></script>
+<script type="text/javascript">//<![CDATA[ 
+controllerMenu = new ControllerMenu();
+$( window ).scroll(function() {
+    controllerMenu.activeScrollTopMenu();
+});
+</script>
+</head>
+<body>    
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="home.html"><img src="img/Logo-150px.png" id="logo" class=""/></a>            
+    </div> 
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="home.html">Inicio </a></li>
+        <li><a href="usuario.html">Usuário </a></li>
+        <li class="active"><a href="repositorio.html">Repositório <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Relatórios <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Consumo periódico</a></li>
+            <li><a href="#">Gráficos</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" id="usuario-logado" data-toggle="dropdown" role="button" aria-expanded="false">
+            <span class="usuario">Swenilton Souza</span><img src="img/perfil.png" id="perfil" width="40px"/><span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Editar perfil</a></li>
+            <li><a href="#">Ver gastos</a></li>
+            <li><a href="#">Ver Rank</a></li>
+            <li class="divider"></li>
+            <li><a href="index.html">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div><!-- fim container -->
+</nav>
+<div class="container">    
+  <div class="conteudo">        
+    <div class="page-header page-titulo">
+        <!-- migalhas de pão -->
+        <ol class="breadcrumb migalhas">
+          <li><a href="home.html">Inicio</a></li>
+          <li class="active">Repositório</li>
+        </ol>
+        <!-- titulo -->
+        <h1>Repositório <small>Gerenciamento</small></h1>
+    </div><!-- fim page-header -->
+    <div class="panel panel-default panel-user">
+      <div class="panel-heading">
+          Lista de Repositórios
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+                <th>#</th>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Capacidade</th>
+                <th>Profundidade</th>
+                <th>Modelo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <th><input type="checkbox" name="user-selected" value="1"/></th>            
+                <td>1</td>
+                <td>Caixa Superior</td>
+                <td>2.000 L</td>
+                <td>130 cm</td>
+                <td>CIRCULAR</td>
+            </tr>
+            <tr>
+                <th><input type="checkbox" name="user-selected" value="2"/></th>            
+                <td>2</td>
+                <td>Caixa Subterrânea</td>
+                <td>8.000 L</td>
+                <td>170 cm</td>
+                <td>RETANGULAR</td>
+            </tr>
+          </tbody>
+        </table>
+      </div><!-- fim div  table -->  
+    </div><!-- fim painel -->
+    <div class="btn-group" role="group" aria-label="">
+      <a class="btn btn-default" href="repositorio-inserir.html" role="button">Inserir</a>
+      <button type="button" class="btn btn-default">Alterar</button>
+      <button type="button" class="btn btn-default">Remover</button>
+    </div>        
+  </div><!-- fim conteudo -->
+</div><!-- fim container -->
+<footer class="rodape">
+    <div id="footer">
+        <div class="container">
+           <a href="home.html">Início</a> | <a href="#">Termos e Condições</a> | <a href="#">Ajuda e Suporte</a> | <a href="#">Mapa do site</a> | <a href="#">Sobre a Coffee Beans</a> <br /><br />
+            Water Level &copy 2015 - Todos os direitos reservados. <br/>
+            Desenvolvido por <a href="http://coffeebeansdev.com.br" target="_blank"><img src="img/coffee-logo.png" alt="Logo Coffee Beans" width="70px"></a>
+            <a href="http://facebook.com.br/coffeebeansdev" target="_blank"><img src="img/facebook.jpeg" alt="Logo Facebook" width="25px"></a><br />
+            <small>Version 1.0</small>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

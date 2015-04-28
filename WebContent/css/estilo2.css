@@ -1,0 +1,133 @@
+@charset "utf-8";
+body {
+  /*padding-top: 70px;*/
+  width: 100%;
+  height: 100%;
+}
+img#perfil {
+    margin-right: 5px;
+    border-radius: 50px;
+}
+table img#perfil {
+  width: 25px;
+}
+#usuario-logado{
+    padding-top: 6px;
+    padding-bottom: 4px;
+}
+span.usuario {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.migalhas {
+    margin-top: 80px;
+}
+.grupo-abas {
+  margin-top: 20px;
+}
+section.caixa {
+    width: 100%;
+    padding-top: 20px;
+    border-bottom: 1px solid #ddd;
+}
+div.progress{
+  width: 100%;
+  height: 100%;
+  top: 30%;
+  background: none;
+  box-shadow: none;
+  position: absolute;
+  text-align: center;
+  color: rgba(0,0,0,0.5);
+}
+div.informacoes td.tdd {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: right;
+    border-right: 1px solid #ddd;
+}
+div.informacoes td.tde {
+    width: 60%;
+}
+.bomba ul li a {
+  padding: 3px 5px 3px 5px;
+}
+.bomba form {
+  padding: 0px 15px 5px 15px;
+}
+#limite-min, #limite-max{
+  margin-top: 5px;
+  width: 50%;
+}
+.conteudo {
+  margin-bottom: 30px;
+  color: inherit;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+}
+.conteudo p {
+  margin-bottom: 15px;
+  font-size: 21px;
+  font-weight: 200;
+}
+.conteudo > hr {
+  border-top-color: #d5d5d5;
+}
+.conteudo .container {
+  max-width: 100%;
+}
+@media screen and (min-width: 768px) {
+  .conteudo {
+    padding: 48px 0;
+  }
+  .container .conteudo,
+  .container-fluid .conteudo {
+    padding-right: 60px;
+    padding-left: 60px;
+  } 
+  img#logo{
+    position: absolute;
+    margin-left: 40px;
+    margin-top: 15px;
+    transition: all 0.6s;
+  }
+  img#logo.on_scroll {
+    margin-top: 0px;
+    margin-left: 40px;
+    width: 80px;
+  }
+}
+table tr td.center {
+  text-align: center;
+}
+div.panel-user {
+  height: 300px;
+}
+.panel-user .table-user {
+  height: 255px;
+}
+footer.rodape {
+  clear: both;
+  width: 100%;
+  height: 150px;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+footer.rodape small {
+  font-style: italic;
+  color: #777;
+}
+@media (max-width: 766px) {
+  img#logo {
+    margin-top: 0px;
+    margin-left: 15px;
+    width: 80px;
+    transition: all 0.6s;
+  }
+  .conteudo {
+    box-shadow: none;
+  }
+}
+.clear {
+  clear: both;
+}
