@@ -19,37 +19,38 @@ public class RepositorioDAO implements IRepositorioDAO {
 	}
 
 	@Override
-	public void cadastrar(Repositorio repositorio) throws SQLException,RepositorioJaExistenteException {
+	public void cadastrar(Repositorio repositorio) throws SQLException,
+			RepositorioJaExistenteException {
 		PreparedStatement stmt = null;
 
 		try {
-		/*	if (repositorio.getModelo().equals(Repositorio.CIRCULAR)) {
-				String sql = "INSERT INTO REPOSITORIO VALUES (?,?,?,?,?,?,?)";
+			if (repositorio instanceof RepositorioCircular) {
+				String sql = "INSERT INTO REPOSITORIO VALUES (?,?,?,?,?,?)";
 
 				stmt = this.connection.prepareStatement(sql);
 				stmt.setString(1, repositorio.getDescricao());
 				stmt.setDouble(2, repositorio.getCapacidade());
-				stmt.setString(3, repositorio.getModelo());
-				stmt.setDouble(4, repositorio.getProfundidade());
-				stmt.setDouble(5, repositorio.getDiametro());
-				stmt.setDouble(6, repositorio.getLimiteMinimo());
-				stmt.setDouble(7, repositorio.getLimiteMaximo());
+				stmt.setDouble(3, repositorio.getProfundidade());
+				stmt.setDouble(4, repositorio.getLimiteMinimo());
+				stmt.setDouble(5, repositorio.getLimiteMaximo());
+				stmt.setDouble(6,
+						((RepositorioCircular) repositorio).getDiametroMedio());
 				stmt.execute();
-			} 
+			}
 
-			else if (repositorio.getModelo().equals(Repositorio.RETANGULAR)) {
+			else if (repositorio instanceof RepositorioRetangular) {
 
-				String sql = "INSERT INTO REPOSITORIO VALUES (?,?,?,?,?,?,?)";
+				String sql = "INSERT INTO REPOSITORIO VALUES (?,?,?,?,?,?)";
 				stmt = this.connection.prepareStatement(sql);
 				stmt.setString(1, repositorio.getDescricao());
 				stmt.setDouble(2, repositorio.getCapacidade());
-				stmt.setString(3, repositorio.getModelo());
-				stmt.setDouble(4, repositorio.getProfundidade());
-				stmt.setDouble(5, repositorio.getAreaBase());
-				stmt.setDouble(6, repositorio.getLimiteMaximo());
-				stmt.setDouble(7, repositorio.getLimiteMinimo());
+				stmt.setDouble(3, repositorio.getProfundidade());
+				stmt.setDouble(4, repositorio.getLimiteMinimo());
+				stmt.setDouble(5, repositorio.getLimiteMaximo());
+				stmt.setDouble(6,
+						((RepositorioRetangular) repositorio).getAreaBase());
 				stmt.execute();
-			} */
+			}
 
 		} catch (Exception e) {
 
@@ -64,31 +65,39 @@ public class RepositorioDAO implements IRepositorioDAO {
 		ArrayList<Repositorio> repositorios = new ArrayList<Repositorio>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		Repositorio repositorio = null;
 
 		try {
-	/*		String sql = "SELECT * FROM REPOSITORIO";
+
+			String sql = "SELECT * FROM REPOSITORIO";
 			stmt = this.connection.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				Repositorio repositorio = new Repositorio(
-						rs.getString("DESCRICAO"), rs.getDouble("CAPACIDADE"),
-						rs.getString("MODELO"), rs.getDouble("PROFUNDIDADE"),
-						rs.getDouble("LIMITE_MINIMO"),
-						rs.getDouble("LIMITE_MAXIMO"));
-
-				repositorio.setId(rs.getInt("ID"));
-
-				if (rs.getString("MODELO").equals(Repositorio.CIRCULAR)) {
-					repositorio.setDiametro(rs.getDouble("DIAMETRO"));
-				} else if (rs.getString("MODELO")
-						.equals(Repositorio.RETANGULAR)) {
-					repositorio.setAreaBase(rs.getDouble("AreaBase"));
+				if (rs.getString("DIAMETRO_MEDIO") == "") {
+					repositorio = new RepositorioRetangular(
+							rs.getString("DESCRICAO"),
+							rs.getDouble("CAPACIDADE"),
+							rs.getDouble("PROFUNDIDADE"),
+							rs.getDouble("LIMITE_MINIMO"),
+							rs.getDouble("LIMITE_MAXIMO"),
+							rs.getDouble("AREA_BASE"));
+					repositorio.setId(rs.getInt("ID"));
+				} else {
+					repositorio = new RepositorioCircular(
+							rs.getString("DESCRICAO"),
+							rs.getDouble("CAPACIDADE"),
+							rs.getDouble("PROFUNDIDADE"),
+							rs.getDouble("LIMITE_MINIMO"),
+							rs.getDouble("LIMITE_MAXIMO"),
+							rs.getDouble("DIAMETRO_MEDIO"));
+					repositorio.setId(rs.getInt("ID"));
 				}
+
 				repositorios.add(repositorio);
 			}
 		} catch (SQLException e) {
 			throw new SQLException(e.getMessage());
-	*/	}
+		}
 
 		finally {
 			stmt.close();
@@ -104,29 +113,32 @@ public class RepositorioDAO implements IRepositorioDAO {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-	/*		String sql = "SELECT * FROM REPOSITORIO WHERE ID = ?";
+
+			String sql = "SELECT * FROM REPOSITORIO WHERE ID = ?";
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 
-			repositorio = new Repositorio(rs.getString("DESCRICAO"),
-					rs.getDouble("CAPACIDADE"), rs.getString("MODELO"),
-					rs.getDouble("PROFUNDIDADE"),
-					rs.getDouble("LIMITE_MINIMO"),
-					rs.getDouble("LIMITE_MAXIMO"));
-			
-			repositorio.setId(rs.getInt("ID"));
-			
-			if (rs.getString("MODELO").equals(Repositorio.CIRCULAR)) {
-				repositorio.setDiametro(rs.getDouble("DIAMETRO"));
-			} else if (rs.getString("MODELO")
-					.equals(Repositorio.RETANGULAR)) {
-				repositorio.setAreaBase(rs.getDouble("AreaBase"));
+			if (rs.getString("DIAMETRO_MEDIO") == "") {
+				repositorio = new RepositorioRetangular(
+						rs.getString("DESCRICAO"), rs.getDouble("CAPACIDADE"),
+						rs.getDouble("PROFUNDIDADE"),
+						rs.getDouble("LIMITE_MINIMO"),
+						rs.getDouble("LIMITE_MAXIMO"),
+						rs.getDouble("AREA_BASE"));
+				repositorio.setId(rs.getInt("ID"));
+			} else {
+				repositorio = new RepositorioCircular(
+						rs.getString("DESCRICAO"), rs.getDouble("CAPACIDADE"),
+						rs.getDouble("PROFUNDIDADE"),
+						rs.getDouble("LIMITE_MINIMO"),
+						rs.getDouble("LIMITE_MAXIMO"),
+						rs.getDouble("DIAMETRO_MEDIO"));
+				repositorio.setId(rs.getInt("ID"));
 			}
 
 		} catch (SQLException e) {
-
-*/		} finally {
+		} finally {
 			stmt.close();
 			rs.close();
 		}
@@ -139,33 +151,35 @@ public class RepositorioDAO implements IRepositorioDAO {
 			throws RepositorioNaoEncontradoException, SQLException {
 		PreparedStatement stmt = null;
 		try {
-		/*	if (repositorio.getModelo().equals(Repositorio.CIRCULAR)) {
-				String sql = "UPDATE REPOSITORIO SET DESCRICAO = ?, CAPACIDADE = ?, MODELO = ?, PROFUNDIDADE = ?, LIMITE_MINIMO = ?, LIMITE_MAXIMO = ?, DIAMETRO=? where ID=?";
+
+			if (repositorio instanceof RepositorioCircular) {
+				String sql = "UPDATE REPOSITORIO SET DESCRICAO = ?, CAPACIDADE = ?, PROFUNDIDADE = ?, LIMITE_MINIMO = ?, LIMITE_MAXIMO = ?, DIAMETRO_MEDIO=? where ID=?";
 				stmt = this.connection.prepareStatement(sql);
 				stmt.setString(1, repositorio.getDescricao());
 				stmt.setDouble(2, repositorio.getCapacidade());
-				stmt.setString(3, repositorio.getModelo());
-				stmt.setDouble(4, repositorio.getProfundidade());
-				stmt.setDouble(5, repositorio.getLimiteMinimo());
-				stmt.setDouble(6, repositorio.getLimiteMaximo());
-				stmt.setDouble(7, repositorio.getDiametro());
-			} else if (repositorio.getModelo().equals(Repositorio.RETANGULAR)) {
-				String sql = "UPDATE REPOSITORIO SET DESCRICAO = ?, CAPACIDADE = ?, MODELO = ?, PROFUNDIDADE = ?, LIMITE_MINIMO = ?, LIMITE_MAXIMO = ?, AreaBase=? where ID=?";
+				stmt.setDouble(3, repositorio.getProfundidade());
+				stmt.setDouble(4, repositorio.getLimiteMinimo());
+				stmt.setDouble(5, repositorio.getLimiteMaximo());
+				stmt.setDouble(6,
+						((RepositorioCircular) repositorio).getDiametroMedio());
+
+			} else if (repositorio instanceof RepositorioRetangular) {
+				String sql = "UPDATE REPOSITORIO SET DESCRICAO = ?, CAPACIDADE = ?, MODELO = ?, PROFUNDIDADE = ?, LIMITE_MINIMO = ?, LIMITE_MAXIMO = ?, AREA_BASE=? where ID=?";
 				stmt = this.connection.prepareStatement(sql);
 				stmt.setString(1, repositorio.getDescricao());
 				stmt.setDouble(2, repositorio.getCapacidade());
-				stmt.setString(3, repositorio.getModelo());
-				stmt.setDouble(4, repositorio.getProfundidade());
-				stmt.setDouble(5, repositorio.getLimiteMinimo());
-				stmt.setDouble(6, repositorio.getLimiteMaximo());
-				stmt.setDouble(7, repositorio.getAreaBase());
+				stmt.setDouble(3, repositorio.getProfundidade());
+				stmt.setDouble(4, repositorio.getLimiteMinimo());
+				stmt.setDouble(5, repositorio.getLimiteMaximo());
+				stmt.setDouble(6,
+						((RepositorioRetangular) repositorio).getAreaBase());
 			}
 
 			Integer resultado = stmt.executeUpdate();
 			if (resultado == 0)
 				throw new RepositorioNaoEncontradoException();
 		} catch (SQLException e) {
-		*/} finally {
+		} finally {
 			stmt.close();
 		}
 	}
