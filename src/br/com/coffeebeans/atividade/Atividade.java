@@ -1,6 +1,5 @@
 package br.com.coffeebeans.atividade;
-
-import java.sql.Timestamp;
+import java.util.Date;
 
 import br.com.coffeebeans.usuario.Usuario;
 
@@ -8,12 +7,12 @@ public class Atividade {
 	
 	private int id;
 	private String descricao;
-	private Timestamp dataHoraInicio;
-	private Timestamp dataHoraFim;
+	private Date dataHoraInicio;
+	private Date dataHoraFim;
 	private Usuario usuario;
 	
-	public Atividade(String descricao, Timestamp dataHoraInicio,
-			Timestamp dataHoraFim, Usuario usuario) {
+	public Atividade(String descricao, Date dataHoraInicio,
+			Date dataHoraFim, Usuario usuario) {
 		super();
 		this.descricao = descricao;
 		this.dataHoraInicio = dataHoraInicio;
@@ -37,19 +36,19 @@ public class Atividade {
 		this.descricao = descricao;
 	}
 
-	public Timestamp getDataHoraInicio() {
+	public Date getDataHoraInicio() {
 		return dataHoraInicio;
 	}
 
-	public void setDataHoraInicio(Timestamp dataHoraInicio) {
+	public void setDataHoraInicio(Date dataHoraInicio) {
 		this.dataHoraInicio = dataHoraInicio;
 	}
 
-	public Timestamp getDataHoraFim() {
+	public Date getDataHoraFim() {
 		return dataHoraFim;
 	}
 
-	public void setDataHoraFim(Timestamp dataHoraFim) {
+	public void setDataHoraFim(Date dataHoraFim) {
 		this.dataHoraFim = dataHoraFim;
 	}
 
