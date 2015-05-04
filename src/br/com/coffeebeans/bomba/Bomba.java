@@ -6,6 +6,29 @@ public class Bomba {
 	private String status;
 	private Double potencia;
 	private Double vazao;
+	private String acionamento;
+	public static final String MANUAL = "MANUAL";
+	public static final String AUTOMATICO = "AUTOMATICO";
+
+	public Bomba(String descricao, String status, Double potencia,
+			Double vazao, String acionamento) throws Exception {
+		this.descricao = descricao;
+		this.status = status;
+		this.potencia = potencia;
+		this.vazao = vazao;
+		if (acionamento != this.MANUAL && acionamento != this.AUTOMATICO)
+			throw new Exception("Modo de acionamento inválido");
+		else
+			this.acionamento = acionamento;
+	}
+
+	public String getAcionamento() {
+		return acionamento;
+	}
+
+	public void setAcionamento(String acionamento) {
+		this.acionamento = acionamento;
+	}
 
 	public int getCodigo() {
 		return codigo;
@@ -46,12 +69,4 @@ public class Bomba {
 	public void setVazao(Double vazao) {
 		this.vazao = vazao;
 	}
-
-	public Bomba(String descricao, String status, Double potencia, Double vazao) {
-		this.descricao = descricao;
-		this.status = status;
-		this.potencia = potencia;
-		this.vazao = vazao;
-	}
-
 }
