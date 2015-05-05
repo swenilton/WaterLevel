@@ -32,8 +32,16 @@ $( window ).scroll(function() {
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="home.html">Inicio </a></li>
-        <li class="active"><a href="usuario.html">Usuário <span class="sr-only">(current)</span></a></li>
-        <li><a href="repositorio.html">Repositório</a></li>
+        <!-- menu cadastros -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cadastros <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="active"><a href="usuario.html">Usuário</a></li>
+            <li><a href="repositorio.html">Repositório</a></li>
+            <li><a href="atividade.html">Atividade</a></li>
+            <li><a href="bomba.html">Bomba</a></li>
+          </ul>
+        </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Relatórios <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

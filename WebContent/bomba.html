@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
 <meta charset="utf-8">
-<title>Inserir Usuário - Water Level</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bomba - Water Level</title>
 <link rel="shortcut icon" href="img/ico.png"/>
 <link rel="stylesheet" type="text/css" href="css/estilo2.css"/>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
@@ -16,34 +16,6 @@ $( window ).scroll(function() {
     controllerMenu.activeScrollTopMenu();
 });
 </script>
-<style>
-  #foto-usuario {
-    width: 30%;
-    height: 300px;
-    display: block;
-    float: left;
-    text-align: center;
-  }
-  #dados-usuario {
-    width: 60%;
-    height: 100%;
-    margin-left: 40%;
-    display: block;
-  }
-  #dados-usuario .form-esquerda {
-    display: block;
-    float: left;
-    width: 45%;
-  }
-  #dados-usuario .form-direita {
-    display: block;
-    margin-left: 50%;
-    width: 45%;
-  }
-  #dados-usuario select {
-    width: 70%;
-  }
-</style>
 </head>
 <body>    
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -60,13 +32,14 @@ $( window ).scroll(function() {
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="home.html">Inicio </a></li>
+        <!-- menu cadastros -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cadastros <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li class="active"><a href="usuario.html">Usuário</a></li>
+            <li><a href="usuario.html">Usuário</a></li>
             <li><a href="repositorio.html">Repositório</a></li>
             <li><a href="atividade.html">Atividade</a></li>
-            <li><a href="bomba.html">Bomba</a></li>
+            <li class="active"><a href="bomba.html">Bomba</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -84,7 +57,7 @@ $( window ).scroll(function() {
             <li><a href="#" data-toggle="modal" data-target="#ver-gastos">Ver gastos</a></li>
             <li><a href="#" data-toggle="modal" data-target="#ver-rank">Ver Rank</a></li>
             <li class="divider"></li>
-            <li><a href="undex.html">Sair</a></li>
+            <li><a href="index.html">Sair</a></li>
           </ul>
         </li>
       </ul>
@@ -191,68 +164,95 @@ $( window ).scroll(function() {
         <!-- migalhas de pão -->
         <ol class="breadcrumb migalhas">
           <li><a href="home.html">Inicio</a></li>
-          <li><a href="usuario.html">Usuário</a></li>
-          <li class="active">Inserir</li>
+          <li class="active">Bomba</li>
         </ol>
         <!-- titulo -->
-        <h1>Usuário <small>Inserir</small></h1>
+        <h1>Bomba <small>Gerenciamento</small></h1>
     </div><!-- fim page-header -->
-    <form>
-      <div id="foto-usuario">
-        <img src="http://placehold.it/150x150" alt="Imagem do Usuário" class="img-circle"/>
-        <div class="form-group">
-          <label for="foto">Procurar Foto</label>
-          <input type="file" id="foto"/>
-        </div>
+    <div class="panel panel-default panel-user">
+      <div class="panel-heading">
+          Lista de Bombas
       </div>
-      <div id="dados-usuario">
-        <div class="form-group">
-          <label for="nome">Nome</label>
-          <input type="text" class="form-control" id="nome" placeholder="Insira seu Nome"/>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <span class="add-on"><i class="icon-envelope"></i></span>
-          <input type="email" class="form-control" id="email" placeholder="insira seu email"/>
-        </div>
-        <div class="form-group">
-          <label for="telefone">Telefone</label>
-          <input type="tel" class="form-control" id="telefone" placeholder="insira seu número de telefone"/>
-        </div>
-        <div class="form-group">
-          <label for="login">Login</label>
-          <input type="text" class="form-control" id="login" placeholder="insira seu nome de usuário"/>
-        </div>
-        <div class="form-group form-esquerda">
-          <label for="senha">Senha</label>
-          <input type="password" class="form-control" id="senha" placeholder="insira sua senha"/>
-        </div>
-        <div class="form-group form-direita">
-          <label for="confirma-senha">Confirmar senha</label>
-          <input type="password" class="form-control" id="confirma-senha" placeholder="Confirme sua senha"/>
-        </div>
-        <div class="form-group form-esquerda">
-          <label for="perfil">Perfil</label>
-          <select class="form-control" id="perfil">
-            <option>Administrador</option>
-            <option>Usuario</option>
-          </select>
-        </div>
-        <div class="form-group form-direita">
-          <label for="ativo">Ativo</label>
-          <select class="form-control" id="ativo">
-            <option>Sim</option>
-            <option>Não</option>
-          </select>
-        </div>
-        <button type="reset" class="btn btn-warning"/>Limpar</button>
-        <button type="submit" class="btn btn-success"/>Inserir</button>
-      </div>
-    </form>   
-
-
+      <div class="table-responsive table-user">
+        <table class="table table-hover">
+          <caption class="hidden">Lista de Bombas</caption>
+          <thead>
+            <tr>
+                <th>#</th>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Status</th>
+                <th>Potência</th>
+                <th>Vazão</th>
+                <th>Acionamento</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <th width="40px"><input type="radio" name="user-selected" value="1"/></th>            
+                <td width="60px">1</td>
+                <td>Bomba principal</td>
+                <td>DESLIGADA</td>
+                <td>1/2CV</td>
+                <td>110 l/min</td>
+                <td>AUTOMATICO</td>
+            </tr>
+          </tbody>
+        </table>
+      </div><!-- fim div  table -->  
+    </div><!-- fim painel -->
+    <div class="btn-group" role="group" aria-label="">
+      <a class="btn btn-primary" href="bomba-inserir.html" role="button">Inserir</a>
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#alterar-bomba">Alterar</button>
+      <button type="button" class="btn btn-danger">Remover</button>
+    </div>      
   </div><!-- fim conteudo -->
 </div><!-- fim container -->
+<!-- Modal Alterar bomba -->
+<div class="modal fade" id="alterar-bomba" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Alterar Bomba</h4>
+      </div>
+      <div class="modal-body">
+        <form class="">
+          <div class="form-group col-md-12">
+            <label for="descricao">Descrição</label>
+            <input type="text" class="form-control" id="descricao" placeholder="Insira uma descrição"/>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="potencia">Potência</label>
+            <div class="input-group">
+              <input type="numeric" class="form-control" id="potencia" placeholder="Ex: 1/2"/>
+              <div class="input-group-addon">CV</div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="vazao">Vazão</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="vazao" placeholder="Ex: 120"/>
+              <div class="input-group-addon">l/min</div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="acionamento">Acionamento</label>
+            <select class="form-control" id="acionamento">
+              <option>AUTOMATICO</option>
+              <option>MANUAL</option>
+            </select> 
+          </div>
+          <div class="clear"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+</div>
 <footer class="rodape">
     <div id="footer">
         <div class="container">

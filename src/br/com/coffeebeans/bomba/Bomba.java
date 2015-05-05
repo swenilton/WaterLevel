@@ -7,8 +7,8 @@ public class Bomba {
 	private Double potencia;
 	private Double vazao;
 	private String acionamento;
-	public static final String MANUAL = "MANUAL";
-	public static final String AUTOMATICO = "AUTOMATICO";
+	public static final String ACIONAMENTO_MANUAL = "MANUAL";
+	public static final String ACIONAMENTO_AUTOMATICO = "AUTOMATICO";
 
 	public Bomba(String descricao, String status, Double potencia,
 			Double vazao, String acionamento) throws Exception {
@@ -16,7 +16,7 @@ public class Bomba {
 		this.status = status;
 		this.potencia = potencia;
 		this.vazao = vazao;
-		if (acionamento != this.MANUAL && acionamento != this.AUTOMATICO)
+		if (acionamento != Bomba.ACIONAMENTO_MANUAL && acionamento != Bomba.ACIONAMENTO_AUTOMATICO)
 			throw new Exception("Modo de acionamento inválido");
 		else
 			this.acionamento = acionamento;
