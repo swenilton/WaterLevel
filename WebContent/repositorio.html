@@ -207,11 +207,56 @@ $( window ).scroll(function() {
     </div><!-- fim painel -->
     <div class="btn-group" role="group" aria-label="">
       <a class="btn btn-default" href="repositorio-inserir.html" role="button">Inserir</a>
-      <button type="button" class="btn btn-default">Alterar</button>
+      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#alterar-repositorio">Alterar</button>
       <button type="button" class="btn btn-default">Remover</button>
     </div>        
   </div><!-- fim conteudo -->
 </div><!-- fim container -->
+<!-- Modal Alterar Usuario -->
+<div class="modal fade" id="alterar-repositorio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Alterar Usuário</h4>
+      </div>
+      <div class="modal-body">
+        <form class="">
+          <div class="form-group col-md-6">
+            <label for="formato">Formato</label>
+            <select class="form-control" id="formato">
+              <option>Circular</option>
+              <option>Retangular</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="nome">Identificação</label>
+            <input type="text" class="form-control" id="nome" placeholder="Ex: Reservatório subterrâneo"/>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="profundidade">Profundidade</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="profundidade" placeholder="Ex: 120"/>
+              <div class="input-group-addon">cm</div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="area">Area da Base</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="area" placeholder="Ex: 1000"/>
+              <div class="input-group-addon">cm</div>
+            </div>
+          </div>
+          <div class="clear"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+</div>
 <footer class="rodape">
     <div id="footer">
         <div class="container">

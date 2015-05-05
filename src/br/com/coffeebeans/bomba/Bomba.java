@@ -11,13 +11,13 @@ public class Bomba {
 	public static final String ACIONAMENTO_AUTOMATICO = "AUTOMATICO";
 
 	public Bomba(String descricao, String status, Double potencia,
-			Double vazao, String acionamento) throws Exception {
+			Double vazao, String acionamento) throws IllegalArgumentException {
 		this.descricao = descricao;
 		this.status = status;
 		this.potencia = potencia;
 		this.vazao = vazao;
 		if (acionamento != Bomba.ACIONAMENTO_MANUAL && acionamento != Bomba.ACIONAMENTO_AUTOMATICO)
-			throw new Exception("Modo de acionamento inválido");
+			throw new IllegalArgumentException("Modo de acionamento inválido");
 		else
 			this.acionamento = acionamento;
 	}
