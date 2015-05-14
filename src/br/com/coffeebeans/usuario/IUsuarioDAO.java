@@ -10,7 +10,7 @@ import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 
 public interface IUsuarioDAO {
 	public void cadastrar(Usuario usuario) throws SQLException,
-			UsuarioJaExistenteException;
+			UsuarioJaExistenteException, RepositorioException;
 
 	public ArrayList<Usuario> listar() throws SQLException,
 			ListaUsuarioVaziaException;
@@ -21,6 +21,6 @@ public interface IUsuarioDAO {
 			throws UsuarioNaoEncontradoException, SQLException, RepositorioException;
 
 	public void excluir(int id) throws SQLException,
-			UsuarioNaoEncontradoException;
+			UsuarioNaoEncontradoException, RepositorioException;
 
 }

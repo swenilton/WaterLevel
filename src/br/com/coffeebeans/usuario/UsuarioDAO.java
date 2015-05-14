@@ -23,10 +23,11 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	@Override
 	public void cadastrar(Usuario usuario) throws SQLException,
-			UsuarioJaExistenteException {
+			UsuarioJaExistenteException, RepositorioException {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "INSERT INTO USUARIO VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO USUARIO VALUES(NOME, LOGIN, SENHA, EMAIL, TELEFONE, ATIVO, FOTO, PERFIL)"
+					+ " (?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getNome());
 			stmt.setString(2, usuario.getLogin());
@@ -35,8 +36,13 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.setString(5, usuario.getAtivo());
 			stmt.setString(6, usuario.getPerfil());
 			stmt.execute();
-		} catch (Exception e) {
-			e.getMessage();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		catch (Exception e) {
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 		}
@@ -119,7 +125,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	@Override
 	public void excluir(int id) throws SQLException,
-			UsuarioNaoEncontradoException {
+			UsuarioNaoEncontradoException, RepositorioException {
 		PreparedStatement stmt = null;
 		try {
 			String sql = "DELETE FROM USUARIO WHERE ID = ?";
@@ -127,7 +133,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.setInt(1, id);
 			stmt.execute();
 		} catch (SQLException e) {
-
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 		}

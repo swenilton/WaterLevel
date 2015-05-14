@@ -16,7 +16,7 @@ public class ControladorUsuario {
 	}
 
 	public void cadastrar(Usuario usuario) throws SQLException,
-			UsuarioJaExistenteException, UsuarioNaoEncontradoException {
+			UsuarioJaExistenteException, UsuarioNaoEncontradoException, RepositorioException {
 		if (usuario == null) {
 			throw new NullPointerException();
 		}
@@ -60,7 +60,7 @@ public class ControladorUsuario {
 	}
 
 	public void remover(int id) throws SQLException,
-			UsuarioNaoEncontradoException {
+			UsuarioNaoEncontradoException, RepositorioException {
 		if (iusuario.procurar(id) == null) {
 			throw new UsuarioNaoEncontradoException();
 		} else {
