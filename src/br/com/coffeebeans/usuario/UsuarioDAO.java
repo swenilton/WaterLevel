@@ -7,14 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.util.Conexao;
 
-/*-----------------------------------------------------------------------
- *				 	MÉTODOS A SEREM IMPLEMENTADOS------------------------
- */
 public class UsuarioDAO implements IUsuarioDAO {
+
 	private Connection connection = null;
 	private String sistema = "mysql";
 
@@ -80,12 +79,13 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-			
-			usuario = new Usuario (rs.getString("NOME"), rs.getString("LOGIN"), rs.getString("SENHA"),
-					rs.getString("EMAIL"), rs.getString("ATIVO"), rs.getString("PERFIL"));
+
+			usuario = new Usuario(rs.getString("NOME"), rs.getString("LOGIN"),
+					rs.getString("SENHA"), rs.getString("EMAIL"),
+					rs.getString("ATIVO"), rs.getString("PERFIL"));
 			usuario.setId(rs.getInt("ID"));
 		} catch (SQLException e) {
-			
+
 		} finally {
 			stmt.close();
 			rs.close();
@@ -95,8 +95,26 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	@Override
 	public void atualizar(Usuario usuario)
-			throws UsuarioNaoEncontradoException, SQLException {
-
+			throws UsuarioNaoEncontradoException, SQLException,
+			RepositorioException {
+		PreparedStatement stmt = null;
+		try {
+			if (usuario != null) {
+				try {
+					String sql = "UPDATE USUARIO SET SENHA = ? WHERE ID = ?";
+					stmt = this.connection.prepareStatement(sql);
+					stmt.setString(1, usuario.getSenha());
+					stmt.setInt(2, usuario.getId());
+					Integer resultado = stmt.executeUpdate();
+					if (resultado == 0)
+						throw new UsuarioNaoEncontradoException();
+				} catch (SQLException e) {
+					throw new RepositorioException(e);
+				}
+			}
+		} finally {
+			stmt.close();
+		}
 	}
 
 	@Override
@@ -109,7 +127,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.setInt(1, id);
 			stmt.execute();
 		} catch (SQLException e) {
-			
+
 		} finally {
 			stmt.close();
 		}

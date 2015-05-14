@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 
@@ -17,7 +18,7 @@ public interface IUsuarioDAO {
 	public Usuario procurar(int id) throws SQLException;
 
 	public void atualizar(Usuario usuario)
-			throws UsuarioNaoEncontradoException, SQLException;
+			throws UsuarioNaoEncontradoException, SQLException, RepositorioException;
 
 	public void excluir(int id) throws SQLException,
 			UsuarioNaoEncontradoException;

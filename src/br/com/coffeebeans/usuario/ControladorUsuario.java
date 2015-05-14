@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 
@@ -46,7 +47,7 @@ public class ControladorUsuario {
 	}
 
 	public void atualizar(Usuario usuarioNovo) throws SQLException,
-			UsuarioNaoEncontradoException {
+			UsuarioNaoEncontradoException, RepositorioException {
 		if (usuarioNovo == null) {
 			throw new NullPointerException();
 		}
