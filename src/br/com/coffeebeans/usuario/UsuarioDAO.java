@@ -38,10 +38,8 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		catch (Exception e) {
+			throw new RepositorioException(e);
+		} catch (Exception e) {
 			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
