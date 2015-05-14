@@ -11,8 +11,6 @@ public abstract class Repositorio {
 	// private Double diametro;
 	private Double limiteMaximo;
 	private Double limiteMinimo;
-	private Bomba bomba;
-	private int idBomba;
 
 	// public static final String CIRCULAR = "CIRCULAR";
 	// public static final String RETANGULAR = "RETANGULAR";
@@ -27,32 +25,12 @@ public abstract class Repositorio {
 
 	}
 
-	public int getIdBomba() {
-		return idBomba;
-	}
-
-
-	public void setIdBomba(int idBomba) {
-		this.idBomba = idBomba;
-	}
-
-
-
 	@Override
 	public String toString() {
 		return "Repositorio [id=" + id + ", descricao=" + descricao
 				+ ", capacidade=" + capacidade + ", profundidade="
 				+ profundidade + "limiteMaximo=" + limiteMaximo
 				+ ", limiteMinimo=" + limiteMinimo + "]";
-	}
-
-	
-	public Bomba getBomba() {
-		return bomba;
-	}
-
-	public void setBomba(Bomba bomba) {
-		this.bomba = bomba;
 	}
 
 	public int getId() {
