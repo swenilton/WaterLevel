@@ -5,18 +5,33 @@ import java.util.Date;
 import br.com.coffeebeans.bomba.Bomba;
 
 public class Acionamento {
-	
+
 	private int id;
 	private Bomba bomba;
 	private Date dataHoraInicio;
 	private Date dataHoraFim;
-	
-	public Acionamento(Bomba bomba, Date dataHoraInicio,
-			Date dataHoraFim) {
+	private int idBomba;
+
+	public Acionamento(Bomba bomba, Date dataHoraInicio, Date dataHoraFim) {
 		super();
 		this.bomba = bomba;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
+	}
+
+	public Acionamento(Date dataHoraInicio, Date dataHoraFim, int idBomba) {
+		super();
+		this.dataHoraInicio = dataHoraInicio;
+		this.dataHoraFim = dataHoraFim;
+		this.idBomba = idBomba;
+	}
+
+	public int getIdBomba() {
+		return idBomba;
+	}
+
+	public void setIdBomba(int idBomba) {
+		this.idBomba = idBomba;
 	}
 
 	public int getId() {
