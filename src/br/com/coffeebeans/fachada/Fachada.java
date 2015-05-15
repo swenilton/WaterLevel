@@ -14,17 +14,14 @@ public class Fachada {
 	private static Fachada instance = null;
 	ControladorRepositorio controladorRepositorio;
 
-	public Fachada() throws Exception {
+	private Fachada() throws Exception {
 		this.controladorRepositorio = new ControladorRepositorio();
 	}
 
-	public static Fachada getInstance() {
+	public static Fachada getInstance() throws Exception {
 		if (Fachada.instance == null) {
-			try {
-				Fachada.instance = new Fachada();
-			} catch (Exception e) {
+			Fachada.instance = new Fachada();
 
-			}
 		}
 		return Fachada.instance;
 	}
@@ -54,9 +51,9 @@ public class Fachada {
 
 	}
 
-	public Repositorio repositorioProcurar(int id) throws SQLException, RepositorioNaoEncontradoException {
+	public Repositorio repositorioProcurar(int id) throws SQLException,
+			RepositorioNaoEncontradoException {
 		return controladorRepositorio.procurar(id);
 	}
 
-	
 }
