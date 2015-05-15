@@ -28,7 +28,7 @@ public class ControladorUsuario {
 	}
 
 	public ArrayList<Usuario> listar() throws SQLException,
-			ListaUsuarioVaziaException {
+			ListaUsuarioVaziaException, RepositorioException {
 		if (iusuario.listar().isEmpty()) {
 			throw new ListaUsuarioVaziaException();
 		}
@@ -37,7 +37,7 @@ public class ControladorUsuario {
 	}
 
 	public Usuario procurar(int id) throws SQLException,
-			UsuarioNaoEncontradoException {
+			UsuarioNaoEncontradoException, RepositorioException {
 		if (iusuario.procurar(id) == null) {
 			throw new UsuarioNaoEncontradoException();
 		}

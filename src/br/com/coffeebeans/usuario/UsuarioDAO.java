@@ -26,17 +26,19 @@ public class UsuarioDAO implements IUsuarioDAO {
 			UsuarioJaExistenteException, RepositorioException {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "INSERT INTO USUARIO VALUES(NOME, LOGIN, SENHA, EMAIL, TELEFONE, ATIVO, FOTO, PERFIL)"
+			String sql = "INSERT INTO USUARIO(NOME, LOGIN, SENHA, EMAIL, TELEFONE, ATIVO, FOTO, PERFIL) VALUES"
 					+ " (?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getNome());
 			stmt.setString(2, usuario.getLogin());
 			stmt.setString(3, usuario.getSenha());
 			stmt.setString(4, usuario.getEmail());
-			stmt.setString(5, usuario.getAtivo());
-			stmt.setString(6, usuario.getPerfil());
+			stmt.setString(5, usuario.getTelefone());
+			stmt.setString(6, usuario.getAtivo());
+			stmt.setString(7, usuario.getFoto());
+			stmt.setString(8, usuario.getPerfil());
 			stmt.execute();
-			
+
 		} catch (SQLException e) {
 			throw new RepositorioException(e);
 		} catch (Exception e) {
@@ -48,7 +50,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	@Override
 	public ArrayList<Usuario> listar() throws SQLException,
-			ListaUsuarioVaziaException {
+			ListaUsuarioVaziaException, RepositorioException {
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -63,18 +65,23 @@ public class UsuarioDAO implements IUsuarioDAO {
 						rs.getString("EMAIL"), rs.getString("ATIVO"),
 						rs.getString("PERFIL"));
 				usuario.setId(rs.getInt("ID"));
+				usuario.setFoto(rs.getString("FOTO"));
+				usuario.setTelefone("TELEFONE");
 				usuarios.add(usuario);
 			}
 		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
+			throw new RepositorioException(e);
+		} catch (Exception e) {
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
+			rs.close();
 		}
 		return usuarios;
 	}
 
 	@Override
-	public Usuario procurar(int id) throws SQLException {
+	public Usuario procurar(int id) throws SQLException, RepositorioException {
 		Usuario usuario = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -83,13 +90,21 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-
-			usuario = new Usuario(rs.getString("NOME"), rs.getString("LOGIN"),
-					rs.getString("SENHA"), rs.getString("EMAIL"),
-					rs.getString("ATIVO"), rs.getString("PERFIL"));
-			usuario.setId(rs.getInt("ID"));
+			if(rs.next()){
+				usuario = new Usuario(rs.getString("NOME"),
+						rs.getString("LOGIN"), rs.getString("SENHA"),
+						rs.getString("EMAIL"), rs.getString("ATIVO"),
+						rs.getString("PERFIL"));
+				usuario.setId(rs.getInt("ID"));
+				usuario.setFoto(rs.getString("FOTO"));
+				usuario.setTelefone("TELEFONE");
+			} else {
+				throw new IllegalArgumentException("usuario não encontrado");
+			}
 		} catch (SQLException e) {
-
+			throw new RepositorioException(e);
+		} catch (Exception e) {
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -131,6 +146,8 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.setInt(1, id);
 			stmt.execute();
 		} catch (SQLException e) {
+			throw new RepositorioException(e);
+		} catch (Exception e) {
 			throw new RepositorioException(e);
 		} finally {
 			stmt.close();

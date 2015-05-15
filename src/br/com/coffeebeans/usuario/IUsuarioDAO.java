@@ -13,9 +13,9 @@ public interface IUsuarioDAO {
 			UsuarioJaExistenteException, RepositorioException;
 
 	public ArrayList<Usuario> listar() throws SQLException,
-			ListaUsuarioVaziaException;
+			ListaUsuarioVaziaException, RepositorioException;
 
-	public Usuario procurar(int id) throws SQLException;
+	public Usuario procurar(int id) throws SQLException, RepositorioException;
 
 	public void atualizar(Usuario usuario)
 			throws UsuarioNaoEncontradoException, SQLException, RepositorioException;
