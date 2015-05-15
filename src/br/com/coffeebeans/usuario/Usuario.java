@@ -97,7 +97,8 @@ public class Usuario {
 	public String toString() {
 		return "Usuario [id=" + id + ", nome=" + nome + ", login=" + login
 				+ ", senha=" + senha + ", email=" + email + ", telefone="
-				+ telefone + ", ativo=" + ativo + "]";
+				+ telefone + ", ativo=" + ativo + ", foto=" + foto
+				+ ", perfil=" + perfil + "]";
 	}
 
 }
