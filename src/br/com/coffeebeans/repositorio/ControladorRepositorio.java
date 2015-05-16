@@ -20,7 +20,7 @@ public class ControladorRepositorio {
 		if (repositorio == null) {
 			throw new NullPointerException();
 		}
-		if (irepositorio.procurar(repositorio.getId()) != null) {
+		if (irepositorio.procurar(repositorio.getDescricao()) != null) {
 			throw new RepositorioJaExistenteException();
 		}
 		irepositorio.cadastrar(repositorio);
@@ -46,6 +46,16 @@ public class ControladorRepositorio {
 
 	}
 
+	public Repositorio procurar(String descricao) throws SQLException,
+			RepositorioNaoEncontradoException {
+		if (irepositorio.procurar(descricao) == null) {
+			throw new RepositorioNaoEncontradoException();
+		}
+
+		return irepositorio.procurar(descricao);
+
+	}
+
 	public void atualizar(Repositorio repositorioNovo) throws SQLException,
 			RepositorioNaoEncontradoException {
 		if (repositorioNovo == null) {
@@ -68,9 +78,8 @@ public class ControladorRepositorio {
 		}
 	}
 
-	
-	//método ainda será codificado
-	public Double calcularCapacidade(Double arg1,Double arg2) {
+	// método ainda será codificado
+	public Double calcularCapacidade(Double arg1, Double arg2) {
 		// esse retorno é só para o método não dar erro
 		return 0.00;
 	}

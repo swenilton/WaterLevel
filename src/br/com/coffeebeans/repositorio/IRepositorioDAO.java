@@ -18,4 +18,6 @@ public interface IRepositorioDAO {
 	public void atualizar(Repositorio repositorio) throws RepositorioNaoEncontradoException, SQLException;
 
 	public void excluir(int id) throws SQLException,RepositorioNaoEncontradoException;
+
+	public Repositorio procurar(String descricao) throws SQLException,RepositorioNaoEncontradoException;
 }

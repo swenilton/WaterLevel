@@ -10,6 +10,10 @@ public class RepositorioCircular extends Repositorio {
 		this.diametroMedio = diametroMedio;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString()+ " diametroMedio="+diametroMedio +"\n";
+	}
 	public Double getDiametroMedio() {
 		return diametroMedio;
 	}

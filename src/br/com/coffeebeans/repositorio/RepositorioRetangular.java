@@ -10,6 +10,10 @@ public class RepositorioRetangular extends Repositorio {
 		this.areaBase = areaBase;
 	}
 
+   @Override
+public String toString() {
+	return super.toString()+ " areaBase="+areaBase +"\n";
+}
 	public Double getAreaBase() {
 		return areaBase;
 	}
