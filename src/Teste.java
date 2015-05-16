@@ -14,7 +14,7 @@ public class Teste {
 			Double profundidade = null;
 			Double limiteMinimo = null;
 			Double limiteMaximo = null;
-			Double areaBase;
+			Double areaBase = null;
 			Double diametroMedio = null;
 
 			int opcao = 0;
@@ -41,18 +41,18 @@ public class Teste {
 					System.out.println("Digite a profundidade");
 					profundidade = in.nextDouble();
 
-					System.out.println("Digite o limite minimo");
-					limiteMinimo = in.nextDouble();
-
 					System.out.println("Digite o limite maximo");
 					limiteMaximo = in.nextDouble();
 
-					System.out.println("Digite o diâmetro médio");
-					diametroMedio = in.nextDouble();
+					System.out.println("Digite o limite minimo");
+					limiteMinimo = in.nextDouble();
 
-					repositorio = new RepositorioCircular(descricao,
+					System.out.println("Digite a area da base");
+					areaBase = in.nextDouble();
+
+					repositorio = new RepositorioRetangular(descricao,
 							capacidade, profundidade, limiteMinimo,
-							limiteMaximo, diametroMedio);
+							limiteMaximo, areaBase);
 
 					fachada.cadastrar(repositorio);
 				}
@@ -60,7 +60,7 @@ public class Teste {
 					System.out.println(fachada.repositorioListar().toString());
 				}
 				if (opcao == 3) {
-					fachada.repositorioRemover(7);
+					fachada.repositorioRemover(2);
 				}
 				if (opcao == 4) {
 
@@ -68,7 +68,9 @@ public class Teste {
 							.println("Digite o id do repositório a ser atualizado:");
 
 					repositorio = fachada.repositorioProcurar(in.nextInt());
-					RepositorioRetangular repositorio2 = new RepositorioRetangular(descricao, capacidade, profundidade, limiteMinimo, limiteMaximo, diametroMedio);
+					RepositorioRetangular repositorio2 = new RepositorioRetangular(
+							descricao, capacidade, profundidade, limiteMinimo,
+							limiteMaximo, diametroMedio);
 
 					if (repositorio == null) {
 						throw new NullPointerException();
@@ -87,19 +89,19 @@ public class Teste {
 
 						System.out.println("Digite a profundidade");
 						profundidade = in.nextDouble();
-						
+
 						repositorio2.setProfundidade(profundidade);
+
+						System.out.println("Digite o limite maximo");
+						limiteMaximo = in.nextDouble();
+
+						repositorio2.setLimiteMaximo(limiteMaximo);
 
 						System.out.println("Digite o limite minimo");
 						limiteMinimo = in.nextDouble();
-						
+
 						repositorio2.setLimiteMinimo(limiteMinimo);
-						
-						System.out.println("Digite o limite maximo");
-						limiteMaximo = in.nextDouble();
-						
-						repositorio2.setLimiteMaximo(limiteMaximo);
-						
+
 						System.out.println("Digite a área da base");
 						areaBase = in.nextDouble();
 						repositorio2.setAreaBase(areaBase);
