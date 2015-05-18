@@ -2,6 +2,9 @@ package br.com.coffeebeans.usuario;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -18,21 +21,18 @@ public class ControladorUsuario {
 	public void cadastrar(Usuario usuario) throws SQLException,
 			UsuarioJaExistenteException, UsuarioNaoEncontradoException, RepositorioException {
 		if (usuario == null) {
-			throw new NullPointerException();
-		}
-		if (iusuario.procurar(usuario.getId()) != null) {
-			throw new UsuarioJaExistenteException();
+			throw new IllegalAnnotationException("Usuário Null");
 		}
 		iusuario.cadastrar(usuario);
 
 	}
 
-	public ArrayList<Usuario> listar() throws SQLException,
+	public List<Usuario> getLista() throws SQLException,
 			ListaUsuarioVaziaException, RepositorioException {
-		if (iusuario.listar().isEmpty()) {
+		if (iusuario.getLista().isEmpty()) {
 			throw new ListaUsuarioVaziaException();
 		}
-		return iusuario.listar();
+		return iusuario.getLista();
 
 	}
 

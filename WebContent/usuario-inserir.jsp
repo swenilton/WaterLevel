@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"/>
+<%@ page pageEncoding="UTF-8" %>
 <title>Inserir Usuário - Water Level</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="shortcut icon" href="img/ico.png"/>
@@ -55,24 +56,24 @@ $( window ).scroll(function() {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="home.html"><img src="img/Logo-150px.png" id="logo" class=""/></a>            
+          <a class="navbar-brand" href="home.jsp"><img src="img/Logo-150px.png" id="logo" class=""/></a>            
     </div> 
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="home.html">Inicio </a></li>
+        <li><a href="home.jsp">Início </a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cadastros <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li class="active"><a href="usuario.html">Usuário</a></li>
-            <li><a href="repositorio.html">Repositório</a></li>
-            <li><a href="atividade.html">Atividade</a></li>
-            <li><a href="bomba.html">Bomba</a></li>
+            <li class="active"><a href="usuario.jsp">Usuário</a></li>
+            <li><a href="repositorio.jsp">Repositório</a></li>
+            <li><a href="atividade.jsp">Atividade</a></li>
+            <li><a href="bomba.jsp">Bomba</a></li>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Relatórios <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="consumo-periodico.html">Consumo periódico</a></li>
+            <li><a href="consumo-periodico.jsp">Consumo periódico</a></li>
             <li><a href="#">Gráficos</a></li>
           </ul>
         </li>
@@ -84,7 +85,7 @@ $( window ).scroll(function() {
             <li><a href="#" data-toggle="modal" data-target="#ver-gastos">Ver gastos</a></li>
             <li><a href="#" data-toggle="modal" data-target="#ver-rank">Ver Rank</a></li>
             <li class="divider"></li>
-            <li><a href="undex.html">Sair</a></li>
+            <li><a href="index.jsp">Sair</a></li>
           </ul>
         </li>
       </ul>
@@ -101,14 +102,14 @@ $( window ).scroll(function() {
       </div>
       <div class="modal-body">
         <form class="">
-          <div id="foto-usuario" style="text-align: center;">
+          <div style="text-align: center;">
             <img src="http://placehold.it/150x150" alt="Imagem do Usuário" class="img-circle"/>
             <div class="form-group">
               <label for="foto">Procurar Foto</label>
               <input type="file" id="foto"/>
             </div>
           </div>
-          <div id="dados-usuario">
+          <div>
             <div class="form-group">
               <label for="nome">Nome</label>
               <input type="text" class="form-control" id="nome" placeholder="Insira seu Nome"/>
@@ -190,14 +191,15 @@ $( window ).scroll(function() {
     <div class="page-header page-titulo">
         <!-- migalhas de pão -->
         <ol class="breadcrumb migalhas">
-          <li><a href="home.html">Inicio</a></li>
-          <li><a href="usuario.html">Usuário</a></li>
+          <li><a href="home.jsp">Inicio</a></li>
+          <li><a href="usuario.jsp">Usuário</a></li>
           <li class="active">Inserir</li>
         </ol>
         <!-- titulo -->
         <h1>Usuário <small>Inserir</small></h1>
     </div><!-- fim page-header -->
-    <form action="http://localhost:8080/WaterLevel/ServletController" method="POST" name="form-inserir">
+    <form action="/WaterLevel/ServletController" method="POST" name="form-inserir-usuario">
+    	<input type="hidden" name="acao" value="inserirUsuario"/>
       <div id="foto-usuario">
         <img src="http://placehold.it/150x150" alt="Imagem do Usuário" class="img-circle"/>
         <div class="form-group">
@@ -256,7 +258,7 @@ $( window ).scroll(function() {
 <footer class="rodape">
     <div id="footer">
         <div class="container">
-            <a href="home.html">Início</a> | <a href="#">Termos e Condições</a> | <a href="#">Ajuda e Suporte</a> | <a href="#">Mapa do site</a> | <a href="#">Sobre a Coffee Beans</a> <br /><br />
+            <a href="home.jsp">Início</a> | <a href="#">Termos e Condições</a> | <a href="#">Ajuda e Suporte</a> | <a href="#">Mapa do site</a> | <a href="#">Sobre a Coffee Beans</a> <br /><br />
             Water Level &copy 2015 - Todos os direitos reservados. <br/>
             Desenvolvido por <a href="http://coffeebeansdev.com.br" target="_blank"><img src="img/coffee-logo.png" alt="Logo Coffee Beans" width="70px"></a>
             <a href="http://facebook.com.br/coffeebeansdev" target="_blank"><img src="img/facebook.jpeg" alt="Logo Facebook" width="25px"></a><br/>

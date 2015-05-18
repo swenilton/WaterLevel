@@ -2,6 +2,7 @@ package br.com.coffeebeans.fachada;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.ListaVaziaException;
@@ -75,9 +76,9 @@ public class Fachada {
 		controladorUsuario.remover(id);
 	}
 
-	public ArrayList<Usuario> usuarioListar() throws SQLException,
+	public List<Usuario> getUsuarioLista() throws SQLException,
 			ListaUsuarioVaziaException, RepositorioException {
-		return controladorUsuario.listar();
+		return controladorUsuario.getLista();
 
 	}
 

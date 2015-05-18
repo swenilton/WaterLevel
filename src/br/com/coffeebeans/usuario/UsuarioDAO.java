@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -49,9 +50,9 @@ public class UsuarioDAO implements IUsuarioDAO {
 	}
 
 	@Override
-	public ArrayList<Usuario> listar() throws SQLException,
+	public List<Usuario> getLista() throws SQLException,
 			ListaUsuarioVaziaException, RepositorioException {
-		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+		List<Usuario> usuarios = new ArrayList<Usuario>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
@@ -99,7 +100,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 				usuario.setFoto(rs.getString("FOTO"));
 				usuario.setTelefone("TELEFONE");
 			} else {
-				throw new IllegalArgumentException("usuario não encontrado");
+				throw new IllegalArgumentException("usuario nï¿½o encontrado");
 			}
 		} catch (SQLException e) {
 			throw new RepositorioException(e);

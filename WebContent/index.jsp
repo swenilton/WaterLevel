@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<%@ page pageEncoding="UTF-8" %>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Login - Water Level</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
@@ -111,7 +112,7 @@
       document.getElementById('status').innerHTML =
         'Obrigado por logar, ' + response.name + '!';
        $('#usuario').val(response.email);
-       //$('#foto').html('<img src="https://graph.facebook.com/' + response.first_name + response.last_name + '/picture" alt="'+response.name+'" />')
+       //$('#foto').jsp('<img src="https://graph.facebook.com/' + response.first_name + response.last_name + '/picture" alt="'+response.name+'" />')
     });
   }
 </script>
@@ -255,7 +256,7 @@
       <label class="checkbox pull-left">
       	<input type="checkbox" name="lembre-se">Lembre-se</input>
     	</label>
-      <a href="home.html" class="btn btn-large btn-primary pull-right" role="button"/>Entrar</a>
+      <a href="home.jsp" class="btn btn-large btn-primary pull-right" role="button"/>Entrar</a>
 		</form>
 		<div id="status" style="margin-top:65px;"></div>
 		<div id="foto"><img id="perfil" src="" alt=""></div>

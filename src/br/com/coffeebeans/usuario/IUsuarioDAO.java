@@ -2,6 +2,7 @@ package br.com.coffeebeans.usuario;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -12,7 +13,7 @@ public interface IUsuarioDAO {
 	public void cadastrar(Usuario usuario) throws SQLException,
 			UsuarioJaExistenteException, RepositorioException;
 
-	public ArrayList<Usuario> listar() throws SQLException,
+	public List<Usuario> getLista() throws SQLException,
 			ListaUsuarioVaziaException, RepositorioException;
 
 	public Usuario procurar(int id) throws SQLException, RepositorioException;
