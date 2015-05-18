@@ -34,6 +34,7 @@ public class Conexao {
 		}
 		if (connection == null) {
 			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				connection = DriverManager.getConnection(conexao, usuario,
 						senha);
 			} catch (SQLException e) {
@@ -48,7 +49,7 @@ public class Conexao {
 	}
 
 	/**
-	 * Atenção, este método fecha o Statement!
+	 * Atenï¿½ï¿½o, este mï¿½todo fecha o Statement!
 	 * 
 	 * @throws SQLException
 	 */
