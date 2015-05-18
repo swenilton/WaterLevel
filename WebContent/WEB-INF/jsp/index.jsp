@@ -140,7 +140,7 @@
 		position: absolute;
   }
 	div#background1 {
-		background: url('img/fundo-login.jpg') no-repeat center center fixed;
+		background: url('/img/fundo-login.jpg') no-repeat center center fixed;
 		width: 100%; 
 	    height: 100%; 
 		-webkit-background-size: cover;
@@ -256,7 +256,7 @@
       <label class="checkbox pull-left">
       	<input type="checkbox" name="lembre-se">Lembre-se</input>
     	</label>
-      <a href="home.jsp" class="btn btn-large btn-primary pull-right" role="button"/>Entrar</a>
+      <a href="?acao=login" class="btn btn-large btn-primary pull-right" role="button"/>Entrar</a>
 		</form>
 		<div id="status" style="margin-top:65px;"></div>
 		<div id="foto"><img id="perfil" src="" alt=""></div>

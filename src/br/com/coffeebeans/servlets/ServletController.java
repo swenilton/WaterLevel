@@ -20,7 +20,7 @@ import br.com.coffeebeans.usuario.UsuarioDAO;
 /**
  * Servlet implementation class ServletController
  */
-@WebServlet("/ServletController")
+@WebServlet("/")
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Fachada fachada;
@@ -41,44 +41,79 @@ public class ServletController extends HttpServlet {
 			HttpServletResponse response) {
 
 		String acao = request.getParameter("acao");
+		try {
+			if (acao == null) {
+				RequestDispatcher rd = request
+						.getRequestDispatcher("/WEB-INF/jsp/index.jsp");
+				try {
+					rd.forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (acao.equals("login")) {
+				RequestDispatcher rd = request
+						.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+				try {
+					rd.forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (acao.equals("inserirUsuario")) {
+				String nome = request.getParameter("nome");
+				String login = request.getParameter("login");
+				String senha = request.getParameter("senha");
+				String email = request.getParameter("email");
+				String ativo = request.getParameter("ativo");
+				String perfil = request.getParameter("perfil");
+				String telefone = request.getParameter("telefone");
+				String foto = request.getParameter("foto");
+				Usuario u = new Usuario(nome, login, senha, email, ativo,
+						perfil);
+				u.setTelefone(telefone);
+				u.setFoto(foto);
 
-		if (acao.equals("inserirUsuario")) {
-			String nome = request.getParameter("nome");
-			String login = request.getParameter("login");
-			String senha = request.getParameter("senha");
-			String email = request.getParameter("email");
-			String ativo = request.getParameter("ativo");
-			String perfil = request.getParameter("perfil");
-			String telefone = request.getParameter("telefone");
-			String foto = request.getParameter("foto");
-			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
-			u.setTelefone(telefone);
-			u.setFoto(foto);
+				try {
+					fachada.cadastrar(u);
+				} catch (Exception e) {
+					System.out.println("Erro ao inserir usuario => "
+							+ e.getMessage());
+					e.printStackTrace();
+				}
 
-			try {
-				fachada.cadastrar(u);
-			} catch (Exception e) {
-				System.out.println("Erro ao inserir usuario => "
-						+ e.getMessage());
-				e.printStackTrace();
+				RequestDispatcher rd = request
+						.getRequestDispatcher("/usuario-inserir.jsp");
+				try {
+					rd.forward(request, response);
+				} catch (ServletException e) {
+					System.out
+							.println("Erro ao direcionar usuario-inserir.jsp => "
+									+ e.getMessage());
+				} catch (IOException e) {
+					System.out
+							.println("Erro ao direcionar usuario-inserir.jsp => "
+									+ e.getMessage());
+				}
+			} else {
+				System.out.println("porra nenhuma");
 			}
 
-			RequestDispatcher rd = request
-					.getRequestDispatcher("/usuario-inserir.jsp");
-			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			} catch (IOException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		System.out.println("foi executado");
 
 	}
-	
-	public List<Usuario> getListaUsuario() throws SQLException, ListaUsuarioVaziaException, RepositorioException{
+
+	public List<Usuario> getListaUsuario() throws SQLException,
+			ListaUsuarioVaziaException, RepositorioException {
 		return fachada.getUsuarioLista();
 	}
 
