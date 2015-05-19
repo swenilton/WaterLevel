@@ -24,11 +24,7 @@ public class Bomba {
 		this.potencia = potencia;
 		this.vazao = vazao;
 		this.repositorioEnche = repositorioEnche;
-		if (acionamento != Bomba.ACIONAMENTO_MANUAL
-				&& acionamento != Bomba.ACIONAMENTO_AUTOMATICO)
-			throw new IllegalArgumentException("Modo de acionamento inválido");
-		else
-			this.acionamento = acionamento;
+		this.acionamento = acionamento;
 	}
 
 	public Bomba(String descricao, String status, Double potencia,
@@ -39,11 +35,8 @@ public class Bomba {
 		this.potencia = potencia;
 		this.vazao = vazao;
 		this.idRepositorioEnche = idRepositorioEnche;
-		if (acionamento != Bomba.ACIONAMENTO_MANUAL
-				&& acionamento != Bomba.ACIONAMENTO_AUTOMATICO)
-			throw new IllegalArgumentException("Modo de acionamento inválido");
-		else
-			this.acionamento = acionamento;
+
+		this.acionamento = acionamento;
 	}
 
 	public int getIdRepositorioEnche() {

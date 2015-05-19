@@ -4,6 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.coffeebeans.bomba.Bomba;
+import br.com.coffeebeans.bomba.ControladorBomba;
+import br.com.coffeebeans.exception.BombaJaExistenteException;
+import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.ListaVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -21,10 +25,12 @@ public class Fachada {
 	private static Fachada instance = null;
 	ControladorRepositorio controladorRepositorio;
 	ControladorUsuario controladorUsuario;
+	ControladorBomba controladorBomba;
 
 	private Fachada() throws Exception {
 		this.controladorRepositorio = new ControladorRepositorio();
 		this.controladorUsuario = new ControladorUsuario();
+		this.controladorBomba = new ControladorBomba();
 	}
 
 	public static Fachada getInstance() throws Exception {
@@ -37,27 +43,47 @@ public class Fachada {
 	public <E> void cadastrar(E element) throws SQLException,
 			RepositorioJaExistenteException, RepositorioNaoEncontradoException,
 			UsuarioJaExistenteException, UsuarioNaoEncontradoException,
-			RepositorioException {
+			RepositorioException, BombaJaExistenteException,
+			BombaNaoEncontradaException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.cadastrar((Repositorio) element);
 		} else if (element instanceof Usuario) {
 			controladorUsuario.cadastrar((Usuario) element);
+		} else if (element instanceof Bomba) {
+			controladorBomba.cadastrar((Bomba) element);
 		}
 	}
 
 	public <E> void atualizar(E element) throws SQLException,
 			RepositorioNaoEncontradoException, UsuarioNaoEncontradoException,
-			RepositorioException {
+			RepositorioException, BombaNaoEncontradaException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.atualizar((Repositorio) element);
 		} else if (element instanceof Usuario) {
 			controladorUsuario.atualizar((Usuario) element);
+		} else if (element instanceof Bomba) {
+			controladorBomba.atualizar((Bomba) element);
 		}
+	}
+
+	public void bombaRemover(int id) throws SQLException,
+			BombaNaoEncontradaException {
+		controladorBomba.remover(id);
 	}
 
 	public void repositorioRemover(int id) throws SQLException,
 			RepositorioNaoEncontradoException {
 		controladorRepositorio.remover(id);
+	}
+
+	public void usuarioRemover(int id) throws SQLException,
+			UsuarioNaoEncontradoException, RepositorioException {
+		controladorUsuario.remover(id);
+	}
+
+	public ArrayList<Bomba> bombaListar() throws SQLException,
+			ListaVaziaException {
+		return controladorBomba.listar();
 	}
 
 	public ArrayList<Repositorio> repositorioListar() throws SQLException,
@@ -66,20 +92,20 @@ public class Fachada {
 
 	}
 
-	public Repositorio repositorioProcurar(int id) throws SQLException,
-			RepositorioNaoEncontradoException {
-		return controladorRepositorio.procurar(id);
-	}
-
-	public void usuarioRemover(int id) throws SQLException,
-			UsuarioNaoEncontradoException, RepositorioException {
-		controladorUsuario.remover(id);
-	}
-
 	public List<Usuario> getUsuarioLista() throws SQLException,
 			ListaUsuarioVaziaException, RepositorioException {
 		return controladorUsuario.getLista();
 
+	}
+
+	public Bomba procurar(int id) throws SQLException,
+			BombaNaoEncontradaException {
+		return controladorBomba.procurar(id);
+	}
+
+	public Repositorio repositorioProcurar(int id) throws SQLException,
+			RepositorioNaoEncontradoException {
+		return controladorRepositorio.procurar(id);
 	}
 
 	public Usuario usuariorioProcurar(int id) throws SQLException,
