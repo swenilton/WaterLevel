@@ -13,7 +13,6 @@ public class Acionamento {
 	private int idBomba;
 
 	public Acionamento(Bomba bomba, Date dataHoraInicio, Date dataHoraFim) {
-		super();
 		this.bomba = bomba;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
