@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.util.Conexao;
 
-public class BombaDAO {
+public class BombaDAO implements IBombaDAO {
 	private Connection connection = null;
 	private String sistema = "mysql";
 
