@@ -121,10 +121,17 @@ public class UsuarioDAO implements IUsuarioDAO {
 		try {
 			if (usuario != null) {
 				try {
-					String sql = "UPDATE USUARIO SET SENHA = ? WHERE ID = ?";
+					String sql = "UPDATE USUARIO SET LOGIN= ?, SENHA = ?, NOME = ?, EMAIL = ?, TELEFONE = ?, FOTO = ?, ATIVO = ?, PERFIL = ? WHERE ID = ?";
 					stmt = this.connection.prepareStatement(sql);
-					stmt.setString(1, usuario.getSenha());
-					stmt.setInt(2, usuario.getId());
+					stmt.setString(1, usuario.getLogin());
+					stmt.setString(2, usuario.getSenha());
+					stmt.setString(3, usuario.getNome());
+					stmt.setString(4, usuario.getEmail());
+					stmt.setString(5, usuario.getTelefone());
+					stmt.setString(6, usuario.getFoto());
+					stmt.setString(7, usuario.getAtivo());
+					stmt.setString(8, usuario.getPerfil());
+					stmt.setInt(9, usuario.getId());
 					Integer resultado = stmt.executeUpdate();
 					if (resultado == 0)
 						throw new UsuarioNaoEncontradoException();
