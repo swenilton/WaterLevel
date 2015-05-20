@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 
 public class ControladorBomba {
 	private IBombaDAO iBomba;
@@ -15,15 +16,15 @@ public class ControladorBomba {
 	}
 
 	public void cadastrar(Bomba bomba) throws SQLException,
-			BombaJaExistenteException, BombaNaoEncontradaException {
+			BombaJaExistenteException, BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException {
 		if (bomba == null) {
 			throw new NullPointerException();
 		}
 		if (iBomba.procurar(bomba.getDescricao()) != null) {
 			throw new BombaJaExistenteException();
 		}
-		if (bomba.getAcionamento() != Bomba.ACIONAMENTO_AUTOMATICO
-				&& bomba.getAcionamento() != Bomba.ACIONAMENTO_MANUAL) {
+		if (!(bomba.getAcionamento().equals(Bomba.ACIONAMENTO_AUTOMATICO))
+				&& (!bomba.getAcionamento().equals(Bomba.ACIONAMENTO_MANUAL))) {
 			throw new IllegalArgumentException("Modo de acionamento inválido");
 		}
 		iBomba.cadastrar(bomba);
@@ -68,8 +69,8 @@ public class ControladorBomba {
 			throw new BombaNaoEncontradaException();
 
 		}
-		if (bomba.getAcionamento() != Bomba.ACIONAMENTO_AUTOMATICO
-				&& bomba.getAcionamento() != Bomba.ACIONAMENTO_MANUAL) {
+		if (!(bomba.getAcionamento().equals(Bomba.ACIONAMENTO_AUTOMATICO))
+				&& (!bomba.getAcionamento().equals(Bomba.ACIONAMENTO_MANUAL))) {
 			throw new IllegalArgumentException("Modo de acionamento inválido");
 		}
 

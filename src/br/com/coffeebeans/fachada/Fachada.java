@@ -15,6 +15,7 @@ import br.com.coffeebeans.exception.RepositorioJaExistenteException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
+import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 import br.com.coffeebeans.repositorio.ControladorRepositorio;
 import br.com.coffeebeans.repositorio.Repositorio;
 import br.com.coffeebeans.repositorio.RepositorioCircular;
@@ -44,7 +45,7 @@ public class Fachada {
 			RepositorioJaExistenteException, RepositorioNaoEncontradoException,
 			UsuarioJaExistenteException, UsuarioNaoEncontradoException,
 			RepositorioException, BombaJaExistenteException,
-			BombaNaoEncontradaException {
+			BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.cadastrar((Repositorio) element);
 		} else if (element instanceof Usuario) {
@@ -98,7 +99,7 @@ public class Fachada {
 
 	}
 
-	public Bomba procurar(int id) throws SQLException,
+	public Bomba bombaProcurar(int id) throws SQLException,
 			BombaNaoEncontradaException {
 		return controladorBomba.procurar(id);
 	}
