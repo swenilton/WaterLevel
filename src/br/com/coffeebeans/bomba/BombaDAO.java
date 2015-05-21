@@ -51,6 +51,8 @@ public class BombaDAO implements IBombaDAO {
 
 			// throw new ViolacaoChaveEstrangeiraException();
 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 		finally {
@@ -99,7 +101,7 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setString(1, descricao);
 			rs = stmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				bomba = new Bomba(rs.getString("DESCRICAO"),
 						rs.getString("STATUS"), rs.getDouble("POTENCIA"),
 						rs.getDouble("VAZAO"), rs.getString("ACIONAMENTO"),
@@ -128,7 +130,7 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				bomba = new Bomba(rs.getString("DESCRICAO"),
 						rs.getString("STATUS"), rs.getDouble("POTENCIA"),
 						rs.getDouble("VAZAO"), rs.getString("ACIONAMENTO"),

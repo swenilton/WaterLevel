@@ -1,5 +1,6 @@
 package br.com.coffeebeans.acionamento;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import br.com.coffeebeans.bomba.Bomba;
@@ -8,18 +9,19 @@ public class Acionamento {
 
 	private int id;
 	private Bomba bomba;
-	private Date dataHoraInicio;
-	private Date dataHoraFim;
+	private Timestamp dataHoraInicio;
+	private Timestamp dataHoraFim;
 	private int idBomba;
 
-	public Acionamento(Bomba bomba, Date dataHoraInicio, Date dataHoraFim) {
+	public Acionamento(Bomba bomba, Timestamp dataHoraInicio,
+			Timestamp dataHoraFim) {
 		this.bomba = bomba;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
 	}
 
-	public Acionamento(Date dataHoraInicio, Date dataHoraFim, int idBomba) {
-		super();
+	public Acionamento(Timestamp dataHoraInicio, Timestamp dataHoraFim,
+			int idBomba) {
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
 		this.idBomba = idBomba;
@@ -49,26 +51,27 @@ public class Acionamento {
 		this.bomba = bomba;
 	}
 
-	public Date getDataHoraInicio() {
+	public Timestamp getDataHoraInicio() {
 		return dataHoraInicio;
 	}
 
-	public void setDataHoraInicio(Date dataHoraInicio) {
+	public void setDataHoraInicio(Timestamp dataHoraInicio) {
 		this.dataHoraInicio = dataHoraInicio;
 	}
 
-	public Date getDataHoraFim() {
+	public Timestamp getDataHoraFim() {
 		return dataHoraFim;
 	}
 
-	public void setDataHoraFim(Date dataHoraFim) {
+	public void setDataHoraFim(Timestamp dataHoraFim) {
 		this.dataHoraFim = dataHoraFim;
 	}
 
 	@Override
 	public String toString() {
-		return "Acionamento [id=" + id + ", bomba=" + bomba
+		return "Acionamento [id=" + id + ", bomba=" + bomba.getDescricao()
 				+ ", dataHoraInicio=" + dataHoraInicio + ", dataHoraFim="
-				+ dataHoraFim + "]";
+				+ dataHoraFim + ", idBomba=" + idBomba + "]";
 	}
+
 }
