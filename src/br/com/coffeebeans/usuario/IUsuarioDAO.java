@@ -13,8 +13,7 @@ public interface IUsuarioDAO {
 	public void cadastrar(Usuario usuario) throws SQLException,
 			UsuarioJaExistenteException, RepositorioException;
 
-	public List<Usuario> getLista() throws SQLException,
-			ListaUsuarioVaziaException, RepositorioException;
+	public List<Usuario> getLista() throws SQLException, RepositorioException;
 
 	public Usuario procurar(int id) throws SQLException, RepositorioException;
 

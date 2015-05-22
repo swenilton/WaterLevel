@@ -27,11 +27,7 @@ public class ControladorUsuario {
 
 	}
 
-	public List<Usuario> getLista() throws SQLException,
-			ListaUsuarioVaziaException, RepositorioException {
-		if (iusuario.getLista().isEmpty()) {
-			throw new ListaUsuarioVaziaException();
-		}
+	public List<Usuario> getLista() throws SQLException, RepositorioException {
 		return iusuario.getLista();
 
 	}

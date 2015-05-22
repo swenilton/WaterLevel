@@ -50,8 +50,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 	}
 
 	@Override
-	public List<Usuario> getLista() throws SQLException,
-			ListaUsuarioVaziaException, RepositorioException {
+	public List<Usuario> getLista() throws SQLException, RepositorioException {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -67,7 +66,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 						rs.getString("PERFIL"));
 				usuario.setId(rs.getInt("ID"));
 				usuario.setFoto(rs.getString("FOTO"));
-				usuario.setTelefone("TELEFONE");
+				usuario.setTelefone(rs.getString("TELEFONE"));
 				usuarios.add(usuario);
 			}
 		} catch (SQLException e) {
