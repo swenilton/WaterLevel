@@ -118,4 +118,14 @@ public class Bomba {
 	public void setRepositorioSeca(Repositorio repositorioSeca) {
 		this.repositorioSeca = repositorioSeca;
 	}
+
+	@Override
+	public String toString() {
+		return "Bomba [codigo=" + codigo + ", descricao=" + descricao
+				+ ", status=" + status + ", potencia=" + potencia + ", vazao="
+				+ vazao + ", acionamento=" + acionamento
+				+ ", idRepositorioEnche=" + idRepositorioEnche
+				+ ", idRepositorioSeca=" + idRepositorioSeca + "]" + "\n";
+	}
+	
 }

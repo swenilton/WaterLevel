@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
+import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 import br.com.coffeebeans.util.Conexao;
 
 public class BombaDAO implements IBombaDAO {
@@ -17,7 +18,8 @@ public class BombaDAO implements IBombaDAO {
 		this.connection = Conexao.conectar(sistema);
 	}
 
-	public void cadastrar(Bomba bomba) throws SQLException {
+	public void cadastrar(Bomba bomba) throws SQLException,
+			ViolacaoChaveEstrangeiraException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		int id = 0;
@@ -43,9 +45,17 @@ public class BombaDAO implements IBombaDAO {
 			while (rs.next()) {
 				id = rs.getInt(1);
 			}
+		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
+			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
+			System.out.println(exc.getMessage());
+
+			// throw new ViolacaoChaveEstrangeiraException();
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-		} finally {
+		}
+
+		finally {
 			stmt.close();
 			rs.close();
 		}
@@ -91,7 +101,7 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setString(1, descricao);
 			rs = stmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				bomba = new Bomba(rs.getString("DESCRICAO"),
 						rs.getString("STATUS"), rs.getDouble("POTENCIA"),
 						rs.getDouble("VAZAO"), rs.getString("ACIONAMENTO"),
@@ -120,7 +130,7 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				bomba = new Bomba(rs.getString("DESCRICAO"),
 						rs.getString("STATUS"), rs.getDouble("POTENCIA"),
 						rs.getDouble("VAZAO"), rs.getString("ACIONAMENTO"),

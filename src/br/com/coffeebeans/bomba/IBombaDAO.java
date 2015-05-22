@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 
 public interface IBombaDAO {
 	public void cadastrar(Bomba bomba) throws SQLException,
-			BombaJaExistenteException;
+			BombaJaExistenteException, ViolacaoChaveEstrangeiraException;
 
 	public ArrayList<Bomba> listar() throws SQLException, ListaVaziaException;
 
