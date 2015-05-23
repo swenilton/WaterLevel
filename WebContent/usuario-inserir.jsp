@@ -246,7 +246,7 @@
 			</div>
 			<!-- fim page-header -->
 			<form action="/WaterLevel/ctrl" method="POST"
-				name="form-inserir-usuario" enctype="multipart/form-data">
+				name="form-inserir-usuario" enctype="multipart/form-data" id="form">
 				<input type="hidden" name="acao" value="inserirUsuario" />
 				<div id="foto-usuario">
 					<img src="http://placehold.it/150x150" alt="Imagem do Usuário"
@@ -307,12 +307,10 @@
 					<button type="reset" class="btn btn-warning" />
 					Limpar
 					</button>
-					<input type="submit" class="btn btn-success" name="inserir"
-						value="Inserir" />
+					<input type="submit" class="btn btn-success" name="inserir" value="Inserir"/>
 				</div>
 			</form>
-
-
+			<div class="" role="alert" id="msg"></div>
 		</div>
 		<!-- fim conteudo -->
 	</div>

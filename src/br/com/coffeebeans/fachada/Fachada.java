@@ -112,5 +112,9 @@ public class Fachada {
 			UsuarioNaoEncontradoException, RepositorioException {
 		return controladorUsuario.procurar(id);
 	}
+	
+	public Usuario loginFacebook(String email) throws RepositorioException, SQLException{
+		return controladorUsuario.loginFacebook(email);
+	}
 
 }

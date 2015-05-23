@@ -22,5 +22,7 @@ public interface IUsuarioDAO {
 
 	public void excluir(int id) throws SQLException,
 			UsuarioNaoEncontradoException, RepositorioException;
+	
+	public Usuario loginFacebook(String email) throws RepositorioException, SQLException;
 
 }

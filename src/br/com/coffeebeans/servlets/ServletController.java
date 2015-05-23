@@ -158,8 +158,9 @@ public class ServletController extends HttpServlet {
 			}
 		} else if (acao.equals("alterarUsuario")) {
 			try {
-				String id = request.getParameter("id");				
-				request.setAttribute("usuario2", fachada.usuarioProcurar(Integer.parseInt(id)));
+				String id = request.getParameter("id");			
+				Usuario u = fachada.usuarioProcurar(Integer.parseInt(id));
+				request.setAttribute("usuarioProcurar", u);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -190,6 +191,19 @@ public class ServletController extends HttpServlet {
 			} catch (RepositorioException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		} else if(acao.equals("loginFacebook")){
+			try{
+				Usuario u = fachada.loginFacebook(request.getParameter("email"));
+				if(u != null) {
+					request.getSession().setAttribute("usuarioLogado", u);
+					response.setStatus(200);
+					request.getRequestDispatcher("/home.jsp").forward(request, response);
+				} else {
+					
+				}
+			} catch(Exception e){
+				System.out.println("Erro ao logar com facebook => " + e.getMessage());
 			}
 		} else {
 			System.out.println("porra nenhuma");

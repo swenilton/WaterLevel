@@ -97,9 +97,9 @@ public class UsuarioDAO implements IUsuarioDAO {
 						rs.getString("PERFIL"));
 				usuario.setId(rs.getInt("ID"));
 				usuario.setFoto(rs.getString("FOTO"));
-				usuario.setTelefone("TELEFONE");
+				usuario.setTelefone(rs.getString("TELEFONE"));
 			} else {
-				throw new IllegalArgumentException("usuario n�o encontrado");
+				throw new IllegalArgumentException("usuario não encontrado");
 			}
 		} catch (SQLException e) {
 			throw new RepositorioException(e);
@@ -160,6 +160,35 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.close();
 		}
 
+	}
+	
+	public Usuario loginFacebook(String email) throws RepositorioException, SQLException {
+		Usuario usuario = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM USUARIO WHERE EMAIL = ?";
+			stmt = this.connection.prepareStatement(sql);
+			stmt.setString(1, email);
+			rs = stmt.executeQuery();
+			if(rs.next()){
+				usuario = new Usuario(rs.getString("NOME"),
+						rs.getString("LOGIN"), rs.getString("SENHA"),
+						rs.getString("EMAIL"), rs.getString("ATIVO"),
+						rs.getString("PERFIL"));
+				usuario.setId(rs.getInt("ID"));
+				usuario.setFoto(rs.getString("FOTO"));
+				usuario.setTelefone(rs.getString("TELEFONE"));
+			}
+		} catch (SQLException e) {
+			throw new RepositorioException(e);
+		} catch (Exception e) {
+			throw new RepositorioException(e);
+		} finally {
+			stmt.close();
+			rs.close();
+		}
+		return usuario;
 	}
 
 }

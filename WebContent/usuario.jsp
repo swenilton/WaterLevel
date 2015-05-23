@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="br.com.coffeebeans.fachada.Fachada"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -11,6 +14,10 @@
 <link rel="shortcut icon" href="img/ico.png" />
 <link rel="stylesheet" type="text/css" href="css/estilo2.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<%
+		Fachada f = Fachada.getInstance();
+		List<Usuario> usuarios = f.getUsuarioLista();
+	%>
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
@@ -20,12 +27,6 @@
 	$(window).scroll(function() {
 		controllerMenu.activeScrollTopMenu();
 	});
-
-	$(window).load(function() {
-		$.get("ctrl?acao=lista", function(resposta) {
-			$('#body').html(resposta);
-		})
-	})
 
 	function remover() {
 		var id = $("input[name='user-selected']:checked").val();
@@ -37,7 +38,7 @@
 									+ "<span aria-hidden='true'>&times;</span>"
 									+ "</button>");
 		} else {
-			if (confirm('Tem certeza que deseja remover')) {
+			if (confirm('Tem certeza que deseja remover?')) {
 				$
 						.post(
 								"ctrl?acao=removerUsuario&id=" + id,
@@ -67,11 +68,14 @@
 									+ "</button>");
 		} else {
 			$.post("ctrl?acao=alterarUsuario&id=" + id, function(resposta) {
-				$('.modal #nome').val('');
-			});
+				$('#alterar-usuario').modal('show');
+				
+				$('.modal #nome').val('${usuarioProcurar.nome}');
+				
+				
+			})
 
 		}
-
 	}
 </script>
 </head>
@@ -262,7 +266,7 @@
 			<div class="panel panel-default panel-user">
 				<div class="panel-heading">Lista de Usuários</div>
 				<div class="table-responsive table-user" id="tabela">
-					<table class="table table-hover">
+					<table class="table table-hover" id="table">
 						<caption class="hidden">Lista de Usuários</caption>
 						<thead>
 							<tr>
@@ -278,7 +282,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="usuario" items="${usuarios}">
+							<c:forEach var="usuario" items="<%=usuarios%>">
 								<tr id="${usuario.id}">
 									<th><input type="radio" name="user-selected"
 										value="${usuario.id}" /></th>
@@ -300,8 +304,7 @@
 			<!-- fim painel -->
 			<div class="btn-group" role="group" aria-label="">
 				<a class="btn btn-default" href="usuario-inserir.jsp" role="button">Inserir</a>
-				<button type="button" class="btn btn-default" data-toggle="modal"
-					data-target="#alterar-usuario" onclick="alterar()">Alterar</button>
+				<button type="button" class="btn btn-default" onclick="alterar()">Alterar</button>
 				<button type="button" class="btn btn-default" onclick="remover()">Remover</button>
 			</div>
 			<button type="button" class="btn btn-default" data-toggle="modal"

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.ISUB;
 import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
@@ -62,6 +63,10 @@ public class ControladorUsuario {
 		} else {
 			iusuario.excluir(id);
 		}
+	}
+	
+	public Usuario loginFacebook(String email) throws RepositorioException, SQLException{
+		return iusuario.loginFacebook(email);
 	}
 
 }
