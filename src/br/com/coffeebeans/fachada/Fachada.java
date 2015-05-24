@@ -7,11 +7,14 @@ import java.util.List;
 import br.com.coffeebeans.acionamento.Acionamento;
 import br.com.coffeebeans.acionamento.ControladorAcionamento;
 import br.com.coffeebeans.atividade.Atividade;
+import br.com.coffeebeans.atividade.AtividadeRealizada;
 import br.com.coffeebeans.atividade.ControladorAtividade;
+import br.com.coffeebeans.atividade.ControladorAtividadeRealizada;
 import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.bomba.ControladorBomba;
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
+import br.com.coffeebeans.exception.AtividadeJaExistenteException;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
@@ -35,6 +38,7 @@ public class Fachada {
 	ControladorBomba controladorBomba;
 	ControladorAcionamento controladorAcionamento;
 	ControladorAtividade controladorAtividade;
+	ControladorAtividadeRealizada controladorAtividadeRealizada;
 
 	private Fachada() throws Exception {
 		this.controladorRepositorio = new ControladorRepositorio();
@@ -42,6 +46,7 @@ public class Fachada {
 		this.controladorBomba = new ControladorBomba();
 		this.controladorAcionamento = new ControladorAcionamento();
 		this.controladorAtividade = new ControladorAtividade();
+		this.controladorAtividadeRealizada = new ControladorAtividadeRealizada();
 
 	}
 
@@ -57,7 +62,8 @@ public class Fachada {
 			UsuarioJaExistenteException, UsuarioNaoEncontradoException,
 			RepositorioException, BombaJaExistenteException,
 			BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException,
-			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException {
+			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException,
+			AtividadeJaExistenteException, AtividadeNaoEncontradaException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.cadastrar((Repositorio) element);
 		} else if (element instanceof Usuario) {
@@ -68,6 +74,9 @@ public class Fachada {
 			controladorAcionamento.cadastrar((Acionamento) element);
 		} else if (element instanceof Atividade) {
 			controladorAtividade.cadastrar((Atividade) element);
+		} else if (element instanceof AtividadeRealizada) {
+			controladorAtividadeRealizada
+					.cadastrar((AtividadeRealizada) element);
 		}
 
 	}
@@ -87,7 +96,16 @@ public class Fachada {
 			controladorAcionamento.atualizar((Acionamento) element);
 		} else if (element instanceof Atividade) {
 			controladorAtividade.atualizar((Atividade) element);
+		} else if (element instanceof AtividadeRealizada) {
+			controladorAtividadeRealizada
+					.atualizar((AtividadeRealizada) element);
 		}
+
+	}
+
+	public void atividadeRealizadaRemover(int id)
+			throws AtividadeNaoEncontradaException, SQLException {
+		controladorAtividadeRealizada.excluir(id);
 	}
 
 	public void acionamentoRemover(int id) throws SQLException,
@@ -109,10 +127,15 @@ public class Fachada {
 			UsuarioNaoEncontradoException, RepositorioException {
 		controladorUsuario.remover(id);
 	}
-	
+
 	public void atividadeRemover(int id) throws SQLException,
-		AtividadeNaoEncontradaException, RepositorioException {
+			AtividadeNaoEncontradaException, RepositorioException {
 		controladorAtividade.remover(id);
+	}
+
+	public ArrayList<AtividadeRealizada> atividadeRealidadaListar()
+			throws SQLException, ListaVaziaException {
+		return controladorAtividadeRealizada.listar();
 	}
 
 	public ArrayList<Acionamento> acionamentoListar() throws SQLException,
@@ -130,9 +153,10 @@ public class Fachada {
 		return controladorRepositorio.listar();
 
 	}
-	
+
 	public ArrayList<Atividade> atividadeListar() throws SQLException,
-		ListaVaziaException, RepositorioException, ListaUsuarioVaziaException {
+			ListaVaziaException, RepositorioException,
+			ListaUsuarioVaziaException {
 		return controladorAtividade.listar();
 	}
 
@@ -140,6 +164,10 @@ public class Fachada {
 			RepositorioException {
 		return controladorUsuario.getLista();
 
+	}
+
+	public AtividadeRealizada atividadeRealizadaProcurar(int id) throws SQLException, AtividadeNaoEncontradaException {
+		return controladorAtividadeRealizada.procurar(id);
 	}
 
 	public Acionamento acionamentoProcurar(int id)
@@ -161,17 +189,19 @@ public class Fachada {
 			UsuarioNaoEncontradoException, RepositorioException {
 		return controladorUsuario.procurar(id);
 	}
-	
+
 	public Atividade atividadeProcurar(int id) throws SQLException,
-		AtividadeNaoEncontradaException, RepositorioException {
+			AtividadeNaoEncontradaException, RepositorioException {
 		return controladorAtividade.procurar(id);
 	}
-	
-	public Usuario loginFacebook(String email) throws RepositorioException, SQLException{
+
+	public Usuario loginFacebook(String email) throws RepositorioException,
+			SQLException {
 		return controladorUsuario.loginFacebook(email);
 	}
-	
-	public void alterarSenhaUsuario(int id, String senha) throws SQLException, UsuarioNaoEncontradoException, RepositorioException{
+
+	public void alterarSenhaUsuario(int id, String senha) throws SQLException,
+			UsuarioNaoEncontradoException, RepositorioException {
 		controladorUsuario.alterarSenha(id, senha);
 	}
 
