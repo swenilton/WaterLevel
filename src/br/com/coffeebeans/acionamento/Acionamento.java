@@ -9,18 +9,18 @@ public class Acionamento {
 
 	private int id;
 	private Bomba bomba;
-	private Timestamp dataHoraInicio;
-	private Timestamp dataHoraFim;
+	private Date dataHoraInicio;
+	private Date dataHoraFim;
 	private int idBomba;
 
-	public Acionamento(Bomba bomba, Timestamp dataHoraInicio,
-			Timestamp dataHoraFim) {
+	public Acionamento(Bomba bomba, Date dataHoraInicio,
+			Date dataHoraFim) {
 		this.bomba = bomba;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
 	}
 
-	public Acionamento(Timestamp dataHoraInicio, Timestamp dataHoraFim,
+	public Acionamento(Date dataHoraInicio, Date dataHoraFim,
 			int idBomba) {
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
@@ -51,19 +51,19 @@ public class Acionamento {
 		this.bomba = bomba;
 	}
 
-	public Timestamp getDataHoraInicio() {
+	public Date getDataHoraInicio() {
 		return dataHoraInicio;
 	}
 
-	public void setDataHoraInicio(Timestamp dataHoraInicio) {
+	public void setDataHoraInicio(Date dataHoraInicio) {
 		this.dataHoraInicio = dataHoraInicio;
 	}
 
-	public Timestamp getDataHoraFim() {
+	public Date getDataHoraFim() {
 		return dataHoraFim;
 	}
 
-	public void setDataHoraFim(Timestamp dataHoraFim) {
+	public void setDataHoraFim(Date dataHoraFim) {
 		this.dataHoraFim = dataHoraFim;
 	}
 

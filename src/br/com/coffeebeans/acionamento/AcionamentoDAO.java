@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
-
 import br.com.coffeebeans.exception.ListaVaziaException;
 import br.com.coffeebeans.util.Conexao;
 
@@ -32,8 +32,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 			String sql = "INSERT INTO ACIONAMENTO(INICIO,DATA_HORA_FIM,ID_BOMBA)VALUES(?,?,?)";
 			stmt = this.conexao.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setTimestamp(1, acionamento.getDataHoraInicio());
-			stmt.setTimestamp(2, acionamento.getDataHoraFim());
+			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio().getTime()));
+			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim().getTime()));
 			stmt.setInt(3, acionamento.getIdBomba());
 			stmt.execute();
 
@@ -117,7 +117,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 	}
 
 	@Override
-	public Acionamento procurarIni(Timestamp data1, Timestamp data2)
+	public Acionamento procurarIni(Date data1, Date data2)
 			throws SQLException, AcionamentoNaoEncontradoException {
 		Acionamento acionamento = null;
 
@@ -127,8 +127,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 		try {
 			String sql = "SELECT * FROM ACIONAMENTO where INICIO BETWEEN ? and ?";
 			stmt = this.conexao.prepareStatement(sql);
-			stmt.setTimestamp(1, data1);
-			stmt.setTimestamp(2, data2);
+			stmt.setTimestamp(1, new Timestamp(data1.getTime()));
+			stmt.setTimestamp(2, new Timestamp(data2.getTime()));
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -183,8 +183,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 		try {
 			String sql = "UPDATE ACIONAMENTO SET INICIO=?,DATA_HORA_FIM=?,ID_BOMBA=? WHERE ID=?";
 			stmt = this.conexao.prepareStatement(sql);
-			stmt.setTimestamp(1, acionamento.getDataHoraInicio());
-			stmt.setTimestamp(2, acionamento.getDataHoraFim());
+			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio().getTime()));
+			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim().getTime()));
 			stmt.setInt(3, acionamento.getIdBomba());
 			stmt.setInt(4, acionamento.getId());
 

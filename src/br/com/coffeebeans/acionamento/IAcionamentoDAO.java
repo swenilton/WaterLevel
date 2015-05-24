@@ -3,6 +3,7 @@ package br.com.coffeebeans.acionamento;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
@@ -18,7 +19,7 @@ public interface IAcionamentoDAO {
 	public Acionamento procurar(int id) throws SQLException,
 			AcionamentoNaoEncontradoException;
 
-	public Acionamento procurarIni(Timestamp data1, Timestamp data2)
+	public Acionamento procurarIni(Date data1, Date data2)
 			throws SQLException, AcionamentoNaoEncontradoException;
 
 	public Acionamento procurarFim(Timestamp data1, Timestamp data2)

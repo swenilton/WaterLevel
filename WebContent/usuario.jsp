@@ -14,10 +14,10 @@
 <link rel="shortcut icon" href="img/ico.png" />
 <link rel="stylesheet" type="text/css" href="css/estilo2.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-	<%
-		Fachada f = Fachada.getInstance();
+<%
+	Fachada f = Fachada.getInstance();
 		List<Usuario> usuarios = f.getUsuarioLista();
-	%>
+%>
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
@@ -67,19 +67,35 @@
 									+ "<span aria-hidden='true'>&times;</span>"
 									+ "</button>");
 		} else {
-			$.post("ctrl?acao=alterarUsuario&id=" + id, function(resposta) {
+			$.post("ctrl?acao=pegarUsuario&id=" + id, function(resposta) {
+				var dados = resposta.split(",");
 				$('#alterar-usuario').modal('show');
-				
-				$('.modal #nome').val('${usuarioProcurar.nome}');
-				
-				
+				$('.modal #nome').val(dados[0]);
+				$('.modal #email').val(dados[1]);
+				$('.modal #telefone').val(dados[2]);
+				$('.modal #login').val(dados[3]);
+				$('.modal #perfil').val(dados[4]);
+				$('.modal #ativo').val(dados[5]);
+				$('.modal #foto').val(dados[6]);
+				$('#idUsuario').val(id);
 			})
 
 		}
 	}
+
+	function preview(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$('#foto-usuario').attr('src', e.target.result).width(150)
+						.height(150);
+			};
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 </script>
 </head>
-<body id="body">
+<body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -136,8 +152,8 @@
 		<!-- fim container -->
 	</nav>
 	<!-- modal alterar dados usuario logado -->
-	<div class="modal fade" id="alterar-usuario" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="alterar-usuario-logado" tabindex="-1"
+		role="dialog" aria-labelledby="" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -326,13 +342,17 @@
 					<h4 class="modal-title" id="myModalLabel">Alterar Usuário</h4>
 				</div>
 				<div class="modal-body">
-					<form class="">
+					<form class="" method="POST" action="/WaterLevel/ctrl"
+						enctype="multipart/form-data" id="form">
+						<input type="text" name="id" id="idUsuario"/>
+						<input type="hidden" name="acao" value="alterarUsuario" />
 						<div id="foto-usuario" style="text-align: center;">
 							<img src="http://placehold.it/150x150" alt="Imagem do Usuário"
 								class="img-circle" />
 							<div class="form-group">
 								<label for="foto">Procurar Foto</label> <input type="file"
-									id="foto" />
+									accept="image/*" id="foto" name="foto" size="60"
+									onchange="preview(foto)" />
 							</div>
 						</div>
 						<div id="dados-usuario">
@@ -372,12 +392,13 @@
 							</div>
 							<div class="clear"></div>
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-warning"
+								data-dismiss="modal">Cancelar</button>
+							<input type="submit" class="btn btn-success"
+								value="Salvar Alterações" />
+						</div>
 					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success">Salvar
-						Alterações</button>
 				</div>
 			</div>
 		</div>

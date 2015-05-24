@@ -58,7 +58,7 @@ public class ServletController extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws IOException {
 
 		String acao = request.getParameter("acao");
 
@@ -154,13 +154,21 @@ public class ServletController extends HttpServlet {
 			} catch (IOException e) {
 				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
 						+ e.getMessage());
-				
+
 			}
-		} else if (acao.equals("alterarUsuario")) {
+		} else if (acao.equals("pegarUsuario")) {
 			try {
-				String id = request.getParameter("id");			
+				String id = request.getParameter("id");
 				Usuario u = fachada.usuarioProcurar(Integer.parseInt(id));
 				request.setAttribute("usuarioProcurar", u);
+				response.getOutputStream().print(u.getNome() + ",");
+				response.getOutputStream().print(u.getEmail() + ",");
+				response.getOutputStream().print(u.getTelefone() + ",");
+				response.getOutputStream().print(u.getLogin() + ",");
+				response.getOutputStream().print(u.getPerfil() + ",");
+				response.getOutputStream().print(u.getAtivo() + ",");
+				response.getOutputStream().print(u.getFoto() + ",");
+				response.getOutputStream().print(id);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -173,6 +181,58 @@ public class ServletController extends HttpServlet {
 			} catch (UsuarioNaoEncontradoException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		} else if (acao.equals("alterarUsuario")) {
+			String nome = request.getParameter("nome");
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			String email = request.getParameter("email");
+			String ativo = request.getParameter("ativo");
+			String perfil = request.getParameter("perfil");
+			String telefone = request.getParameter("telefone");
+			int id = Integer.parseInt(request.getParameter("id"));
+			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
+			u.setTelefone(telefone);
+			System.out.println("id= " + id);
+			try {
+				File dir = new File(System.getProperty("user.dir")
+						+ "/WaterLevel/img/");
+				Part filePart = request.getPart("foto");
+				String fileName = filePart.getSubmittedFileName();
+				File f = null;
+				InputStream fileContent = null;
+				if (fileName.equals("")) {
+					f = new File(dir.getCanonicalPath() + "/default.jpg");
+					fileContent = new FileInputStream(f);
+					f = new File(dir.getCanonicalPath() + "/" + email + ".jpg");
+				} else {
+					fileContent = filePart.getInputStream();
+					String ext[] = fileName.split("\\.");
+					int i = ext.length;
+					f = new File(dir.getCanonicalPath() + "/" + email + "."
+							+ ext[i - 1]);
+				}
+				OutputStream os = new FileOutputStream(f);
+				while (fileContent.available() > 0) {
+					os.write(fileContent.read());
+				}
+				u.setFoto(f.getCanonicalPath());
+				fachada.atualizar(u);
+			} catch (Exception e) {
+				System.out.println("Erro ao inserir usuario => "
+						+ e.getMessage());
+				e.printStackTrace();
+			}
+			RequestDispatcher rd = request
+					.getRequestDispatcher("/usuario.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException e) {
+				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
+						+ e.getMessage());
+			} catch (IOException e) {
+				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
+						+ e.getMessage());
 			}
 		} else if (acao.equals("removerUsuario")) {
 			try {
@@ -192,18 +252,21 @@ public class ServletController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if(acao.equals("loginFacebook")){
-			try{
-				Usuario u = fachada.loginFacebook(request.getParameter("email"));
-				if(u != null) {
+		} else if (acao.equals("loginFacebook")) {
+			try {
+				Usuario u = fachada
+						.loginFacebook(request.getParameter("email"));
+				if (u != null) {
 					request.getSession().setAttribute("usuarioLogado", u);
 					response.setStatus(200);
-					request.getRequestDispatcher("/home.jsp").forward(request, response);
+					request.getRequestDispatcher("/home.jsp").forward(request,
+							response);
 				} else {
-					
+
 				}
-			} catch(Exception e){
-				System.out.println("Erro ao logar com facebook => " + e.getMessage());
+			} catch (Exception e) {
+				System.out.println("Erro ao logar com facebook => "
+						+ e.getMessage());
 			}
 		} else {
 			System.out.println("porra nenhuma");
