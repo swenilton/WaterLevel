@@ -75,13 +75,18 @@ public class ServletController extends HttpServlet {
 				e.printStackTrace();
 			}
 		} else if (acao.equals("login")) {
+			String usuario = request.getParameter("usuario");
+			String senha = request.getParameter("senha");
+			
 			RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
 			try {
 				rd.forward(request, response);
 			} catch (ServletException e) {
-				System.out.println("Erro ao redirecionar para login.jsp" + e.getMessage());
+				System.out.println("Erro ao redirecionar para login.jsp"
+						+ e.getMessage());
 			} catch (IOException e) {
-				System.out.println("Erro ao redirecionar para login.jsp" + e.getMessage());
+				System.out.println("Erro ao redirecionar para login.jsp"
+						+ e.getMessage());
 			}
 		} else if (acao.equals("inserirUsuario")) {
 			String nome = request.getParameter("nome");
@@ -218,12 +223,11 @@ public class ServletController extends HttpServlet {
 				u.setFoto(f.getCanonicalPath());
 				fachada.atualizar(u);
 			} catch (Exception e) {
-				System.out.println("Erro ao inserir usuario => "
+				System.out.println("Erro ao alterar usuario => "
 						+ e.getMessage());
 				e.printStackTrace();
 			}
-			RequestDispatcher rd = request
-					.getRequestDispatcher("/usuario.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/usuario.jsp");
 			try {
 				rd.forward(request, response);
 			} catch (ServletException e) {
@@ -237,22 +241,29 @@ public class ServletController extends HttpServlet {
 			String senhaAtual = request.getParameter("senhaAtual");
 			String novaSenha = request.getParameter("novaSenha");
 			try {
-				fachada.alterarSenhaUsuario(idUsuarioAlterar, novaSenha);
+				//if (fachada.usuarioProcurar(idUsuarioAlterar).getSenha() == senhaAtual) {
+					fachada.alterarSenhaUsuario(idUsuarioAlterar, novaSenha);
+				//} else {
+				//	throw new IllegalArgumentException("Senha Atual Inválida");
+				//}
+				RequestDispatcher rd = request
+						.getRequestDispatcher("/usuario.jsp");
+				try {
+					rd.forward(request, response);
+				} catch (ServletException e) {
+					System.out
+							.println("Erro ao direcionar usuario-inserir.jsp => "
+									+ e.getMessage());
+				} catch (IOException e) {
+					System.out
+							.println("Erro ao direcionar usuario-inserir.jsp => "
+									+ e.getMessage());
+				}
+
 			} catch (Exception e) {
-				System.out.println("Erro ao inserir usuario => "
+				System.out.println("Erro ao alterar senha usuario => "
 						+ e.getMessage());
 				e.printStackTrace();
-			}
-			RequestDispatcher rd = request
-					.getRequestDispatcher("/usuario.jsp");
-			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			} catch (IOException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
 			}
 		} else if (acao.equals("removerUsuario")) {
 			try {

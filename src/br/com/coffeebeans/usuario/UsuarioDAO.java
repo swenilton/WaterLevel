@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
@@ -90,7 +90,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-			if(rs.next()){
+			if (rs.next()) {
 				usuario = new Usuario(rs.getString("NOME"),
 						rs.getString("LOGIN"), rs.getString("SENHA"),
 						rs.getString("EMAIL"), rs.getString("ATIVO"),
@@ -141,7 +141,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.close();
 		}
 	}
-	
+
 	public void alterarSenha(int id, String senha)
 			throws UsuarioNaoEncontradoException, SQLException,
 			RepositorioException {
@@ -183,8 +183,9 @@ public class UsuarioDAO implements IUsuarioDAO {
 		}
 
 	}
-	
-	public Usuario loginFacebook(String email) throws RepositorioException, SQLException {
+
+	public Usuario loginFacebook(String email) throws RepositorioException,
+			SQLException {
 		Usuario usuario = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -193,7 +194,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, email);
 			rs = stmt.executeQuery();
-			if(rs.next()){
+			if (rs.next()) {
 				usuario = new Usuario(rs.getString("NOME"),
 						rs.getString("LOGIN"), rs.getString("SENHA"),
 						rs.getString("EMAIL"), rs.getString("ATIVO"),
@@ -211,6 +212,29 @@ public class UsuarioDAO implements IUsuarioDAO {
 			rs.close();
 		}
 		return usuario;
+	}
+
+	public boolean login(String usuario, String senha) throws UsuarioInativoException, RepositorioException, SQLException {
+		PreparedStatement stmt = null;
+		ResultSet rs;
+		try {
+			String sql = "select * from usuario where login = ? and senha = ?";
+			stmt = this.connection.prepareStatement(sql);
+			stmt.setString(1, usuario);
+			stmt.setString(2, senha);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("ATIVO").equals("Nao"))
+					throw new UsuarioInativoException(procurar(rs.getInt("id")));
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			throw new RepositorioException(e);
+		} finally {
+			stmt.close();
+		}
 	}
 
 }

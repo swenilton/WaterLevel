@@ -46,7 +46,7 @@
 		// for FB.getLoginStatus().
 		if (response.status === 'connected') {
 			// Logged into your app and Facebook.
-			
+
 			testAPI();
 		} else if (response.status === 'not_authorized') {
 			// The person is logged into Facebook, but not your app.
@@ -270,24 +270,22 @@ div#background3 {
 			</div>
 			<h1>Entrar</h1>
 			<hr />
-			<form class="">
+			<form class="" method="POST" action="/WaterLevel/ctrl" id="form">
+				<input type="hidden" name="acao" value="login" />
 				<div class="form-group">
-					<input type="text" class="form-control" id="usuario"
-						placeholder="Usuario" />
+					<input type="text" class="form-control" id="usuario" name="usuario"
+						placeholder="Usuario" required="required"/>
 				</div>
 				<div class="form-group">
-					<input type="password" class="form-control" id="senha"
-						placeholder="Senha" />
+					<input type="password" class="form-control" id="senha" name="senha"
+						placeholder="Senha" required="required"/>
 				</div>
 				<label class="checkbox pull-left"> <input type="checkbox"
 					name="lembre-se">Lembre-se</input>
-				</label> <a href="ctrl?acao=login"
-					class="btn btn-large btn-primary pull-right" role="button" />Entrar</a>
+				</label> <input type="submit" class="btn btn-large btn-primary pull-right"
+					value="Entrar" />
 			</form>
 			<div id="status" style="margin-top: 65px;"></div>
-			<div id="foto">
-				<img id="perfil" src="" alt="">
-			</div>
 		</div>
 		<div class="logo">
 			<h1>Water Level</h1>

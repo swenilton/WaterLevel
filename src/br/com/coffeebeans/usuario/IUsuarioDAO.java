@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
+import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 
@@ -28,5 +29,7 @@ public interface IUsuarioDAO {
 	public void alterarSenha(int id, String senha)
 			throws UsuarioNaoEncontradoException, SQLException,
 			RepositorioException;
+	
+	public boolean login(String usuario, String senha) throws UsuarioInativoException, RepositorioException, SQLException;
 
 }

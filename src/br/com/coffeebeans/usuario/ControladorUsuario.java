@@ -9,6 +9,7 @@ import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
+import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 
@@ -74,8 +75,11 @@ public class ControladorUsuario {
 	public void alterarSenha(int id, String senha) throws SQLException,
 			UsuarioNaoEncontradoException, RepositorioException {
 		
-			iusuario.alterarSenha(id, senha);
-		
+			iusuario.alterarSenha(id, senha);		
+	}
+	
+	public boolean login(String usuario, String senha) throws UsuarioInativoException, RepositorioException, SQLException{
+		return iusuario.login(usuario, senha);
 	}
 
 }

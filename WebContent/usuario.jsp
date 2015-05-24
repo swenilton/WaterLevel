@@ -90,7 +90,6 @@
 									+ "</button>");
 		} else {
 			$.post("ctrl?acao=pegarUsuario&id=" + id, function(resposta) {
-				var dados = resposta.split(",");
 				$('#alterar-senha').modal('show');
 			})
 
@@ -222,7 +221,7 @@
 								<label for="ativo">Ativo</label> <select class="form-control"
 									id="ativo">
 									<option>Sim</option>
-									<option>Não</option>
+									<option>Nao</option>
 								</select>
 							</div>
 							<div class="clear"></div>
@@ -404,7 +403,7 @@
 								<label for="ativo">Ativo</label> <select class="form-control"
 									name="ativo" id="ativo">
 									<option>Sim</option>
-									<option>Não</option>
+									<option>Nao</option>
 								</select>
 							</div>
 							<div class="clear"></div>

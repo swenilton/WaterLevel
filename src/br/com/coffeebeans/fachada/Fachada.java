@@ -20,6 +20,7 @@ import br.com.coffeebeans.exception.ListaVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.RepositorioJaExistenteException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
+import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
@@ -109,9 +110,9 @@ public class Fachada {
 			UsuarioNaoEncontradoException, RepositorioException {
 		controladorUsuario.remover(id);
 	}
-	
+
 	public void atividadeRemover(int id) throws SQLException,
-		AtividadeNaoEncontradaException, RepositorioException {
+			AtividadeNaoEncontradaException, RepositorioException {
 		controladorAtividade.remover(id);
 	}
 
@@ -130,9 +131,10 @@ public class Fachada {
 		return controladorRepositorio.listar();
 
 	}
-	
+
 	public ArrayList<Atividade> atividadeListar() throws SQLException,
-		ListaVaziaException, RepositorioException, ListaUsuarioVaziaException {
+			ListaVaziaException, RepositorioException,
+			ListaUsuarioVaziaException {
 		return controladorAtividade.listar();
 	}
 
@@ -161,18 +163,25 @@ public class Fachada {
 			UsuarioNaoEncontradoException, RepositorioException {
 		return controladorUsuario.procurar(id);
 	}
-	
+
 	public Atividade atividadeProcurar(int id) throws SQLException,
-		AtividadeNaoEncontradaException, RepositorioException {
+			AtividadeNaoEncontradaException, RepositorioException {
 		return controladorAtividade.procurar(id);
 	}
-	
-	public Usuario loginFacebook(String email) throws RepositorioException, SQLException{
+
+	public Usuario loginFacebook(String email) throws RepositorioException,
+			SQLException {
 		return controladorUsuario.loginFacebook(email);
 	}
-	
-	public void alterarSenhaUsuario(int id, String senha) throws SQLException, UsuarioNaoEncontradoException, RepositorioException{
+
+	public void alterarSenhaUsuario(int id, String senha) throws SQLException,
+			UsuarioNaoEncontradoException, RepositorioException {
 		controladorUsuario.alterarSenha(id, senha);
+	}
+
+	public boolean login(String usuario, String senha)
+			throws UsuarioInativoException, RepositorioException, SQLException {
+		return controladorUsuario.login(usuario, senha);
 	}
 
 }

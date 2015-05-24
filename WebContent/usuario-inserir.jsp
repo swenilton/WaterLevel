@@ -170,7 +170,7 @@
 								<label for="ativo">Ativo</label> <select class="form-control"
 									id="ativo">
 									<option>Sim</option>
-									<option>Não</option>
+									<option>Nao</option>
 								</select>
 							</div>
 							<div class="clear"></div>
