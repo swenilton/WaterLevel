@@ -1,9 +1,10 @@
 package br.com.coffeebeans.atividade;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
+import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
 
 public class ControladorAtividade {
@@ -21,8 +22,12 @@ public class ControladorAtividade {
 		iatividade.cadastrar(atividade);
 	}
 	
-	public List<Atividade> getLista() throws SQLException, RepositorioException {
-		return iatividade.getLista();
+	public ArrayList<Atividade> listar() throws SQLException, RepositorioException,
+		ListaUsuarioVaziaException {
+		if (iatividade.listar().isEmpty()) {
+			throw new ListaUsuarioVaziaException();
+		}
+		return iatividade.listar();
 	}
 	
 	public Atividade procurar (int id) throws SQLException,

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -39,8 +38,8 @@ public class AtividadeDAO implements IAtividadeDAO {
 		}
 	}
 	
-	public List<Atividade> getLista() throws SQLException, RepositorioException {
-		List<Atividade> atividades = new ArrayList<Atividade>();
+	public ArrayList<Atividade> listar() throws SQLException, RepositorioException {
+		ArrayList<Atividade> atividades = new ArrayList<Atividade>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
