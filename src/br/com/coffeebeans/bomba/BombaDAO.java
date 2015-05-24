@@ -49,7 +49,7 @@ public class BombaDAO implements IBombaDAO {
 			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
 			System.out.println(exc.getMessage());
 
-			// throw new ViolacaoChaveEstrangeiraException();
+			//throw new ViolacaoChaveEstrangeiraException();
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

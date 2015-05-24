@@ -16,7 +16,6 @@ public class AtividadeRealizada {
 
 	public AtividadeRealizada(Atividade atividade, Date dataHoraInicio,
 			Date dataHoraFim, Usuario usuario) {
-		super();
 		this.atividade = atividade;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
@@ -25,7 +24,6 @@ public class AtividadeRealizada {
 
 	public AtividadeRealizada(Date dataHoraInicio, Date dataHoraFim,
 			int idUsuario, int idAtividade) {
-		super();
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
 		this.idUsuario = idUsuario;
@@ -88,4 +86,13 @@ public class AtividadeRealizada {
 		this.usuario = usuario;
 	}
 
+	@Override
+	public String toString() {
+		return "id=" + id + ", dataHoraInicio="
+				+ dataHoraInicio + ", dataHoraFim=" + dataHoraFim
+				+ ", idUsuario=" + idUsuario + ", idAtividade=" + idAtividade
+				+ "\n";
+	}
+
+	
 }

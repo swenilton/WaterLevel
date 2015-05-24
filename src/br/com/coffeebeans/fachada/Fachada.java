@@ -62,7 +62,10 @@ public class Fachada {
 			controladorBomba.cadastrar((Bomba) element);
 		} else if (element instanceof Acionamento) {
 			controladorAcionamento.cadastrar((Acionamento) element);
+		} else if (element instanceof Acionamento) {
+			controladorAcionamento.cadastrar((Acionamento) element);
 		}
+
 
 	}
 
