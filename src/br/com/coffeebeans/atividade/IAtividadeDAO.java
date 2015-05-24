@@ -17,4 +17,7 @@ public interface IAtividadeDAO {
 	
 	public void atualizar(Atividade atividade) throws AtividadeNaoEncontradaException,
 	SQLException, RepositorioException;
+	
+	public void excluir (int id) throws SQLException, AtividadeNaoEncontradaException,
+	RepositorioException;
 }
