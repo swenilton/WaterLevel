@@ -170,5 +170,9 @@ public class Fachada {
 	public Usuario loginFacebook(String email) throws RepositorioException, SQLException{
 		return controladorUsuario.loginFacebook(email);
 	}
+	
+	public void alterarSenhaUsuario(int id, String senha) throws SQLException, UsuarioNaoEncontradoException, RepositorioException{
+		controladorUsuario.alterarSenha(id, senha);
+	}
 
 }

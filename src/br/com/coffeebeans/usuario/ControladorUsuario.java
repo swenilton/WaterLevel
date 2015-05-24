@@ -20,7 +20,8 @@ public class ControladorUsuario {
 	}
 
 	public void cadastrar(Usuario usuario) throws SQLException,
-			UsuarioJaExistenteException, UsuarioNaoEncontradoException, RepositorioException {
+			UsuarioJaExistenteException, UsuarioNaoEncontradoException,
+			RepositorioException {
 		if (usuario == null) {
 			throw new IllegalAnnotationException("Usuário Null");
 		}
@@ -64,9 +65,17 @@ public class ControladorUsuario {
 			iusuario.excluir(id);
 		}
 	}
-	
-	public Usuario loginFacebook(String email) throws RepositorioException, SQLException{
+
+	public Usuario loginFacebook(String email) throws RepositorioException,
+			SQLException {
 		return iusuario.loginFacebook(email);
+	}
+
+	public void alterarSenha(int id, String senha) throws SQLException,
+			UsuarioNaoEncontradoException, RepositorioException {
+		
+			iusuario.alterarSenha(id, senha);
+		
 	}
 
 }

@@ -24,5 +24,9 @@ public interface IUsuarioDAO {
 			UsuarioNaoEncontradoException, RepositorioException;
 	
 	public Usuario loginFacebook(String email) throws RepositorioException, SQLException;
+	
+	public void alterarSenha(int id, String senha)
+			throws UsuarioNaoEncontradoException, SQLException,
+			RepositorioException;
 
 }

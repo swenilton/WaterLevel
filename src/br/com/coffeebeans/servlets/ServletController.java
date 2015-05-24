@@ -44,6 +44,7 @@ maxRequestSize = 1024 * 1024 * 4 // 4MB
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Fachada fachada;
+	private int idUsuarioAlterar = 0;
 
 	/**
 	 * Default constructor.
@@ -78,11 +79,9 @@ public class ServletController extends HttpServlet {
 			try {
 				rd.forward(request, response);
 			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Erro ao redirecionar para login.jsp" + e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Erro ao redirecionar para login.jsp" + e.getMessage());
 			}
 		} else if (acao.equals("inserirUsuario")) {
 			String nome = request.getParameter("nome");
@@ -168,7 +167,8 @@ public class ServletController extends HttpServlet {
 				response.getOutputStream().print(u.getPerfil() + ",");
 				response.getOutputStream().print(u.getAtivo() + ",");
 				response.getOutputStream().print(u.getFoto() + ",");
-				response.getOutputStream().print(id);
+				response.getOutputStream().print(u.getId());
+				idUsuarioAlterar = u.getId();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -190,10 +190,9 @@ public class ServletController extends HttpServlet {
 			String ativo = request.getParameter("ativo");
 			String perfil = request.getParameter("perfil");
 			String telefone = request.getParameter("telefone");
-			int id = Integer.parseInt(request.getParameter("id"));
 			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
 			u.setTelefone(telefone);
-			System.out.println("id= " + id);
+			u.setId(idUsuarioAlterar);
 			try {
 				File dir = new File(System.getProperty("user.dir")
 						+ "/WaterLevel/img/");
@@ -218,6 +217,27 @@ public class ServletController extends HttpServlet {
 				}
 				u.setFoto(f.getCanonicalPath());
 				fachada.atualizar(u);
+			} catch (Exception e) {
+				System.out.println("Erro ao inserir usuario => "
+						+ e.getMessage());
+				e.printStackTrace();
+			}
+			RequestDispatcher rd = request
+					.getRequestDispatcher("/usuario.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException e) {
+				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
+						+ e.getMessage());
+			} catch (IOException e) {
+				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
+						+ e.getMessage());
+			}
+		} else if (acao.equals("alterarSenha")) {
+			String senhaAtual = request.getParameter("senhaAtual");
+			String novaSenha = request.getParameter("novaSenha");
+			try {
+				fachada.alterarSenhaUsuario(idUsuarioAlterar, novaSenha);
 			} catch (Exception e) {
 				System.out.println("Erro ao inserir usuario => "
 						+ e.getMessage());
