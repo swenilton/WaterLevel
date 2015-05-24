@@ -28,16 +28,18 @@ public class ControladorAcionamento {
 				acionamento.getDataHoraInicio()) != null) {
 			throw new AcionamentoJaExistenteException();
 		}
-		if (acionamento.getDataHoraInicio().after(acionamento.getDataHoraFim())) {
+		if (acionamento.getDataHoraInicio().after(acionamento.getDataHoraFim())
+				|| acionamento.getDataHoraInicio().equals(
+						acionamento.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser depois da data hora fim");
+					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
 		}
 		iAcionamento.cadastrar(acionamento);
 	}
 
 	public ArrayList<Acionamento> listar() throws SQLException,
 			ListaVaziaException {
-		if (iAcionamento.listar() == null) {
+		if (iAcionamento.listar().isEmpty()) {
 			throw new ListaVaziaException();
 		}
 		return iAcionamento.listar();
@@ -76,7 +78,7 @@ public class ControladorAcionamento {
 		if (acionamento == null) {
 			throw new NullPointerException();
 		}
-		if (iAcionamento.procurar(acionamento.getId()) != null) {
+		if (iAcionamento.procurar(acionamento.getId()) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
 		// se já tiver um acionamento nesse instante
@@ -84,9 +86,11 @@ public class ControladorAcionamento {
 				acionamento.getDataHoraInicio()) != null) {
 			throw new AcionamentoJaExistenteException();
 		}
-		if (acionamento.getDataHoraInicio().after(acionamento.getDataHoraFim())) {
+		if (acionamento.getDataHoraInicio().after(acionamento.getDataHoraFim())
+				|| acionamento.getDataHoraInicio().equals(
+						acionamento.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser depois da data hora fim");
+					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
 		}
 		iAcionamento.atualizar(acionamento);
 	}

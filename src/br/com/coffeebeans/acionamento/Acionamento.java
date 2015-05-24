@@ -69,9 +69,10 @@ public class Acionamento {
 
 	@Override
 	public String toString() {
-		return "Acionamento [id=" + id + ", bomba=" + bomba.getDescricao()
-				+ ", dataHoraInicio=" + dataHoraInicio + ", dataHoraFim="
-				+ dataHoraFim + ", idBomba=" + idBomba + "]";
+		return "Acionamento [id=" + id + ", dataHoraInicio=" + dataHoraInicio
+				+ ", dataHoraFim=" + dataHoraFim + ", idBomba=" + idBomba + "\n"; // bomba="
+																					// +
+																					// bomba.getDescricao()
 	}
 
 }

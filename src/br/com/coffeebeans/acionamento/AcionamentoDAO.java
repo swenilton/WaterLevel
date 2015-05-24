@@ -65,8 +65,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 			ListaVaziaException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Acionamento acionamento;
-		ArrayList<Acionamento> acionamentos = null;
+		Acionamento acionamento=null;
+		ArrayList<Acionamento> acionamentos = new ArrayList<Acionamento>();
 		try {
 			String sql = "SELECT * FROM ACIONAMENTO";
 			stmt = this.conexao.prepareStatement(sql);
@@ -76,6 +76,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 			while (rs.next()) {
 				acionamento = new Acionamento(rs.getTimestamp("INICIO"),
 						rs.getTimestamp("DATA_HORA_FIM"), rs.getInt("ID_BOMBA"));
+				
+				acionamento.setId(rs.getInt("ID"));
 				acionamentos.add(acionamento);
 			}
 

@@ -34,18 +34,21 @@ public class TesteAcionamento {
 				System.out.println("Escolha a opção");
 				opcao = in.nextInt();
 
+				// limpando o buffer
+				in.nextLine();
+
 				if (opcao == 1) {
 					System.out.println("Digite o inicio do acionamento");
-					String inicioString = in.next();
+					String inicioString = in.nextLine();
 
 					SimpleDateFormat sdf = new SimpleDateFormat(
-							"AAAAMMDDHHMMSS");
+							"yyyy-MM-dd HH:mm:ss");
 					sdf.setLenient(false);
-					inicio = (Timestamp) sdf.parse(inicioString);
+					inicio = Timestamp.valueOf(inicioString);
 
 					System.out.println("Digite o fim");
-					String fimString = in.next();
-					fim = (Timestamp) sdf.parse(fimString);
+					String fimString = in.nextLine();
+					fim = Timestamp.valueOf(fimString);
 
 					System.out.println("Digite o id da bomba");
 					idBomba = in.nextInt();
@@ -68,6 +71,8 @@ public class TesteAcionamento {
 					acionamento = fachada.acionamentoProcurar(in.nextInt());
 					Acionamento acionamento2 = new Acionamento(inicio, fim,
 							idBomba);
+					// limpando o buffer
+					in.nextLine();
 
 					if (acionamento == null) {
 						throw new NullPointerException();
@@ -75,19 +80,19 @@ public class TesteAcionamento {
 						acionamento2.setId(acionamento.getId());
 						System.out.println("Digite o inicio do acionamento");
 
-						String inicioString = in.next();
+						String inicioString = in.nextLine();
 
 						SimpleDateFormat sdf = new SimpleDateFormat(
-								"AAAAMMDDHHMMSS");
+								"yyyy-MM-dd HH:mm:ss");
 						sdf.setLenient(false);
 
-						inicio = (Timestamp) sdf.parse(inicioString);
+						inicio = Timestamp.valueOf(inicioString);
 
 						acionamento2.setDataHoraInicio(inicio);
 
 						System.out.println("Digite o fim");
-						String fimString = in.next();
-						fim = (Timestamp) sdf.parse(fimString);
+						String fimString = in.nextLine();
+						fim = Timestamp.valueOf(fimString);
 
 						acionamento2.setDataHoraFim(fim);
 
