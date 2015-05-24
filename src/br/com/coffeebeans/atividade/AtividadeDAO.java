@@ -96,7 +96,7 @@ public class AtividadeDAO implements IAtividadeDAO {
 		try {
 			if (atividade != null) {
 				try {
-					String sql = "";
+					String sql = "UPDATE ATIVIDADE SET DESCRICAO = ? WHERE ID = ?";
 					stmt = this.connection.prepareStatement(sql);
 					stmt.setString(1, atividade.getDescricao());
 					stmt.setInt(2, atividade.getId());
