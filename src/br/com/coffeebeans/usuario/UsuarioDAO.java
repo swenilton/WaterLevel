@@ -17,6 +17,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	private Connection connection = null;
 	private String sistema = "mysql";
+	private static Usuario usuarioLogado;
 
 	public UsuarioDAO() throws Exception {
 		this.connection = Conexao.conectar(sistema);
@@ -214,11 +215,12 @@ public class UsuarioDAO implements IUsuarioDAO {
 		return usuario;
 	}
 
-	public boolean login(String usuario, String senha) throws UsuarioInativoException, RepositorioException, SQLException {
+	public boolean login(String usuario, String senha)
+			throws UsuarioInativoException, RepositorioException, SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs;
 		try {
-			String sql = "select * from usuario where login = ? and senha = ?";
+			String sql = "SELECT * FROM USUARIO WHERE LOGIN = ? AND SENHA = ?";
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, usuario);
 			stmt.setString(2, senha);
@@ -226,6 +228,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			if (rs.next()) {
 				if (rs.getString("ATIVO").equals("Nao"))
 					throw new UsuarioInativoException(procurar(rs.getInt("id")));
+				this.usuarioLogado = procurar(rs.getInt("id"));
 				return true;
 			} else {
 				return false;
@@ -235,6 +238,10 @@ public class UsuarioDAO implements IUsuarioDAO {
 		} finally {
 			stmt.close();
 		}
+	}
+
+	public static Usuario getUsuarioLogado() {
+		return usuarioLogado;
 	}
 
 }

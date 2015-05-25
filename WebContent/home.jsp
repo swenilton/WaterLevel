@@ -95,13 +95,13 @@ $( window ).scroll(function() {
         <!-- usuario logado -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" id="usuario-logado" data-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="usuario">Swenilton Souza</span><img src="img/perfil.png" id="perfil" width="40px"/><span class="caret"></span></a>
+            <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img src="img/perfil.png" id="perfil" width="40px"/><span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#" data-toggle="modal" data-target="#alterar-usuario">Editar perfil</a></li>
             <li><a href="#" data-toggle="modal" data-target="#ver-gastos">Ver gastos</a></li>
             <li><a href="#" data-toggle="modal" data-target="#ver-rank">Ver Rank</a></li>
             <li class="divider"></li>
-            <li><a href="index.jsp">Sair</a></li>
+            <li><a href="/WaterLevel/ctrl?acao=sair">Sair</a></li>
           </ul>
         </li>
       </ul>      
@@ -122,39 +122,39 @@ $( window ).scroll(function() {
             <img src="http://placehold.it/150x150" alt="Imagem do Usuário" class="img-circle"/>
             <div class="form-group">
               <label for="foto">Procurar Foto</label>
-              <input type="file" id="foto"/>
+              <input type="file" name="foto" id="foto" value="${sessionScope.usuarioLogado.foto}"/>
             </div>
           </div>
           <div id="dados-usuario">
             <div class="form-group">
               <label for="nome">Nome</label>
-              <input type="text" class="form-control" id="nome" placeholder="Insira seu Nome"/>
+              <input type="text" class="form-control" id="nome" name="nome" placeholder="Insira seu Nome" value="${sessionScope.usuarioLogado.nome}"/>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
               <span class="add-on"><i class="icon-envelope"></i></span>
-              <input type="email" class="form-control" id="email" placeholder="insira seu email"/>
+              <input type="email" class="form-control" id="email" name="email" placeholder="insira seu email" value="${sessionScope.usuarioLogado.email}"/>
             </div>
             <div class="form-group">
               <label for="telefone">Telefone</label>
-              <input type="tel" class="form-control" id="telefone" placeholder="insira seu número de telefone"/>
+              <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="insira seu número de telefone" value="${sessionScope.usuarioLogado.telefone}"/>
             </div>
             <div class="form-group">
               <label for="login">Login</label>
-              <input type="text" class="form-control" id="login" placeholder="insira seu nome de usuário"/>
+              <input type="text" class="form-control" id="login" name="login" placeholder="insira seu nome de usuário" value="${sessionScope.usuarioLogado.login}"/>
             </div>
             <div class="form-group col-xs-6">
               <label for="perfil">Perfil</label>
-              <select class="form-control" id="perfil">
+              <select class="form-control" id="perfil" name="perfil" value="${sessionScope.usuarioLogado.perfil}">
                 <option>Administrador</option>
                 <option>Usuario</option>
               </select>
             </div>
             <div class="form-group col-xs-6">
               <label for="ativo">Ativo</label>
-              <select class="form-control" id="ativo">
+              <select class="form-control" id="ativo" name="ativo" value="${sessionScope.usuarioLogado.ativo}">
                 <option>Sim</option>
-                <option>Não</option>
+                <option>Nao</option>
               </select>
             </div>
             <div class="clear"></div>

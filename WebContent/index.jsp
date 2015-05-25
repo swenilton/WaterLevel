@@ -1,5 +1,8 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -274,18 +277,31 @@ div#background3 {
 				<input type="hidden" name="acao" value="login" />
 				<div class="form-group">
 					<input type="text" class="form-control" id="usuario" name="usuario"
-						placeholder="Usuario" required="required"/>
+						placeholder="Usuario" required="required" />
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" id="senha" name="senha"
-						placeholder="Senha" required="required"/>
+						placeholder="Senha" required="required" />
 				</div>
 				<label class="checkbox pull-left"> <input type="checkbox"
 					name="lembre-se">Lembre-se</input>
 				</label> <input type="submit" class="btn btn-large btn-primary pull-right"
 					value="Entrar" />
 			</form>
-			<div id="status" style="margin-top: 65px;"></div>
+			<div class="clear" style="margin-top: 50px;"></div>
+			<c:if test="${erros.existeErros}">
+				<div id="status" class="alert alert-danger"
+					style="margin-top: 65px;">
+					<button type='button' class='close' data-dismiss='alert'
+						aria-label='Close'><span aria-hidden='true'>&times;</span>
+					</button>
+					<ul>
+						<c:forEach var="erro" items="${erros.erros}">
+							<li>${erro}</li>
+						</c:forEach>
+					</ul>
+				</div>
+			</c:if>
 		</div>
 		<div class="logo">
 			<h1>Water Level</h1>

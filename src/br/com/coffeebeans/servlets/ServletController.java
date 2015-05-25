@@ -18,6 +18,7 @@ import java.util.List;
 import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,10 +29,12 @@ import javax.servlet.http.Part;
 import sun.java2d.pipe.BufferedContext;
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
+import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.fachada.Fachada;
 import br.com.coffeebeans.usuario.Usuario;
 import br.com.coffeebeans.usuario.UsuarioDAO;
+import br.com.coffeebeans.util.Erro;
 
 /**
  * Servlet implementation class ServletController
@@ -47,7 +50,7 @@ public class ServletController extends HttpServlet {
 	private int idUsuarioAlterar = 0;
 
 	/**
-	 * Default constructor.
+	 * Default constructor
 	 */
 	public ServletController() {
 		try {
@@ -62,32 +65,32 @@ public class ServletController extends HttpServlet {
 			HttpServletResponse response) throws IOException {
 
 		String acao = request.getParameter("acao");
+		Erro erros = new Erro();
+		String url = "";
 
 		if (acao == null) {
-			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			url = "/index.jsp";
 		} else if (acao.equals("login")) {
 			String usuario = request.getParameter("usuario");
 			String senha = request.getParameter("senha");
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
 			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				System.out.println("Erro ao redirecionar para login.jsp"
-						+ e.getMessage());
-			} catch (IOException e) {
-				System.out.println("Erro ao redirecionar para login.jsp"
-						+ e.getMessage());
+				if (fachada.login(usuario, senha)) {
+					request.getSession().setAttribute("usuarioLogado",
+							UsuarioDAO.getUsuarioLogado());
+					url = "/home.jsp";
+				} else {
+					erros.add("Usuário ou senha inválidos");
+					request.getSession().invalidate();
+					url = "index.jsp";
+				}
+			} catch (UsuarioInativoException | RepositorioException
+					| SQLException e) {
+				erros.add(e.getMessage());
 			}
+
+		} else if (acao.equals("sair")) {
+			request.getSession().invalidate();
+			url = "/index.jsp";
 		} else if (acao.equals("inserirUsuario")) {
 			String nome = request.getParameter("nome");
 			String login = request.getParameter("login");
@@ -123,57 +126,29 @@ public class ServletController extends HttpServlet {
 				u.setFoto(f.getCanonicalPath());
 				fachada.cadastrar(u);
 			} catch (Exception e) {
-				System.out.println("Erro ao inserir usuario => "
-						+ e.getMessage());
-				e.printStackTrace();
+				erros.add("Erro ao inserir usuario => " + e.getMessage());
 			}
-			RequestDispatcher rd = request
-					.getRequestDispatcher("/usuario-inserir.jsp");
-			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			} catch (IOException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			}
+			url = "/usuario-inserir.jsp";
 		} else if (acao.equals("nivel")) {
 			System.out.println(request.getParameter("nivel"));
-		} else if (acao.equals("lista")) {
-			try {
-				request.setAttribute("usuarios", fachada.getUsuarioLista());
-				request.getRequestDispatcher("/usuario.jsp").forward(request,
-						response);
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (RepositorioException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ServletException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			} catch (IOException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-
-			}
 		} else if (acao.equals("pegarUsuario")) {
 			try {
 				String id = request.getParameter("id");
 				Usuario u = fachada.usuarioProcurar(Integer.parseInt(id));
 				request.setAttribute("usuarioProcurar", u);
-				response.getOutputStream().print(u.getNome() + ",");
-				response.getOutputStream().print(u.getEmail() + ",");
-				response.getOutputStream().print(u.getTelefone() + ",");
-				response.getOutputStream().print(u.getLogin() + ",");
-				response.getOutputStream().print(u.getPerfil() + ",");
-				response.getOutputStream().print(u.getAtivo() + ",");
-				response.getOutputStream().print(u.getFoto() + ",");
-				response.getOutputStream().print(u.getId());
+				ServletOutputStream os = response.getOutputStream();
+				os.print(u.getNome() + ",");
+				os.print(u.getEmail() + ",");
+				os.print(u.getTelefone() + ",");
+				os.print(u.getLogin() + ",");
+				os.print(u.getPerfil() + ",");
+				os.print(u.getAtivo() + ",");
+				os.print(u.getFoto() + ",");
+				os.print(u.getId());
+				os.flush();
+				os.close();
 				idUsuarioAlterar = u.getId();
+				url = "/usuario.jsp";
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -223,47 +198,21 @@ public class ServletController extends HttpServlet {
 				u.setFoto(f.getCanonicalPath());
 				fachada.atualizar(u);
 			} catch (Exception e) {
-				System.out.println("Erro ao alterar usuario => "
-						+ e.getMessage());
-				e.printStackTrace();
+				erros.add("Erro ao alterar usuario => " + e.getMessage());
 			}
-			RequestDispatcher rd = request.getRequestDispatcher("/usuario.jsp");
-			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			} catch (IOException e) {
-				System.out.println("Erro ao direcionar usuario-inserir.jsp => "
-						+ e.getMessage());
-			}
+			url = "/usuario.jsp";
 		} else if (acao.equals("alterarSenha")) {
 			String senhaAtual = request.getParameter("senhaAtual");
 			String novaSenha = request.getParameter("novaSenha");
 			try {
-				//if (fachada.usuarioProcurar(idUsuarioAlterar).getSenha() == senhaAtual) {
+				if (fachada.usuarioProcurar(idUsuarioAlterar).getSenha() == senhaAtual) {
 					fachada.alterarSenhaUsuario(idUsuarioAlterar, novaSenha);
-				//} else {
-				//	throw new IllegalArgumentException("Senha Atual Inválida");
-				//}
-				RequestDispatcher rd = request
-						.getRequestDispatcher("/usuario.jsp");
-				try {
-					rd.forward(request, response);
-				} catch (ServletException e) {
-					System.out
-							.println("Erro ao direcionar usuario-inserir.jsp => "
-									+ e.getMessage());
-				} catch (IOException e) {
-					System.out
-							.println("Erro ao direcionar usuario-inserir.jsp => "
-									+ e.getMessage());
+				} else {
+					erros.add("Senha atual inválida");
 				}
-
+				url = "/usuario.jsp";
 			} catch (Exception e) {
-				System.out.println("Erro ao alterar senha usuario => "
-						+ e.getMessage());
-				e.printStackTrace();
+				erros.add(e.getMessage());
 			}
 		} else if (acao.equals("removerUsuario")) {
 			try {
@@ -301,6 +250,13 @@ public class ServletController extends HttpServlet {
 			}
 		} else {
 			System.out.println("porra nenhuma");
+		}
+		request.setAttribute("erros", erros);
+		try {
+			request.getRequestDispatcher(url).forward(request, response);
+		} catch (ServletException e) {
+			System.out
+					.println("erro ao direcionar página => " + e.getMessage());
 		}
 		System.out.println("foi executado");
 
