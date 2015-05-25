@@ -173,11 +173,17 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 			stmt.setInt(3, atividadeRealizada.getIdAtividade());
 			stmt.setInt(4, atividadeRealizada.getIdUsuario());
 			stmt.setInt(5, atividadeRealizada.getId());
-			
+
 			Integer resultado = stmt.executeUpdate();
 			if (resultado == 0) {
 				throw new AtividadeNaoEncontradaException();
 			}
+
+		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
+			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
+			System.out.println(exc.getMessage());
+
+			// throw new ViolacaoChaveEstrangeiraException();
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
