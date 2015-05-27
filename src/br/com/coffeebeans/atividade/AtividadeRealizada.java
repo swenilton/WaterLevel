@@ -88,4 +88,11 @@ public class AtividadeRealizada {
 		this.usuario = usuario;
 	}
 
+	@Override
+	public String toString() {
+		return "id=" + id + ", dataHoraInicio=" + dataHoraInicio
+				+ ", dataHoraFim=" + dataHoraFim + ", idUsuario=" + idUsuario
+				+ ", idAtividade=" + idAtividade + "\n";
+	}
+
 }

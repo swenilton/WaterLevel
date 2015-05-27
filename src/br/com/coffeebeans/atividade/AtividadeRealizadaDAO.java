@@ -75,7 +75,7 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 		AtividadeRealizada atividadeRealizada = null;
 		ArrayList<AtividadeRealizada> atividades = new ArrayList<AtividadeRealizada>();
 		try {
-			String sql = "SELECT * FROM ACIONAMENTO";
+			String sql = "SELECT * FROM ATIVIDADE_REALIZADA";
 			stmt = this.conexao.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
@@ -164,7 +164,7 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 			throws AtividadeNaoEncontradaException, SQLException {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "UPDATE ACIONAMENTO SET INICIO=?,DATA_HORA_FIM=?,ID_BOMBA=? WHERE ID=?";
+			String sql = "UPDATE ATIVIDADE_REALIZADA SET INICIO=?,FIM=?,ID_ATIVIDADE=?,ID_USUARIO=? WHERE ID=?";
 			stmt = this.conexao.prepareStatement(sql);
 			stmt.setTimestamp(1, new Timestamp(atividadeRealizada
 					.getDataHoraInicio().getTime()));
@@ -172,11 +172,18 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 					.getDataHoraFim().getTime()));
 			stmt.setInt(3, atividadeRealizada.getIdAtividade());
 			stmt.setInt(4, atividadeRealizada.getIdUsuario());
+			stmt.setInt(5, atividadeRealizada.getId());
 
 			Integer resultado = stmt.executeUpdate();
 			if (resultado == 0) {
 				throw new AtividadeNaoEncontradaException();
 			}
+
+		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
+			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
+			System.out.println(exc.getMessage());
+
+			// throw new ViolacaoChaveEstrangeiraException();
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
