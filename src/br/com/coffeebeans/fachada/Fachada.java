@@ -150,7 +150,7 @@ public class Fachada {
 	}
 
 	public ArrayList<Repositorio> repositorioListar() throws SQLException,
-			ListaVaziaException {
+			RepositorioException {
 		return controladorRepositorio.listar();
 
 	}
@@ -167,7 +167,8 @@ public class Fachada {
 
 	}
 
-	public AtividadeRealizada atividadeRealizadaProcurar(int id) throws SQLException, AtividadeNaoEncontradaException {
+	public AtividadeRealizada atividadeRealizadaProcurar(int id)
+			throws SQLException, AtividadeNaoEncontradaException {
 		return controladorAtividadeRealizada.procurar(id);
 	}
 

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.RepositorioJaExistenteException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 import br.com.coffeebeans.util.Conexao;
@@ -20,14 +21,11 @@ public class RepositorioDAO implements IRepositorioDAO {
 
 	@Override
 	public void cadastrar(Repositorio repositorio) throws SQLException,
-			RepositorioJaExistenteException {
+			RepositorioJaExistenteException, RepositorioException {
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		int id = 0;
-
 		try {
 			if (repositorio instanceof RepositorioCircular) {
-				String sql = "INSERT INTO REPOSITORIO (descricao,capacidade,profundidade,limite_max,limite_min,area_base,diametro_medio) VALUES(?,?,?,?,?,?,?)";
+				String sql = "INSERT INTO REPOSITORIO (descricao,capacidade,profundidade,limite_max,limite_min,area_base) VALUES(?,?,?,?,?,?)";
 				stmt = this.connection.prepareStatement(sql,
 						PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -37,23 +35,12 @@ public class RepositorioDAO implements IRepositorioDAO {
 				stmt.setDouble(4, repositorio.getLimiteMaximo());
 				stmt.setDouble(5, repositorio.getLimiteMinimo());
 				stmt.setDouble(6, 0.00);
-				stmt.setDouble(7,
-						((RepositorioCircular) repositorio).getDiametroMedio());
 				stmt.execute();
-
-				if (sistema.equals("mysql")) {
-					rs = stmt.getGeneratedKeys();
-				}
-
-				while (rs.next()) {
-					id = rs.getInt(1);
-				}
-
 			}
 
 			else if (repositorio instanceof RepositorioRetangular) {
 
-				String sql = "INSERT INTO REPOSITORIO(descricao,capacidade,profundidade,limite_max,limite_min,area_base,diametro_medio) VALUES (?,?,?,?,?,?,?)";
+				String sql = "INSERT INTO REPOSITORIO(descricao,capacidade,profundidade,limite_max,limite_min,area_base) VALUES (?,?,?,?,?,?)";
 				if (sistema.equals("mysql"))
 					stmt = this.connection.prepareStatement(sql,
 							PreparedStatement.RETURN_GENERATED_KEYS);
@@ -65,21 +52,12 @@ public class RepositorioDAO implements IRepositorioDAO {
 				stmt.setDouble(5, repositorio.getLimiteMinimo());
 				stmt.setDouble(6,
 						((RepositorioRetangular) repositorio).getAreaBase());
-				stmt.setDouble(7, 0.00);
 				stmt.execute();
-
-				if (sistema.equals("mysql")) {
-					rs = stmt.getGeneratedKeys();
-				}
-
-				while (rs.next()) {
-					id = rs.getInt(1);
-				}
 
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 
@@ -87,7 +65,7 @@ public class RepositorioDAO implements IRepositorioDAO {
 	}
 
 	@Override
-	public ArrayList<Repositorio> listar() throws SQLException {
+	public ArrayList<Repositorio> listar() throws SQLException, RepositorioException {
 		ArrayList<Repositorio> repositorios = new ArrayList<Repositorio>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -99,7 +77,7 @@ public class RepositorioDAO implements IRepositorioDAO {
 			stmt = this.connection.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				if (rs.getDouble("DIAMETRO_MEDIO") == 0.00) {
+				if (rs.getDouble("AREA_BASE") == 0.00) {
 					repositorio = new RepositorioRetangular(
 							rs.getString("DESCRICAO"),
 							rs.getDouble("CAPACIDADE"),
@@ -114,15 +92,14 @@ public class RepositorioDAO implements IRepositorioDAO {
 							rs.getDouble("CAPACIDADE"),
 							rs.getDouble("PROFUNDIDADE"),
 							rs.getDouble("LIMITE_MIN"),
-							rs.getDouble("LIMITE_MAX"),
-							rs.getDouble("DIAMETRO_MEDIO"));
+							rs.getDouble("LIMITE_MAX"), 0.0);
 					repositorio.setId(rs.getInt("ID"));
 				}
 
 				repositorios.add(repositorio);
 			}
 		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
+			throw new RepositorioException(e);
 		}
 
 		finally {
@@ -210,6 +187,7 @@ public class RepositorioDAO implements IRepositorioDAO {
 			}
 
 		} catch (SQLException e) {
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -271,7 +249,7 @@ public class RepositorioDAO implements IRepositorioDAO {
 			stmt.setInt(1, id);
 			stmt.execute();
 		} catch (SQLException e) {
-
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 		}

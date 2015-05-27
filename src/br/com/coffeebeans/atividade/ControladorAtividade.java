@@ -24,9 +24,6 @@ public class ControladorAtividade {
 	
 	public ArrayList<Atividade> listar() throws SQLException, RepositorioException,
 		ListaUsuarioVaziaException {
-		if (iatividade.listar().isEmpty()) {
-			throw new ListaUsuarioVaziaException();
-		}
 		return iatividade.listar();
 	}
 	

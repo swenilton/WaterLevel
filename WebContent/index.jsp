@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Login - Water Level</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+<script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <link rel="shortcut icon" href="img/ico.png">
 <script>
@@ -118,12 +119,15 @@
 				.api(
 						'/me',
 						function(response) {
-							console.log('Successful login for: '
-									+ response.name);
-							document.getElementById('status').innerHTML = 'Obrigado por logar, '
-									+ response.name + '!';
-							$('#usuario').val(response.email);
+							//console.log('Successful login for: '
+							//		+ response.name);
+							//document.getElementById('status').innerHTML = 'Obrigado por logar, '
+							//		+ response.name + '!';
+							//$('#usuario').val(response.email);
 							//$('#foto').jsp('<img src="https://graph.facebook.com/' + response.first_name + response.last_name + '/picture" alt="'+response.name+'" />')
+							$.post("/WaterLevel/ctrl?acao=loginFacebook", {'email' : response.email}, function(resposta) {
+									
+								});
 						});
 	}
 </script>
@@ -298,6 +302,19 @@ div#background3 {
 					<ul>
 						<c:forEach var="erro" items="${erros.erros}">
 							<li>${erro}</li>
+						</c:forEach>
+					</ul>
+				</div>
+			</c:if>
+			<c:if test="${sucessos.existeSucessos}">
+				<div class="alert alert-success" style="margin-top: 65px;">
+					<button type='button' class='close' data-dismiss='alert'
+						aria-label='Close'>
+						<span aria-hidden='true'>&times;</span>
+					</button>
+					<ul>
+						<c:forEach var="sucesso" items="${sucessos.sucessos}">
+							<li>${sucesso}</li>
 						</c:forEach>
 					</ul>
 				</div>

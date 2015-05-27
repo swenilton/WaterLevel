@@ -66,6 +66,7 @@
 			$.post("ctrl?acao=pegarUsuario&id=" + id, function(resposta) {
 				var dados = resposta.split(",");
 				$('#alterar-usuario-modal').modal('show');
+				$('#id').val(id);
 				$('.modal #nome').val(dados[0]);
 				$('.modal #email').val(dados[1]);
 				$('.modal #telefone').val(dados[2]);
@@ -73,7 +74,6 @@
 				$('.modal #perfil').val(dados[4]);
 				$('.modal #ativo').val(dados[5]);
 				$('.modal #foto').val(dados[6]);
-				$('.modal #pegaa').val(dados[7]);
 			})
 
 		}
@@ -89,10 +89,22 @@
 									+ "<span aria-hidden='true'>&times;</span>"
 									+ "</button>");
 		} else {
-			$.post("ctrl?acao=pegarUsuario&id=" + id, function(resposta) {
-				$('#alterar-senha').modal('show');
-			})
-
+			$('#alterar-senha').modal('show');
+			$('#id2').val(id);			
+		}
+	}
+	
+	function confirmaSenha(){
+		if($('#novaSenha').val == $('#confirmaNovaSenha').val){
+			return true;
+		} else {
+			$('#msg').removeClass().addClass('alert alert-danger');
+			$('#msg')
+					.html(
+							"Confirmação de senha incorreta <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+									+ "<span aria-hidden='true'>&times;</span>"
+									+ "</button>");
+			return false;
 		}
 	}
 
@@ -150,137 +162,27 @@
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
-						aria-expanded="false"> <span class="usuario">Swenilton
-								Souza</span><img src="img/perfil.png" id="perfil" width="40px" /><span
+						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
+							src="${sessionScope.usuarioLogado.foto}" id="perfil" width="40px" /><span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"
-								data-target="#alterar-usuario">Editar perfil</a></li>
+								data-target="#alterar-usuario-logado">Editar perfil</a></li>
 							<li><a href="#" data-toggle="modal"
 								data-target="#ver-gastos">Ver gastos</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#ver-rank">Ver
 									Rank</a></li>
 							<li class="divider"></li>
-							<li><a href="index.jsp">Sair</a></li>
+							<li><a href="/WaterLevel/ctrl?acao=sair">Sair</a></li>
 						</ul></li>
 				</ul>
 			</div>
 		</div>
 		<!-- fim container -->
 	</nav>
-	<!-- modal alterar dados usuario logado -->
-	<div class="modal fade" id="alterar-usuario-logado" tabindex="-1"
-		role="dialog" aria-labelledby="" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">Alterar Usuário</h4>
-				</div>
-				<div class="modal-body">
-					<form class="">
-						<div id="foto-usuario" style="text-align: center;">
-							<img src="http://placehold.it/150x150" alt="Imagem do Usuário"
-								class="img-circle" />
-							<div class="form-group">
-								<label for="foto">Procurar Foto</label> <input type="file"
-									id="foto" />
-							</div>
-						</div>
-						<div id="dados-usuario">
-							<div class="form-group">
-								<label for="nome">Nome</label> <input type="text"
-									class="form-control" id="nome" placeholder="Insira seu Nome" />
-							</div>
-							<div class="form-group">
-								<label for="email">Email</label> <span class="add-on"><i
-									class="icon-envelope"></i></span> <input type="email"
-									class="form-control" id="email" placeholder="insira seu email" />
-							</div>
-							<div class="form-group">
-								<label for="telefone">Telefone</label> <input type="tel"
-									class="form-control" id="telefone"
-									placeholder="insira seu número de telefone" />
-							</div>
-							<div class="form-group">
-								<label for="login">Login</label> <input type="text"
-									class="form-control" id="login"
-									placeholder="insira seu nome de usuário" />
-							</div>
-							<div class="form-group col-xs-6">
-								<label for="perfil">Perfil</label> <select class="form-control"
-									id="perfil">
-									<option>Administrador</option>
-									<option>Usuario</option>
-								</select>
-							</div>
-							<div class="form-group col-xs-6">
-								<label for="ativo">Ativo</label> <select class="form-control"
-									id="ativo">
-									<option>Sim</option>
-									<option>Nao</option>
-								</select>
-							</div>
-							<div class="clear"></div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success">Salvar
-						Alterações</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- fim modal alterar dados usuario logado -->
-	<!-- modal ver gastos -->
-	<div class="modal fade" id="ver-gastos" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<br />
-				</div>
-				<div class="modal-body">
-					<h2>Esta função será implementada na próxima versão.</h2>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- fim modal ver gastos -->
-	<!-- modal ver rank -->
-	<div class="modal fade" id="ver-rank" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<br />
-				</div>
-				<div class="modal-body">
-					<h2>Esta função será implementada na próxima versão.</h2>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- fim modal ver rank -->
+	<jsp:include page="modalAlterarUsuario.jsp"></jsp:include>
+	<jsp:include page="modalVerGastos.jsp"></jsp:include>
+	<jsp:include page="modalVerRank.jsp"></jsp:include>
 	<div class="container">
 		<div class="conteudo">
 			<div class="page-header page-titulo">
@@ -336,7 +238,7 @@
 			</div>
 			<!-- fim painel -->
 			<c:if test="${erros.existeErros}">
-				<div id="status" class="alert alert-danger">
+				<div class="alert alert-danger">
 					<button type='button' class='close' data-dismiss='alert'
 						aria-label='Close'>
 						<span aria-hidden='true'>&times;</span>
@@ -344,6 +246,19 @@
 					<ul>
 						<c:forEach var="erro" items="${erros.erros}">
 							<li>${erro}</li>
+						</c:forEach>
+					</ul>
+				</div>
+			</c:if>
+			<c:if test="${sucessos.existeSucessos}">
+				<div class="alert alert-success">
+					<button type='button' class='close' data-dismiss='alert'
+						aria-label='Close'>
+						<span aria-hidden='true'>&times;</span>
+					</button>
+					<ul>
+						<c:forEach var="sucesso" items="${sucessos.sucessos}">
+							<li>${sucesso}</li>
 						</c:forEach>
 					</ul>
 				</div>
@@ -374,7 +289,8 @@
 				<div class="modal-body">
 					<form class="" method="POST" action="/WaterLevel/ctrl"
 						enctype="multipart/form-data" id="form">
-						<input type="hidden" name="acao" value="alterarUsuario" />
+						<input type="hidden" name="acao" value="alterarUsuario" /> <input
+							type="hidden" name="id" id="id" />
 						<div id="foto-usuario" style="text-align: center;">
 							<img src="http://placehold.it/150x150" alt="Imagem do Usuário"
 								class="img-circle" />
@@ -445,8 +361,9 @@
 					<h4 class="modal-title" id="myModalLabel">Alterar Senha</h4>
 				</div>
 				<div class="modal-body">
-					<form class="" action="/WaterLevel/ctrl" method="post">
-						<input type="hidden" name="acao" value="alterarSenha" />
+					<form class="" action="/WaterLevel/ctrl" method="post" onsubmit="confirmaSenha()">
+						<input type="hidden" name="acao" value="alterarSenha" /> <input
+							type="hidden" name="id" id="id2" />
 						<div class="row">
 							<div class="form-group col-xs-6">
 								<label for="senhaAtual">Senha Atual</label> <input

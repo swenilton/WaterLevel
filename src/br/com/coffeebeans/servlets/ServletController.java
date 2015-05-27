@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.imageio.stream.FileImageInputStream;
@@ -27,14 +28,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import sun.java2d.pipe.BufferedContext;
+import br.com.coffeebeans.atividade.Atividade;
+import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
+import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.fachada.Fachada;
+import br.com.coffeebeans.repositorio.Repositorio;
+import br.com.coffeebeans.repositorio.RepositorioCircular;
+import br.com.coffeebeans.repositorio.RepositorioRetangular;
 import br.com.coffeebeans.usuario.Usuario;
 import br.com.coffeebeans.usuario.UsuarioDAO;
 import br.com.coffeebeans.util.Erro;
+import br.com.coffeebeans.util.Sucesso;
 
 /**
  * Servlet implementation class ServletController
@@ -47,7 +55,6 @@ maxRequestSize = 1024 * 1024 * 4 // 4MB
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Fachada fachada;
-	private int idUsuarioAlterar = 0;
 
 	/**
 	 * Default constructor
@@ -66,6 +73,7 @@ public class ServletController extends HttpServlet {
 
 		String acao = request.getParameter("acao");
 		Erro erros = new Erro();
+		Sucesso sucessos = new Sucesso();
 		String url = "";
 
 		if (acao == null) {
@@ -88,8 +96,31 @@ public class ServletController extends HttpServlet {
 				erros.add(e.getMessage());
 			}
 
+		} else if (acao.equals("loginFacebook")) {
+			String email = request.getParameter("usuario");
+			try {
+				Usuario u = fachada.loginFacebook(email);
+				if (u != null) {
+					request.getSession().setAttribute("usuarioLogado", u);
+					url = "/home.jsp";
+					response.setStatus(200);
+				} else {
+					erros.add("Usuário ou senha inválidos");
+					request.getSession().invalidate();
+					url = "/index.jsp";
+				}
+			} catch (RepositorioException | SQLException e) {
+				erros.add(e.getMessage());
+			}
+
 		} else if (acao.equals("sair")) {
 			request.getSession().invalidate();
+			for (Enumeration<String> e = request.getSession()
+					.getAttributeNames(); e.hasMoreElements();) {
+				String param = e.nextElement();
+				param = "";
+			}
+			sucessos.add("Logoff com sucesso");
 			url = "/index.jsp";
 		} else if (acao.equals("inserirUsuario")) {
 			String nome = request.getParameter("nome");
@@ -125,6 +156,7 @@ public class ServletController extends HttpServlet {
 				}
 				u.setFoto(f.getCanonicalPath());
 				fachada.cadastrar(u);
+				sucessos.add("Usuário inserido");
 			} catch (Exception e) {
 				erros.add("Erro ao inserir usuario => " + e.getMessage());
 			}
@@ -135,7 +167,6 @@ public class ServletController extends HttpServlet {
 			try {
 				String id = request.getParameter("id");
 				Usuario u = fachada.usuarioProcurar(Integer.parseInt(id));
-				request.setAttribute("usuarioProcurar", u);
 				ServletOutputStream os = response.getOutputStream();
 				os.print(u.getNome() + ",");
 				os.print(u.getEmail() + ",");
@@ -143,24 +174,17 @@ public class ServletController extends HttpServlet {
 				os.print(u.getLogin() + ",");
 				os.print(u.getPerfil() + ",");
 				os.print(u.getAtivo() + ",");
-				os.print(u.getFoto() + ",");
-				os.print(u.getId());
-				os.flush();
+				os.print(u.getFoto());
 				os.close();
-				idUsuarioAlterar = u.getId();
-				url = "/usuario.jsp";
+				url = "";
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("Erro ao pegar usuario => " + e.getMessage());
 			} catch (RepositorioException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("Erro ao pegar usuario => " + e.getMessage());
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("Erro ao pegar usuario => " + e.getMessage());
 			} catch (UsuarioNaoEncontradoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("Erro ao pegar usuario => " + e.getMessage());
 			}
 		} else if (acao.equals("alterarUsuario")) {
 			String nome = request.getParameter("nome");
@@ -172,7 +196,7 @@ public class ServletController extends HttpServlet {
 			String telefone = request.getParameter("telefone");
 			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
 			u.setTelefone(telefone);
-			u.setId(idUsuarioAlterar);
+			u.setId(Integer.parseInt(request.getParameter("id")));
 			try {
 				File dir = new File(System.getProperty("user.dir")
 						+ "/WaterLevel/img/");
@@ -197,6 +221,7 @@ public class ServletController extends HttpServlet {
 				}
 				u.setFoto(f.getCanonicalPath());
 				fachada.atualizar(u);
+				sucessos.add("Usuário alterado");
 			} catch (Exception e) {
 				erros.add("Erro ao alterar usuario => " + e.getMessage());
 			}
@@ -204,12 +229,14 @@ public class ServletController extends HttpServlet {
 		} else if (acao.equals("alterarSenha")) {
 			String senhaAtual = request.getParameter("senhaAtual");
 			String novaSenha = request.getParameter("novaSenha");
+			int id = Integer.parseInt(request.getParameter("id"));
 			try {
-				if (fachada.usuarioProcurar(idUsuarioAlterar).getSenha() == senhaAtual) {
-					fachada.alterarSenhaUsuario(idUsuarioAlterar, novaSenha);
-				} else {
-					erros.add("Senha atual inválida");
-				}
+				//if (fachada.usuarioProcurar(id).getSenha() == senhaAtual) {
+				//	fachada.alterarSenhaUsuario(id, novaSenha);
+				//	sucessos.add("Senha alterada");
+				//} else {
+				//	erros.add("Senha atual inválida");
+				//}
 				url = "/usuario.jsp";
 			} catch (Exception e) {
 				erros.add(e.getMessage());
@@ -220,54 +247,141 @@ public class ServletController extends HttpServlet {
 				fachada.usuarioRemover(Integer.parseInt(id));
 				response.setStatus(200);
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("erro ao remover usuario = > " + e.getMessage());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("erro ao remover usuario = > " + e.getMessage());
 			} catch (UsuarioNaoEncontradoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("erro ao remover usuario = > " + e.getMessage());
 			} catch (RepositorioException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				erros.add("erro ao remover usuario = > " + e.getMessage());
 			}
-		} else if (acao.equals("loginFacebook")) {
+		} else if (acao.equals("inserirRepositorio")) {
+			String nome = request.getParameter("nome");
+			String formato = request.getParameter("formato");
+			double area = Double.parseDouble(request.getParameter("area")
+					.replace(",", "."));
+			double profundidade = Double.parseDouble(request.getParameter(
+					"profundidade").replace(",", "."));
+			double limiteMin = Double.parseDouble(request.getParameter(
+					"limiteMin").replace(",", "."));
+			double limiteMax = Double.parseDouble(request.getParameter(
+					"limiteMax").replace(",", "."));
 			try {
-				Usuario u = fachada
-						.loginFacebook(request.getParameter("email"));
-				if (u != null) {
-					request.getSession().setAttribute("usuarioLogado", u);
-					response.setStatus(200);
-					request.getRequestDispatcher("/home.jsp").forward(request,
-							response);
-				} else {
-
-				}
+				Repositorio r;
+				if (formato.equals("Circular"))
+					r = new RepositorioCircular(nome, 0.0, profundidade,
+							limiteMin, limiteMax, 0.0);
+				else
+					r = new RepositorioRetangular(nome, 0.0, profundidade,
+							limiteMin, limiteMax, area);
+				fachada.cadastrar(r);
+				sucessos.add("Repósitorio inserido");
 			} catch (Exception e) {
-				System.out.println("Erro ao logar com facebook => "
-						+ e.getMessage());
+				erros.add("Erro ao inserir repositorio => " + e.getMessage());
+			}
+			url = "/repositorio-inserir.jsp";
+		} else if (acao.equals("pegarRepositorio")) {
+			try {
+				String id = request.getParameter("id");
+				Repositorio r = fachada.repositorioProcurar(Integer
+						.parseInt(id));
+				ServletOutputStream os = response.getOutputStream();
+				os.print(r.getDescricao() + ",");
+				os.print(r.getLimiteMaximo() + ",");
+				os.print(r.getLimiteMinimo() + ",");
+				os.print(r.getProfundidade());
+				os.close();
+				url = "";
+			} catch (SQLException e) {
+				erros.add("Erro ao pegar repositorio => " + e.getMessage());
+			} catch (NumberFormatException e) {
+				erros.add("Erro ao pegar repositorio => " + e.getMessage());
+			} catch (RepositorioNaoEncontradoException e) {
+				erros.add("Erro ao pegar repositorio => " + e.getMessage());
+			}
+		} else if (acao.equals("removerRepositorio")) {
+			try {
+				String id = request.getParameter("id");
+				fachada.repositorioRemover(Integer.parseInt(id));
+				response.setStatus(200);
+				url = "/repositorio.jsp";
+			} catch (NumberFormatException e) {
+				erros.add("erro ao remover repositorio = > " + e.getMessage());
+			} catch (SQLException e) {
+				erros.add("erro ao remover repositorio = > " + e.getMessage());
+			} catch (RepositorioNaoEncontradoException e) {
+				erros.add("erro ao remover repositorio = > " + e.getMessage());
+			}
+		} else if (acao.equals("inserirAtividade")) {
+			String nome = request.getParameter("nome");
+			Atividade a = new Atividade(nome);
+			try {
+				fachada.cadastrar(a);
+				sucessos.add("Atividade inserida");
+			} catch (Exception e) {
+				erros.add("Erro ao inserir atividade => " + e.getMessage());
+			}
+			url = "/atividade-inserir.jsp";
+		} else if (acao.equals("pegarAtividade")) {
+			try {
+				String id = request.getParameter("id");
+				Atividade a = fachada.atividadeProcurar(Integer
+						.parseInt(id));
+				request.setAttribute("atividadeProcurar", a);
+				ServletOutputStream os = response.getOutputStream();
+				os.print(a.getDescricao());
+				os.flush();
+				os.close();
+				url = "";
+			} catch (SQLException e) {
+				erros.add("Erro ao pegar atividade => " + e.getMessage());
+			} catch (NumberFormatException e) {
+				erros.add("Erro ao pegar atividade => " + e.getMessage());
+			} catch (AtividadeNaoEncontradaException e) { 
+					erros.add("Erro ao pegar atividade => " + e.getMessage());
+			} catch (RepositorioException e) {
+				erros.add("Erro ao pegar atividade => " + e.getMessage());
+			}
+		} else if (acao.equals("alterarAtividade")) {
+			String nome = request.getParameter("nome");
+			Atividade a = new Atividade(nome);
+			a.setId(Integer.parseInt(request.getParameter("id")));
+			try {
+				fachada.atualizar(a);
+				sucessos.add("Atividade alterada");
+			} catch (Exception e) {
+				erros.add("Erro ao alterar atividade => " + e.getMessage());
+			}
+			url = "/atividade.jsp";
+		} else if (acao.equals("removerAtividade")) {
+			try {
+				String id = request.getParameter("id");
+				fachada.atividadeRemover(Integer.parseInt(id));
+				response.setStatus(200);
+				url = "/atividade.jsp";
+			} catch (NumberFormatException e) {
+				erros.add("erro ao remover atividade = > " + e.getMessage());
+			} catch (SQLException e) {
+				erros.add("erro ao remover atividade = > " + e.getMessage());
+			} catch (AtividadeNaoEncontradaException e) {
+				erros.add("erro ao remover atividade = > " + e.getMessage());
+			} catch (RepositorioException e) {
+				erros.add("erro ao remover atividade = > " + e.getMessage());
 			}
 		} else {
-			System.out.println("porra nenhuma");
+			System.out.println("Erro");
 		}
+		request.setAttribute("sucessos", sucessos);
 		request.setAttribute("erros", erros);
+		if(!url.equals("")){
 		try {
 			request.getRequestDispatcher(url).forward(request, response);
 		} catch (ServletException e) {
 			System.out
 					.println("erro ao direcionar página => " + e.getMessage());
 		}
+		}
 		System.out.println("foi executado");
-
-	}
-
-	/**
-	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-
-	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
 	}
 
