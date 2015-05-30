@@ -29,7 +29,9 @@ import javax.servlet.http.Part;
 
 import sun.java2d.pipe.BufferedContext;
 import br.com.coffeebeans.atividade.Atividade;
+import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
+import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
@@ -89,7 +91,7 @@ public class ServletController extends HttpServlet {
 				} else {
 					erros.add("Usuário ou senha inválidos");
 					request.getSession().invalidate();
-					url = "index.jsp";
+					url = "/index.jsp";
 				}
 			} catch (UsuarioInativoException | RepositorioException
 					| SQLException e) {
@@ -231,12 +233,12 @@ public class ServletController extends HttpServlet {
 			String novaSenha = request.getParameter("novaSenha");
 			int id = Integer.parseInt(request.getParameter("id"));
 			try {
-				//if (fachada.usuarioProcurar(id).getSenha() == senhaAtual) {
-				//	fachada.alterarSenhaUsuario(id, novaSenha);
-				//	sucessos.add("Senha alterada");
-				//} else {
-				//	erros.add("Senha atual inválida");
-				//}
+				if (fachada.usuarioProcurar(id).getSenha() == senhaAtual) {
+					fachada.alterarSenhaUsuario(id, novaSenha);
+					sucessos.add("Senha alterada");
+				} else {
+					erros.add("Senha atual inválida");
+				}
 				url = "/usuario.jsp";
 			} catch (Exception e) {
 				erros.add(e.getMessage());
@@ -325,8 +327,7 @@ public class ServletController extends HttpServlet {
 		} else if (acao.equals("pegarAtividade")) {
 			try {
 				String id = request.getParameter("id");
-				Atividade a = fachada.atividadeProcurar(Integer
-						.parseInt(id));
+				Atividade a = fachada.atividadeProcurar(Integer.parseInt(id));
 				request.setAttribute("atividadeProcurar", a);
 				ServletOutputStream os = response.getOutputStream();
 				os.print(a.getDescricao());
@@ -337,8 +338,8 @@ public class ServletController extends HttpServlet {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
 			} catch (NumberFormatException e) {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
-			} catch (AtividadeNaoEncontradaException e) { 
-					erros.add("Erro ao pegar atividade => " + e.getMessage());
+			} catch (AtividadeNaoEncontradaException e) {
+				erros.add("Erro ao pegar atividade => " + e.getMessage());
 			} catch (RepositorioException e) {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
 			}
@@ -368,18 +369,60 @@ public class ServletController extends HttpServlet {
 			} catch (RepositorioException e) {
 				erros.add("erro ao remover atividade = > " + e.getMessage());
 			}
+		} else if (acao.equals("removerBomba")) {
+			try {
+				String id = request.getParameter("id");
+				fachada.bombaRemover(Integer.parseInt(id));
+				response.setStatus(200);
+				url = "/bomba.jsp";
+			} catch (NumberFormatException e) {
+				erros.add("erro ao remover bomba = > " + e.getMessage());
+			} catch (SQLException e) {
+				erros.add("erro ao remover bomba = > " + e.getMessage());
+			} catch (BombaNaoEncontradaException e) {
+				erros.add("erro ao remover bomba = > " + e.getMessage());
+			}
+		} else if (acao.equals("inserirBomba")) {
+			String descricao = request.getParameter("descricao");
+			double potencia = Double.parseDouble(request.getParameter(
+					"potencia").replace(",", "."));
+			double vazao = Double.parseDouble(request.getParameter("vazao")
+					.replace(",", "."));
+			String acionamento = request.getParameter("acionamento");
+			int idEnche = Integer.parseInt(request.getParameter("enche"));
+			int idSeca = Integer.parseInt(request.getParameter("seca"));
+			try {
+				Bomba b = new Bomba(descricao, potencia, vazao, acionamento);
+				if (idEnche != 0) {
+					Repositorio enche = fachada.repositorioProcurar(idEnche);
+					b.setRepositorioEnche(enche);
+				}
+				if (idSeca != 0) {
+					Repositorio seca = fachada.repositorioProcurar(idSeca);
+					b.setRepositorioSeca(seca);
+				}
+				b.setStatus(Bomba.OFF);
+				if (idSeca == 0 && idEnche == 0)
+					throw new IllegalArgumentException(
+							"Algum repositório tem que ser selecionado");
+				fachada.cadastrar(b);
+				sucessos.add("Bomba inserida");
+			} catch (Exception e) {
+				erros.add("Erro ao inserir bomba => " + e.getMessage());
+			}
+			url = "/bomba-inserir.jsp";
 		} else {
 			System.out.println("Erro");
 		}
 		request.setAttribute("sucessos", sucessos);
 		request.setAttribute("erros", erros);
-		if(!url.equals("")){
-		try {
-			request.getRequestDispatcher(url).forward(request, response);
-		} catch (ServletException e) {
-			System.out
-					.println("erro ao direcionar página => " + e.getMessage());
-		}
+		if (!url.equals("")) {
+			try {
+				request.getRequestDispatcher(url).forward(request, response);
+			} catch (ServletException e) {
+				System.out.println("erro ao direcionar página => "
+						+ e.getMessage());
+			}
 		}
 		System.out.println("foi executado");
 

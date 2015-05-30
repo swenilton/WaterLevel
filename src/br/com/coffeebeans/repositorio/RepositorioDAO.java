@@ -65,7 +65,8 @@ public class RepositorioDAO implements IRepositorioDAO {
 	}
 
 	@Override
-	public ArrayList<Repositorio> listar() throws SQLException, RepositorioException {
+	public ArrayList<Repositorio> listar() throws SQLException,
+			RepositorioException {
 		ArrayList<Repositorio> repositorios = new ArrayList<Repositorio>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -123,28 +124,17 @@ public class RepositorioDAO implements IRepositorioDAO {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				if (rs.getDouble("DIAMETRO_MEDIO") == 0.00) {
-					repositorio = new RepositorioRetangular(
-							rs.getString("DESCRICAO"),
-							rs.getDouble("CAPACIDADE"),
-							rs.getDouble("PROFUNDIDADE"),
-							rs.getDouble("LIMITE_MIN"),
-							rs.getDouble("LIMITE_MAX"),
-							rs.getDouble("AREA_BASE"));
-					repositorio.setId(rs.getInt("ID"));
-				} else {
-					repositorio = new RepositorioCircular(
-							rs.getString("DESCRICAO"),
-							rs.getDouble("CAPACIDADE"),
-							rs.getDouble("PROFUNDIDADE"),
-							rs.getDouble("LIMITE_MIN"),
-							rs.getDouble("LIMITE_MAX"),
-							rs.getDouble("DIAMETRO_MEDIO"));
-					repositorio.setId(rs.getInt("ID"));
-				}
+				repositorio = new RepositorioRetangular(
+						rs.getString("DESCRICAO"), rs.getDouble("CAPACIDADE"),
+						rs.getDouble("PROFUNDIDADE"),
+						rs.getDouble("LIMITE_MIN"), rs.getDouble("LIMITE_MAX"),
+						rs.getDouble("AREA_BASE"));
+				repositorio.setId(rs.getInt("ID"));
+
 			}
 
 		} catch (SQLException e) {
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -165,25 +155,12 @@ public class RepositorioDAO implements IRepositorioDAO {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				if (rs.getDouble("DIAMETRO_MEDIO") == 0.00) {
-					repositorio = new RepositorioRetangular(
-							rs.getString("DESCRICAO"),
-							rs.getDouble("CAPACIDADE"),
-							rs.getDouble("PROFUNDIDADE"),
-							rs.getDouble("LIMITE_MIN"),
-							rs.getDouble("LIMITE_MAX"),
-							rs.getDouble("AREA_BASE"));
-					repositorio.setId(rs.getInt("ID"));
-				} else {
-					repositorio = new RepositorioCircular(
-							rs.getString("DESCRICAO"),
-							rs.getDouble("CAPACIDADE"),
-							rs.getDouble("PROFUNDIDADE"),
-							rs.getDouble("LIMITE_MIN"),
-							rs.getDouble("LIMITE_MAX"),
-							rs.getDouble("DIAMETRO_MEDIO"));
-					repositorio.setId(rs.getInt("ID"));
-				}
+				repositorio = new RepositorioRetangular(
+						rs.getString("DESCRICAO"), rs.getDouble("CAPACIDADE"),
+						rs.getDouble("PROFUNDIDADE"),
+						rs.getDouble("LIMITE_MIN"), rs.getDouble("LIMITE_MAX"),
+						rs.getDouble("AREA_BASE"));
+				repositorio.setId(rs.getInt("ID"));
 			}
 
 		} catch (SQLException e) {

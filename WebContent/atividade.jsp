@@ -67,7 +67,7 @@
 				<%
 				Fachada fa = Fachada.getInstance();
 				%>
-				var dados = resposta.split(",");
+	var dados = resposta.split(",");
 				$('#alterar-atividade-modal').modal('show');
 				$('.modal #nome').val(dados);
 				$('.modal #id').val(id);
@@ -78,6 +78,9 @@
 </script>
 </head>
 <%
+	if (request.getSession().getAttribute("usuarioLogado") == null) {
+		response.sendRedirect("index.jsp");
+	}
 	Fachada f = Fachada.getInstance();
 	List<Atividade> atividades = f.atividadeListar();
 %>
@@ -211,8 +214,7 @@
 			<div class="btn-group" role="group" aria-label="">
 				<a class="btn btn-default" href="atividade-inserir.jsp"
 					role="button">Inserir</a>
-				<button type="button" class="btn btn-default" data-toggle="modal"
-					data-target="#alterar-atividade" onclick="alterar()">Alterar</button>
+				<button type="button" class="btn btn-default" onclick="alterar()">Alterar</button>
 				<button type="button" class="btn btn-default" onclick="remover()">Remover</button>
 			</div>
 		</div>
@@ -233,11 +235,12 @@
 				</div>
 				<div class="modal-body">
 					<form class="" action="/WaterLevel/ctrl" method="POST">
-					<input type="hidden" name="acao" value="alterarAtividade" />
-					<input type="hidden" name="id" id="id" />
+						<input type="hidden" name="acao" value="alterarAtividade" /> <input
+							type="hidden" name="id" id="id" />
 						<div class="form-group">
 							<label for="nome">Descrição</label> <input type="text"
-								class="form-control" id="nome" name="nome" placeholder="Ex: Tomar banho" required="required"/>
+								class="form-control" id="nome" name="nome"
+								placeholder="Ex: Tomar banho" required="required" />
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-warning"

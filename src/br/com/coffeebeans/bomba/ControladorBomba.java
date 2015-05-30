@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 
 public class ControladorBomba {
@@ -16,7 +17,7 @@ public class ControladorBomba {
 	}
 
 	public void cadastrar(Bomba bomba) throws SQLException,
-			BombaJaExistenteException, BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException {
+			BombaJaExistenteException, BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException, RepositorioException {
 		if (bomba == null) {
 			throw new NullPointerException();
 		}
@@ -25,16 +26,13 @@ public class ControladorBomba {
 		}
 		if (!(bomba.getAcionamento().equals(Bomba.ACIONAMENTO_AUTOMATICO))
 				&& (!bomba.getAcionamento().equals(Bomba.ACIONAMENTO_MANUAL))) {
-			throw new IllegalArgumentException("Modo de acionamento inv�lido");
+			throw new IllegalArgumentException("Modo de acionamento inválido");
 		}
 		iBomba.cadastrar(bomba);
 
 	}
 
 	public ArrayList<Bomba> listar() throws SQLException, ListaVaziaException {
-		if (iBomba.listar().isEmpty()) {
-			throw new ListaVaziaException();
-		}
 		return iBomba.listar();
 
 	}

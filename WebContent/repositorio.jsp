@@ -75,6 +75,9 @@
 	}
 </script>
 <%
+	if (request.getSession().getAttribute("usuarioLogado") == null) {
+		response.sendRedirect("index.jsp");
+	}
 	Fachada f = Fachada.getInstance();
 	List<Repositorio> repositorios = f.repositorioListar();
 %>
@@ -238,8 +241,8 @@
 				</div>
 				<div class="modal-body">
 					<form class="" method="POST" action="/WaterLevel/ctrl">
-					<input type="hidden" name="acao" value="alterarRepositorio" />					
-					<input type="hidden" name="id" id="id" />
+						<input type="hidden" name="acao" value="alterarRepositorio" /> <input
+							type="hidden" name="id" id="id" />
 						<div class="form-group col-md-6">
 							<label for="formato">Formato</label> <select class="form-control"
 								id="formato" name="formato">
@@ -256,7 +259,7 @@
 							<label for="profundidade">Profundidade</label>
 							<div class="input-group">
 								<input type="text" class="form-control" id="profundidade"
-									placeholder="Ex: 120" name="profundidade"/>
+									placeholder="Ex: 120" name="profundidade" />
 								<div class="input-group-addon">cm</div>
 							</div>
 						</div>
@@ -264,7 +267,7 @@
 							<label for="area">Area da Base</label>
 							<div class="input-group">
 								<input type="text" class="form-control" id="area"
-									placeholder="Ex: 1000" name="area"/>
+									placeholder="Ex: 1000" name="area" />
 								<div class="input-group-addon">cm</div>
 							</div>
 						</div>
@@ -288,7 +291,8 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-warning"
 								data-dismiss="modal">Cancelar</button>
-							<input type="submit" class="btn btn-success" value="Salvar
+							<input type="submit" class="btn btn-success"
+								value="Salvar
 								Alterações" />
 						</div>
 					</form>

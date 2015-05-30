@@ -1,3 +1,4 @@
+<%@page import="br.com.coffeebeans.util.Erro"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="br.com.coffeebeans.fachada.Fachada"%>
@@ -66,6 +67,11 @@
 	});
 </script>
 </head>
+<%
+	if (request.getSession().getAttribute("usuarioLogado") == null) {
+		response.sendRedirect("index.jsp");
+	}
+%>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
@@ -379,12 +385,11 @@
 			<div class="container">
 				<a href="home.jsp">Início</a> | <a href="#">Termos e Condições</a> |
 				<a href="#">Ajuda e Suporte</a> | <a href="#">Mapa do site</a> | <a
-					href="#">Sobre a Coffee Beans</a> <br />
-				<br /> Water Level &copy 2015 - Todos os direitos reservados. <br />
-				Desenvolvido por <a href="http://coffeebeansdev.com.br"
-					target="_blank"><img src="img/coffee-logo.png"
-					alt="Logo Coffee Beans" width="70px"></a> <a
-					href="http://facebook.com.br/coffeebeansdev" target="_blank"><img
+					href="#">Sobre a Coffee Beans</a> <br /> <br /> Water Level &copy
+				2015 - Todos os direitos reservados. <br /> Desenvolvido por <a
+					href="http://coffeebeansdev.com.br" target="_blank"><img
+					src="img/coffee-logo.png" alt="Logo Coffee Beans" width="70px"></a>
+				<a href="http://facebook.com.br/coffeebeansdev" target="_blank"><img
 					src="img/facebook.jpeg" alt="Logo Facebook" width="25px"></a><br />
 				<small>Version 1.0</small>
 			</div>

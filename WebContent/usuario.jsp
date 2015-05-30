@@ -90,12 +90,12 @@
 									+ "</button>");
 		} else {
 			$('#alterar-senha').modal('show');
-			$('#id2').val(id);			
+			$('#id2').val(id);
 		}
 	}
-	
-	function confirmaSenha(){
-		if($('#novaSenha').val == $('#confirmaNovaSenha').val){
+
+	function confirmaSenha() {
+		if ($('#novaSenha').val == $('#confirmaNovaSenha').val) {
 			return true;
 		} else {
 			$('#msg').removeClass().addClass('alert alert-danger');
@@ -120,6 +120,9 @@
 	}
 </script>
 <%
+	if (request.getSession().getAttribute("usuarioLogado") == null) {
+		response.sendRedirect("index.jsp");
+	}
 	Fachada f = Fachada.getInstance();
 	List<Usuario> usuarios = f.getUsuarioLista();
 %>
@@ -361,7 +364,8 @@
 					<h4 class="modal-title" id="myModalLabel">Alterar Senha</h4>
 				</div>
 				<div class="modal-body">
-					<form class="" action="/WaterLevel/ctrl" method="post" onsubmit="confirmaSenha()">
+					<form class="" action="/WaterLevel/ctrl" method="post"
+						onsubmit="confirmaSenha()">
 						<input type="hidden" name="acao" value="alterarSenha" /> <input
 							type="hidden" name="id" id="id2" />
 						<div class="row">

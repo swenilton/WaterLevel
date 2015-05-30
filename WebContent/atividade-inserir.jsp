@@ -21,6 +21,11 @@
 	});
 </script>
 </head>
+<%
+	if (request.getSession().getAttribute("usuarioLogado") == null) {
+		response.sendRedirect("index.jsp");
+	}
+%>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
