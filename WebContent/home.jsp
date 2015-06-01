@@ -114,7 +114,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
 						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
-							src="${sessionScope.usuarioLogado.nome}" id="perfil" width="40px" /><span
+							src="${sessionScope.usuarioLogado.foto}" id="perfil" width="40px" height="40px" /><span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"

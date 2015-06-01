@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import sun.java2d.pipe.BufferedContext;
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
@@ -134,9 +135,12 @@ public class ServletController extends HttpServlet {
 			String telefone = request.getParameter("telefone");
 			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
 			u.setTelefone(telefone);
+			String arquivo = "";
 			try {
 				File dir = new File(System.getProperty("user.dir")
 						+ "/WaterLevel/img/");
+				File dir2 = new File(this.getServletContext().getRealPath(
+						"/fotos"));
 				Part filePart = request.getPart("foto");
 				String fileName = filePart.getSubmittedFileName();
 				File f = null;
@@ -145,18 +149,20 @@ public class ServletController extends HttpServlet {
 					f = new File(dir.getCanonicalPath() + "/default.jpg");
 					fileContent = new FileInputStream(f);
 					f = new File(dir.getCanonicalPath() + "/" + email + ".jpg");
+					arquivo = "/" + email + ".jpg";
 				} else {
 					fileContent = filePart.getInputStream();
 					String ext[] = fileName.split("\\.");
 					int i = ext.length;
-					f = new File(dir.getCanonicalPath() + "/" + email + "."
+					f = new File(dir2.getCanonicalPath() + "/" + email + "."
 							+ ext[i - 1]);
+					arquivo = "/" + email + "." + ext[i - 1];
 				}
 				OutputStream os = new FileOutputStream(f);
 				while (fileContent.available() > 0) {
 					os.write(fileContent.read());
 				}
-				u.setFoto(f.getCanonicalPath());
+				u.setFoto("fotos" + arquivo);
 				fachada.cadastrar(u);
 				sucessos.add("Usuário inserido");
 			} catch (Exception e) {
