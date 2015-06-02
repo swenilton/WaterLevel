@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 import br.com.coffeebeans.util.Conexao;
 
@@ -19,10 +20,8 @@ public class BombaDAO implements IBombaDAO {
 	}
 
 	public void cadastrar(Bomba bomba) throws SQLException,
-			ViolacaoChaveEstrangeiraException {
+			ViolacaoChaveEstrangeiraException, RepositorioException {
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		int id = 0;
 		try {
 			String sql = "INSERT INTO BOMBA (DESCRICAO,STATUS,POTENCIA,VAZAO,ACIONAMENTO,ID_REPOSITORIO_ENC,ID_REPOSITORIO_SEC)"
 					+ "VALUES(?,?,?,?,?,?,?)";
@@ -33,31 +32,17 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setDouble(3, bomba.getPotencia());
 			stmt.setDouble(4, bomba.getVazao());
 			stmt.setString(5, bomba.getAcionamento());
-			stmt.setInt(6, bomba.getIdRepositorioEnche());
-			stmt.setInt(7, bomba.getIdRepositorioSeca());
-
+			
+			stmt.setInt(6, bomba.getRepositorioEnche().getId());
+			stmt.setInt(7, bomba.getRepositorioSeca().getId());
 			stmt.execute();
-
-			if (sistema.equals("mysql")) {
-				rs = stmt.getGeneratedKeys();
-			}
-
-			while (rs.next()) {
-				id = rs.getInt(1);
-			}
 		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
 			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
 			System.out.println(exc.getMessage());
-
-			// throw new ViolacaoChaveEstrangeiraException();
-
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		finally {
+			throw new RepositorioException(e);
+		} finally {
 			stmt.close();
-			rs.close();
 		}
 	}
 

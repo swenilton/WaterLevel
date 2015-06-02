@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.RepositorioJaExistenteException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 
@@ -16,7 +17,7 @@ public class ControladorRepositorio {
 	}
 
 	public void cadastrar(Repositorio repositorio) throws SQLException,
-			RepositorioJaExistenteException, RepositorioNaoEncontradoException {
+			RepositorioJaExistenteException, RepositorioNaoEncontradoException, RepositorioException {
 		if (repositorio == null) {
 			throw new NullPointerException();
 		}
@@ -27,11 +28,7 @@ public class ControladorRepositorio {
 
 	}
 
-	public ArrayList<Repositorio> listar() throws SQLException,
-			ListaVaziaException {
-		if (irepositorio.listar().isEmpty()) {
-			throw new ListaVaziaException();
-		}
+	public ArrayList<Repositorio> listar() throws SQLException, RepositorioException{
 		return irepositorio.listar();
 
 	}
@@ -71,16 +68,16 @@ public class ControladorRepositorio {
 
 	public void remover(int id) throws SQLException,
 			RepositorioNaoEncontradoException {
-		if (irepositorio.procurar(id) == null) {
-			throw new RepositorioNaoEncontradoException();
-		} else {
+		//if (irepositorio.procurar(id) == null) {
+		//	throw new RepositorioNaoEncontradoException();
+		//} else {
 			irepositorio.excluir(id);
-		}
+		//}
 	}
 
-	// método ainda será codificado
+	// mï¿½todo ainda serï¿½ codificado
 	public Double calcularCapacidade(Double arg1, Double arg2) {
-		// esse retorno é só para o método não dar erro
+		// esse retorno ï¿½ sï¿½ para o mï¿½todo nï¿½o dar erro
 		return 0.00;
 	}
 }

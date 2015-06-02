@@ -15,15 +15,15 @@ public class Bomba {
 	private int idRepositorioSeca;
 	public static final String ACIONAMENTO_MANUAL = "MANUAL";
 	public static final String ACIONAMENTO_AUTOMATICO = "AUTOMATICO";
+	public static final String ON = "LIGADA";
+	public static final String OFF = "DESLIGADA";
 
-	public Bomba(String descricao, String status, Double potencia,
-			Double vazao, String acionamento, Repositorio repositorioEnche)
+	public Bomba(String descricao, Double potencia,
+			Double vazao, String acionamento)
 			throws IllegalArgumentException {
 		this.descricao = descricao;
-		this.status = status;
 		this.potencia = potencia;
 		this.vazao = vazao;
-		this.repositorioEnche = repositorioEnche;
 		this.acionamento = acionamento;
 	}
 
@@ -34,8 +34,6 @@ public class Bomba {
 		this.status = status;
 		this.potencia = potencia;
 		this.vazao = vazao;
-		this.idRepositorioEnche = idRepositorioEnche;
-
 		this.acionamento = acionamento;
 	}
 

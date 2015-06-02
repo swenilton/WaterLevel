@@ -10,6 +10,7 @@ img#perfil {
 }
 table img#perfil {
   width: 25px;
+  height: 25px;
 }
 #usuario-logado{
     padding-top: 6px;
