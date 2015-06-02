@@ -7,8 +7,6 @@ import java.util.Date;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -21,6 +19,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.util.JRLoader;
+
 import br.com.coffeebeans.util.Conexao;
 
 @WebServlet("/TesteRelatorio")
@@ -44,61 +43,67 @@ public class TesteRelatorio extends HttpServlet {
 
 			Connection conectar = Conexao.conectar("mysql");
 
-			/*
-			 * if (conectar == null) { ServletOutputStream ouputStream2 = null;
-			 * ouputStream2
-			 * .print("Não foi possível se conectar com o banco de dados.");
-			 * 
-			 * }
-			 */
 			ServletContext context = getServletContext();
 			byte[] bytes = null;
-
+			//System.out.println(context
+					//.getRealPath("/WEB-INF/Acionamentos.jasper"));
 			try {
 
 				// carrega os arquivos jasper
-				JasperReport relatorioJasper = (JasperReport) JRLoader
-						.loadObjectFromFile(context
-								.getRealPath("/WEB-INF/Acionamentos.jasper"));
-				// *******
+					JasperReport relatorioJasper = (JasperReport) JRLoader
+								.loadObjectFromFile(context
+									.getRealPath("/WEB-INF/Acionamentos.jasper"));
+
+				
+				
 				// Na variavel pathJasper ficara o caminho do diretório para
 				// os relatórios compilados (.jasper)
 				String pathJasper = getServletContext()
 						.getRealPath("/WEB-INF/") + "/";
+
 				// A variavel path armazena o caminho real para o contexto
 				// isso é util pois o seu web container pode estar instalado em
 				// lugares diferentes
 				String path = getServletContext().getRealPath("/");
-				//
-
-				// Parametros do relatorio
-				// *********
 
 				// parâmetros, se houverem
-				Map parametros = new HashMap();
+				HashMap<String, Object> parametros = new HashMap<String, Object>();
 				parametros.put("dataIni", dateIni);
 				parametros.put("dataFim", dateFim);
 
 				// direciona a saída do relatório para um stream
 				bytes = JasperRunManager.runReportToPdf(relatorioJasper,
 						parametros, conectar);
+
 			}
 
 			catch (JRException e) {
-				e.getMessage();
+				e.printStackTrace();
+				e.getCause();
+				e.getStackTrace();
+				System.out.println(e.getMessage());
 			}
-			// envia o relatório em formato PDF para o browser
-			response.setContentType("application/pdf");
+			
+			catch(Exception e) {
+			e.printStackTrace();
+			e.getCause();
+			e.getStackTrace();
+			System.out.println(e.getMessage());	
+			}
 
-			response.setContentLength(bytes.length);
-			ServletOutputStream ouputStream = response.getOutputStream();
-			ouputStream.write(bytes, 0, bytes.length);
-			ouputStream.flush();
-			ouputStream.close();
+			if (bytes != null && bytes.length > 0) {
 
+				// envia o relatório em formato PDF para o browser
+				response.setContentType("application/pdf");
+
+				response.setContentLength(bytes.length);
+				ServletOutputStream ouputStream = response.getOutputStream();
+				ouputStream.write(bytes, 0, bytes.length);
+				ouputStream.flush();
+				ouputStream.close();
+			}
 			conectar.close();
-			// }
-
+			
 		} catch (Exception erro) {
 			PrintStream tela = new PrintStream(response.getOutputStream());
 			tela.println("<HTML><BODY>");
