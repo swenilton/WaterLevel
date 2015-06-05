@@ -108,11 +108,11 @@
 		}
 	}
 
-	function preview(input) {
+	function preview(input) {	
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('#foto-usuario').attr('src', e.target.result).width(150)
+				$('#fotoPerfil').attr('src', e.target.result).width(150)
 						.height(150);
 			};
 			reader.readAsDataURL(input.files[0]);
@@ -296,7 +296,7 @@
 							type="hidden" name="id" id="id" />
 						<div id="foto-usuario" style="text-align: center;">
 							<img src="http://placehold.it/150x150" alt="Imagem do Usuário"
-								class="img-circle" />
+								class="img-circle" id="fotoPerfil"/>
 							<div class="form-group">
 								<label for="foto">Procurar Foto</label> <input type="file"
 									accept="image/*" id="foto" name="foto" size="60"

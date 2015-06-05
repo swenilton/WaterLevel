@@ -20,7 +20,7 @@
 					<h4 class="modal-title" id="myModalLabel">Alterar Usuário</h4>
 				</div>
 				<div class="modal-body">
-					<form class="" method="POST" action="/WaterLevel/ctrl" enctype="multipart/form-data" id="form">
+					<form class="" method="POST" action="/WaterLevel/ctrl" enctype="multipart/form-data">
 						<input type="hidden" name="acao" value="alterarUsuario" /> <input
 							type="hidden" name="id" value="${sessionScope.usuarioLogado.id}" />
 						<div id="foto-usuario" style="text-align: center;">

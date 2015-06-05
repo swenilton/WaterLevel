@@ -20,6 +20,8 @@
 <script type="text/javascript" src="js/toggle.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
 <script type="text/javascript">
+	var url = 'http://192.168.1.15';
+
 	$(function() {
 		$('#caixa1.skill div').load('.inner', geraCaixa1());
 		$('#caixa2.skill div').load('.inner', geraCaixa2());
@@ -27,19 +29,64 @@
 
 	$(function() {
 		setInterval(function() {
-			geraCaixa1();
+			$.ajax({
+				url : url,
+				type : 'GET',
+				timeout : 3000,
+				success : function(retorno) {
+					$('#msg').html(retorno);
+				},
+				error : function(erro) {
+					$('#msg').html(erro);
+				}
+			})
+			var valor = $('#msg div#nivel').text();
+			geraCaixa1(valor);
 			geraCaixa2();
 		}, 2000);
 	});
 
-	function geraCaixa1() {
+	//setInterval(function() {		 
+		 /*
+		$.ajax({
+			url : url,
+			data : {
+				'' : ''
+			}, // usaremos em proximas versões
+			dataType : 'jsonp', // IMPORTANTE
+			crossDomain : true, // IMPORTANTE
+			jsonp : false,
+			jsonpCallback : 'dados', // IMPORTANTE
+			success : function(data, status, xhr) {
+				$('#msg').removeClass().addClass('alert alert-success');
+				$('#msg').html("foi > " + data.sensor1);
+			},
+			error : function(erro) {
+				$('#msg').removeClass().addClass('alert alert-danger');
+				$('#msg').html("nao foi > " + erro);
+			}
+		});
+		*/
+	//}, 2000);
+
+	function geraCaixa1(nivel) {
 		var skillBar = $('#caixa1.skill div').siblings().find('.inner');
-		var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
-		document.getElementById("progress").innerHTML = "<h1>" + skillVal
-				+ "</h1>";
-		$(skillBar).animate({
-			height : skillVal
-		}, 1000);
+		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
+		var profundidade = 18;
+		var altura = profundidade - nivel;
+		var percent = (altura / profundidade * 100).toFixed(2);
+		if(nivel > 0 && percent < 101){
+			var skillVal = percent + "%";
+			$('#progress').html("<h1>" + skillVal + "</h1>");
+			$(skillBar).animate({
+				height : skillVal
+			}, 1000);
+		} else {
+			$('#progress').html("<h1> aguarde... </h1>");
+			$(skillBar).animate({
+				height : 0
+			}, 1000);
+		}		
 	}
 
 	function geraCaixa2() {
@@ -114,7 +161,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
 						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
-							src="${sessionScope.usuarioLogado.foto}" id="perfil" width="40px" height="40px" /><span
+							src="${sessionScope.usuarioLogado.foto}" id="perfil" /><span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"
@@ -147,6 +194,7 @@
 					Resumo Diário <small>Monitoramento</small>
 				</h1>
 			</div>
+			<div id="msg" style="display: none;"></div>
 			<!-- abas -->
 			<ul class="nav nav-tabs grupo-abas">
 				<li role="presentation" class="active"><a href="#caixa1"
