@@ -50,17 +50,18 @@
 		// for FB.getLoginStatus().
 		if (response.status === 'connected') {
 			// Logged into your app and Facebook.
-
 			testAPI();
 		} else if (response.status === 'not_authorized') {
 			// The person is logged into Facebook, but not your app.
-			document.getElementById('status').innerHTML = 'Please log '
-					+ 'into this app.';
+			document.getElementById('status').innerHTML = 'Por favor, '
+					+ 'logue no aplicativo';
+			$('#status').addClass("alert alert-danger");
 		} else {
 			// The person is not logged into Facebook, so we're not sure if
 			// they are logged into this app or not.
-			document.getElementById('status').innerHTML = 'Please log '
-					+ 'into Facebook.';
+			document.getElementById('status').innerHTML = 'Por favor, '
+				+ 'logue no aplicativo';
+			$('#status').addClass("alert alert-danger");
 		}
 	}
 
@@ -93,11 +94,6 @@
 		//    your app or not.
 		//
 		// These three cases are handled in the callback function.
-
-		FB.getLoginStatus(function(response) {
-			statusChangeCallback(response);
-		});
-
 	};
 
 	// Load the SDK asynchronously
@@ -125,9 +121,25 @@
 							//		+ response.name + '!';
 							//$('#usuario').val(response.email);
 							//$('#foto').jsp('<img src="https://graph.facebook.com/' + response.first_name + response.last_name + '/picture" alt="'+response.name+'" />')
-							$.post("/WaterLevel/ctrl?acao=loginFacebook", {'email' : response.email}, function(resposta) {
-									
-								});
+							//$.post("/WaterLevel/ctrl?acao=loginFacebook", {'email' : response.email}, function(resposta) {});
+							$
+									.ajax({
+										url : "/WaterLevel/ctrl?acao=loginFacebook&usuario="
+												+ response.email,
+										type : 'POST',
+										timeout : 3000,
+										success : function(retorno) {
+											//$('#msg').html(retorno);
+											window.location
+													.assign("/WaterLevel/home.jsp");
+										},
+										error : function(erro) {
+											//$('#msg').html(erro);
+											//window.location.assign("/WaterLevel/index.jsp");
+											document.getElementById('status').innerHTML = 'Email ' + response.email + ' não cadastrado.';
+											$('#status').addClass("alert alert-danger");
+										}
+									})
 						});
 	}
 </script>
@@ -281,7 +293,7 @@ div#background3 {
 				<input type="hidden" name="acao" value="login" />
 				<div class="form-group">
 					<input type="text" class="form-control" id="usuario" name="usuario"
-						placeholder="Usuario" required="required" />
+						placeholder="Usuario" required="required" autofocus="autofocus" />
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" id="senha" name="senha"
@@ -293,11 +305,12 @@ div#background3 {
 					value="Entrar" />
 			</form>
 			<div class="clear" style="margin-top: 50px;"></div>
+			<div id="status" style="margin-top: 65px;"></div>
 			<c:if test="${erros.existeErros}">
-				<div id="status" class="alert alert-danger"
-					style="margin-top: 65px;">
+				<div class="alert alert-danger">
 					<button type='button' class='close' data-dismiss='alert'
-						aria-label='Close'><span aria-hidden='true'>&times;</span>
+						aria-label='Close'>
+						<span aria-hidden='true'>&times;</span>
 					</button>
 					<ul>
 						<c:forEach var="erro" items="${erros.erros}">

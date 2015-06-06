@@ -105,12 +105,12 @@ public class ServletController extends HttpServlet {
 				Usuario u = fachada.loginFacebook(email);
 				if (u != null) {
 					request.getSession().setAttribute("usuarioLogado", u);
-					url = "/home.jsp";
 					response.setStatus(200);
+					System.out.println("Logou");
 				} else {
-					erros.add("Usuário ou senha inválidos");
+					erros.add("Login Inválido");
 					request.getSession().invalidate();
-					url = "/index.jsp";
+					System.out.println("não logou");
 				}
 			} catch (RepositorioException | SQLException e) {
 				erros.add(e.getMessage());
@@ -126,21 +126,24 @@ public class ServletController extends HttpServlet {
 			sucessos.add("Logoff com sucesso");
 			url = "/index.jsp";
 		} else if (acao.equals("inserirUsuario")) {
-			String nome = request.getParameter("nome");
-			String login = request.getParameter("login");
-			String senha = request.getParameter("senha");
-			String email = request.getParameter("email");
-			String ativo = request.getParameter("ativo");
-			String perfil = request.getParameter("perfil");
-			String telefone = request.getParameter("telefone");
-			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
-			u.setTelefone(telefone);
-			String arquivo = "";
 			try {
+				String nome = request.getParameter("nome");
+				String login = request.getParameter("login");
+				String senha = request.getParameter("senha");
+				String confirmaSenha = request.getParameter("confirma-senha");
+				String email = request.getParameter("email");
+				String ativo = request.getParameter("ativo");
+				String perfil = request.getParameter("perfil");
+				String telefone = request.getParameter("telefone");
+				if (!senha.equals(confirmaSenha))
+					throw new IllegalArgumentException(
+							"Confirmação de senha inválida");
+				Usuario u = new Usuario(nome, login, senha, email, ativo,
+						perfil);
+				u.setTelefone(telefone);
+				String arquivo = "";
 				File dir = new File(System.getProperty("user.dir")
 						+ "/WaterLevel/img/");
-				File dir2 = new File(this.getServletContext().getRealPath(
-						"/fotos"));
 				Part filePart = request.getPart("foto");
 				String fileName = filePart.getSubmittedFileName();
 				File f = null;
@@ -154,7 +157,7 @@ public class ServletController extends HttpServlet {
 					fileContent = filePart.getInputStream();
 					String ext[] = fileName.split("\\.");
 					int i = ext.length;
-					f = new File(dir2.getCanonicalPath() + "/" + email + "."
+					f = new File(dir.getCanonicalPath() + "/" + email + "."
 							+ ext[i - 1]);
 					arquivo = "/" + email + "." + ext[i - 1];
 				}
@@ -171,6 +174,7 @@ public class ServletController extends HttpServlet {
 			url = "/usuario-inserir.jsp";
 		} else if (acao.equals("nivel")) {
 			System.out.println(request.getParameter("nivel"));
+			
 		} else if (acao.equals("pegarUsuario")) {
 			try {
 				String id = request.getParameter("id");
@@ -204,8 +208,16 @@ public class ServletController extends HttpServlet {
 			String telefone = request.getParameter("telefone");
 			Usuario u = new Usuario(nome, login, senha, email, ativo, perfil);
 			u.setTelefone(telefone);
-			u.setId(Integer.parseInt(request.getParameter("id")));
+			int id = Integer.parseInt(request.getParameter("id"));
+			u.setId(id);
+			String arquivo = "";
 			try {
+				File f2 = new File(
+						System.getProperty("user.dir")
+								+ "/WaterLevel/img/"
+								+ new File(fachada.usuarioProcurar(id)
+										.getFoto()).getName());
+				f2.delete();
 				File dir = new File(System.getProperty("user.dir")
 						+ "/WaterLevel/img/");
 				Part filePart = request.getPart("foto");
@@ -216,18 +228,20 @@ public class ServletController extends HttpServlet {
 					f = new File(dir.getCanonicalPath() + "/default.jpg");
 					fileContent = new FileInputStream(f);
 					f = new File(dir.getCanonicalPath() + "/" + email + ".jpg");
+					arquivo = "/" + email + ".jpg";
 				} else {
 					fileContent = filePart.getInputStream();
 					String ext[] = fileName.split("\\.");
 					int i = ext.length;
 					f = new File(dir.getCanonicalPath() + "/" + email + "."
 							+ ext[i - 1]);
+					arquivo = "/" + email + "." + ext[i - 1];
 				}
 				OutputStream os = new FileOutputStream(f);
 				while (fileContent.available() > 0) {
 					os.write(fileContent.read());
 				}
-				u.setFoto(f.getCanonicalPath());
+				u.setFoto("fotos" + arquivo);
 				fachada.atualizar(u);
 				sucessos.add("Usuário alterado");
 			} catch (Exception e) {
@@ -251,8 +265,14 @@ public class ServletController extends HttpServlet {
 			}
 		} else if (acao.equals("removerUsuario")) {
 			try {
-				String id = request.getParameter("id");
-				fachada.usuarioRemover(Integer.parseInt(id));
+				int id = Integer.parseInt(request.getParameter("id"));
+				File f = new File(
+						System.getProperty("user.dir")
+								+ "/WaterLevel/img/"
+								+ new File(fachada.usuarioProcurar(id)
+										.getFoto()).getName());
+				f.delete();
+				fachada.usuarioRemover(id);
 				response.setStatus(200);
 			} catch (NumberFormatException e) {
 				erros.add("erro ao remover usuario = > " + e.getMessage());
@@ -307,6 +327,33 @@ public class ServletController extends HttpServlet {
 			} catch (RepositorioNaoEncontradoException e) {
 				erros.add("Erro ao pegar repositorio => " + e.getMessage());
 			}
+		} else if (acao.equals("alterarRepositorio")) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			String nome = request.getParameter("nome");
+			String formato = request.getParameter("formato");
+			double area = Double.parseDouble(request.getParameter("area")
+					.replace(",", "."));
+			double profundidade = Double.parseDouble(request.getParameter(
+					"profundidade").replace(",", "."));
+			double limiteMin = Double.parseDouble(request.getParameter(
+					"limiteMin").replace(",", "."));
+			double limiteMax = Double.parseDouble(request.getParameter(
+					"limiteMax").replace(",", "."));
+			try {
+				Repositorio r;
+				if (formato.equals("Circular"))
+					r = new RepositorioCircular(nome, 0.0, profundidade,
+							limiteMin, limiteMax, 0.0);
+				else
+					r = new RepositorioRetangular(nome, 0.0, profundidade,
+							limiteMin, limiteMax, area);
+				r.setId(id);
+				fachada.atualizar(r);
+				sucessos.add("Repósitorio Alterado");
+			} catch (Exception e) {
+				erros.add("Erro ao alterar repositorio => " + e.getMessage());
+			}
+			url = "/repositorio.jsp";
 		} else if (acao.equals("removerRepositorio")) {
 			try {
 				String id = request.getParameter("id");
@@ -442,6 +489,11 @@ public class ServletController extends HttpServlet {
 			}
 		}
 		return null;
+	}
+	
+	public double getDist(){
+		
+		return 0;
 	}
 
 }
