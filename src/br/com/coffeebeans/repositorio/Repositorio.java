@@ -9,8 +9,7 @@ public abstract class Repositorio {
 	private Double limiteMinimo;
 	
 
-	public Repositorio(String descricao, Double capacidade,
-			Double profundidade, Double limiteMinimo, Double limiteMaximo) {
+	public Repositorio(String descricao, double capacidade, Double profundidade, Double limiteMinimo, Double limiteMaximo) {
 		this.descricao = descricao;
 		this.capacidade = capacidade;
 		this.profundidade = profundidade;
@@ -74,6 +73,4 @@ public abstract class Repositorio {
 	public void setLimiteMinimo(Double limiteMinimo) {
 		this.limiteMinimo = limiteMinimo;
 	}
-
-	public abstract void calcularCapacidade();
 }

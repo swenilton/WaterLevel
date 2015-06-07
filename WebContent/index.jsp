@@ -115,13 +115,6 @@
 				.api(
 						'/me',
 						function(response) {
-							//console.log('Successful login for: '
-							//		+ response.name);
-							//document.getElementById('status').innerHTML = 'Obrigado por logar, '
-							//		+ response.name + '!';
-							//$('#usuario').val(response.email);
-							//$('#foto').jsp('<img src="https://graph.facebook.com/' + response.first_name + response.last_name + '/picture" alt="'+response.name+'" />')
-							//$.post("/WaterLevel/ctrl?acao=loginFacebook", {'email' : response.email}, function(resposta) {});
 							$
 									.ajax({
 										url : "/WaterLevel/ctrl?acao=loginFacebook&usuario="
@@ -129,14 +122,11 @@
 										type : 'POST',
 										timeout : 3000,
 										success : function(retorno) {
-											//$('#msg').html(retorno);
 											window.location
 													.assign("/WaterLevel/home.jsp");
 										},
 										error : function(erro) {
-											//$('#msg').html(erro);
-											//window.location.assign("/WaterLevel/index.jsp");
-											document.getElementById('status').innerHTML = 'Email ' + response.email + ' não cadastrado.';
+											$('#status').html('Email ' + response.email + ' não cadastrado.');
 											$('#status').addClass("alert alert-danger");
 										}
 									})
@@ -305,7 +295,7 @@ div#background3 {
 					value="Entrar" />
 			</form>
 			<div class="clear" style="margin-top: 50px;"></div>
-			<div id="status" style="margin-top: 65px;"></div>
+			<div id="status"></div>
 			<c:if test="${erros.existeErros}">
 				<div class="alert alert-danger">
 					<button type='button' class='close' data-dismiss='alert'

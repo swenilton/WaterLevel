@@ -68,11 +68,44 @@
 				$('.modal #nome').val(dados[0]);
 				$('.modal #limiteMax').val(dados[1]);
 				$('.modal #limiteMin').val(dados[2]);
-				$('.modal #produndidade').val(dados[3]);
+				$('.modal #profundidade').val(dados[3]);
+				$(".modal #formato option[value=" + dados[4] + "]").attr(
+						"selected", true);
+				if ($('#formato').val() == 'circular') {
+					('#diametro').val(dados[5]);
+				} else {
+					('#area').val(dados[5]);
+				}
 			})
 
 		}
 	}
+
+	$(
+			function() {
+				$('#formato')
+						.on(
+								'change',
+								function() {
+									if ($('#formato').val() == 'circular') {
+										$('#opcformato')
+												.html(
+														"<label for='diametro'>Diametro Medio</label>"
+																+ "<div class='input-group'>"
+																+ "<input type='number' class='form-control' id='diametro' name='diametro' required='required' placeholder='Ex: 1000' />"
+																+ "<div class='input-group-addon'>cm</div>"
+																+ "</div>");
+									} else {
+										$('#opcformato')
+												.html(
+														"<label for='area'>Area da Base</label>"
+																+ "<div class='input-group'>"
+																+ "<input type='number' class='form-control' id='area' name='area' required='required' placeholder='Ex: 1000' />"
+																+ "<div class='input-group-addon'>cm</div>"
+																+ "</div>");
+									}
+								})
+			})
 </script>
 <%
 	if (request.getSession().getAttribute("usuarioLogado") == null) {
@@ -164,9 +197,9 @@
 								<th>#</th>
 								<th>ID</th>
 								<th>Descrição</th>
+								<th>Formato</th>
 								<th>Capacidade</th>
 								<th>Profundidade</th>
-								<th>Modelo</th>
 								<th>Limite Min</th>
 								<th>Limite Max</th>
 							</tr>
@@ -178,11 +211,17 @@
 										value="${repositorio.id}" /></th>
 									<td>${repositorio.id}</td>
 									<td>${repositorio.descricao}</td>
+									<td><c:if
+											test="${repositorio.getClass().getName() eq 'br.com.coffeebeans.repositorio.RepositorioCircular'}">
+										Circular
+									</c:if> <c:if
+											test="${repositorio.getClass().getName()  eq 'br.com.coffeebeans.repositorio.RepositorioRetangular'}">
+										Retangular
+									</c:if></td>
 									<td>${repositorio.capacidade}L</td>
 									<td>${repositorio.profundidade}cm</td>
 									<td>${repositorio.limiteMinimo}</td>
 									<td>${repositorio.limiteMaximo}</td>
-									<td></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -246,8 +285,8 @@
 						<div class="form-group col-md-6">
 							<label for="formato">Formato</label> <select class="form-control"
 								id="formato" name="formato">
-								<option>Circular</option>
-								<option>Retangular</option>
+								<option value="circular">Circular</option>
+								<option value="retangular" selected="selected">Retangular</option>
 							</select>
 						</div>
 						<div class="form-group col-md-6">
@@ -263,12 +302,12 @@
 								<div class="input-group-addon">cm</div>
 							</div>
 						</div>
-						<div class="form-group col-md-6">
-							<label for="area">Area da Base</label>
-							<div class="input-group">
-								<input type="text" class="form-control" id="area"
-									placeholder="Ex: 1000" name="area" />
-								<div class="input-group-addon">cm</div>
+						<div class="form-group col-md-6" id="opcformato">
+							<label for='area'>Area da Base</label>
+							<div class='input-group'>
+								<input type='number' class='form-control' id='area' name='area'
+									required='required' placeholder='Ex: 1000' />
+								<div class='input-group-addon'>cm</div>
 							</div>
 						</div>
 						<div class="form-group col-md-6">

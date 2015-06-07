@@ -20,7 +20,7 @@
 <script type="text/javascript" src="js/toggle.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
 <script type="text/javascript">
-	var url = 'http://192.168.1.15';
+	var url = 'http://192.168.1.11';
 
 	$(function() {
 		$('#caixa1.skill div').load('.inner', geraCaixa1());
@@ -43,7 +43,7 @@
 			var valor = $('#msg div#nivel').text();
 			geraCaixa1(valor);
 			geraCaixa2();
-		}, 2000);
+		}, 3000);
 	});
 
 	//setInterval(function() {		 
@@ -73,8 +73,8 @@
 		var skillBar = $('#caixa1.skill div').siblings().find('.inner');
 		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
 		var profundidade = 18;
-		var altura = profundidade - nivel;
-		var percent = (altura / profundidade * 100).toFixed(2);
+		//var altura = profundidade - nivel;
+		var percent = ((nivel / profundidade) * 100).toFixed(2);
 		if(nivel > 0 && percent < 101){
 			var skillVal = percent + "%";
 			$('#progress').html("<h1>" + skillVal + "</h1>");
@@ -83,6 +83,7 @@
 			}, 1000);
 		} else {
 			$('#progress').html("<h1> aguarde... </h1>");
+			//$('#progress').html("<br /><img src='img/aguarde3.gif' />");
 			$(skillBar).animate({
 				height : 0
 			}, 1000);
