@@ -264,7 +264,8 @@ public class ServletController extends HttpServlet {
 			String novaSenha = request.getParameter("novaSenha");
 			int id = Integer.parseInt(request.getParameter("id"));
 			try {
-				if (fachada.usuarioProcurar(id).getSenha().equals(md5(senhaAtual))) {
+				if (fachada.usuarioProcurar(id).getSenha()
+						.equals(md5(senhaAtual))) {
 					fachada.alterarSenhaUsuario(id, novaSenha);
 					sucessos.add("Senha alterada");
 				} else {
@@ -335,7 +336,7 @@ public class ServletController extends HttpServlet {
 				os.print(r.getLimiteMaximo() + ",");
 				os.print(r.getLimiteMinimo() + ",");
 				os.print(r.getProfundidade() + ",");
-				if (r instanceof RepositorioCircular){
+				if (r instanceof RepositorioCircular) {
 					os.print("circular,");
 					os.print(((RepositorioCircular) r).getDiametroMedio());
 				} else {
@@ -494,8 +495,65 @@ public class ServletController extends HttpServlet {
 				erros.add("Erro ao inserir bomba => " + e.getMessage());
 			}
 			url = "/bomba-inserir.jsp";
+		} else if (acao.equals("pegarBomba")) {
+			try {
+				String id = request.getParameter("id");
+				Bomba b = fachada.bombaProcurar(Integer.parseInt(id));
+				request.setAttribute("bombaProcurar", b);
+				ServletOutputStream os = response.getOutputStream();
+				os.print(b.getCodigo() + ",");
+				os.print(b.getDescricao() + ",");
+				os.print(b.getPotencia() + ",");
+				os.print(b.getVazao() + ",");
+				os.print(b.getAcionamento() + ",");
+				os.print(b.getIdRepositorioEnche() + ",");
+				os.print(b.getIdRepositorioSeca() + ",");
+				os.print(b.getStatus());
+				os.flush();
+				os.close();
+				url = "";
+			} catch (SQLException e) {
+				erros.add("Erro ao pegar bomba => " + e.getMessage());
+			} catch (NumberFormatException e) {
+				erros.add("Erro ao pegar bomba => " + e.getMessage());
+			} catch (BombaNaoEncontradaException e) {
+				erros.add("Erro ao pegar bomba => " + e.getMessage());
+			}
+		} else if (acao.equals("alterarBomba")) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			String descricao = request.getParameter("descricao");
+			String status = request.getParameter("status");
+			double potencia = Double.parseDouble(request.getParameter(
+					"potencia").replace(",", "."));
+			double vazao = Double.parseDouble(request.getParameter("vazao")
+					.replace(",", "."));
+			String acionamento = request.getParameter("acionamento");
+			int idEnche = Integer.parseInt(request.getParameter("enche"));
+			int idSeca = Integer.parseInt(request.getParameter("seca"));
+			try {
+				Bomba b = new Bomba(descricao, potencia, vazao, acionamento);
+				if (idEnche != 0) {
+					Repositorio enche = fachada.repositorioProcurar(idEnche);
+					b.setRepositorioEnche(enche);
+				}
+				if (idSeca != 0) {
+					Repositorio seca = fachada.repositorioProcurar(idSeca);
+					b.setRepositorioSeca(seca);
+				}
+				if (idSeca == 0 && idEnche == 0)
+					throw new IllegalArgumentException(
+							"Algum repositório tem que ser selecionado");
+				b.setStatus(status);
+				b.setCodigo(id);
+				fachada.atualizar(b);
+				sucessos.add("Bomba Alterada");
+			} catch (Exception e) {
+				erros.add("Erro ao alterar bomba => " + e.getMessage());
+			}
+			url = "/bomba.jsp";
 		} else {
 			System.out.println("Erro");
+			url = "/home.jsp";
 		}
 		request.setAttribute("sucessos", sucessos);
 		request.setAttribute("erros", erros);

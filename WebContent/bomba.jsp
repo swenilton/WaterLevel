@@ -5,6 +5,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="br.com.coffeebeans.bomba.Bomba"%>
+<%@ page import="br.com.coffeebeans.repositorio.Repositorio"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -17,58 +18,64 @@
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
-<script type="text/javascript">//<![CDATA[ 
-controllerMenu = new ControllerMenu();
-$( window ).scroll(function() {
-    controllerMenu.activeScrollTopMenu();
-});
-function remover() {
-	var id = $("input[name='bomba-selected']:checked").val();
-	if (id == null) {
-		$('#msg').removeClass().addClass('alert alert-danger');
-		$('#msg')
-				.html(
-						"Nenhuma bomba selecionada <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
-								+ "<span aria-hidden='true'>&times;</span>"
-								+ "</button>");
-	} else {
-		if (confirm('Tem certeza que deseja remover?')) {
-			$
-					.post(
-							"ctrl?acao=removerBomba&id=" + id,
-							function(dadosDeResposta) {
-								$("#" + id).html('');
-								$('#msg').removeClass().addClass(
-										'alert alert-success');
-								$('#msg')
-										.html(
-												"Bomba removida. <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
-														+ "<span aria-hidden='true'>&times;</span>"
-														+ "</button>");
-							});
+<script type="text/javascript">
+	//<![CDATA[ 
+	controllerMenu = new ControllerMenu();
+	$(window).scroll(function() {
+		controllerMenu.activeScrollTopMenu();
+	});
+	function remover() {
+		var id = $("input[name='bomba-selected']:checked").val();
+		if (id == null) {
+			$('#msg').removeClass().addClass('alert alert-danger');
+			$('#msg')
+					.html(
+							"Nenhuma bomba selecionada <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+									+ "<span aria-hidden='true'>&times;</span>"
+									+ "</button>");
+		} else {
+			if (confirm('Tem certeza que deseja remover?')) {
+				$
+						.post(
+								"ctrl?acao=removerBomba&id=" + id,
+								function(dadosDeResposta) {
+									$("#" + id).html('');
+									$('#msg').removeClass().addClass(
+											'alert alert-success');
+									$('#msg')
+											.html(
+													"Bomba removida. <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+															+ "<span aria-hidden='true'>&times;</span>"
+															+ "</button>");
+								});
+			}
 		}
+
 	}
 
-}
-
-function alterar() {
-	var id = $("input[name='bomba-selected']:checked").val();
-	if (id == null) {
-		$('#msg').removeClass().addClass('alert alert-danger');
-		$('#msg')
-				.html(
-						"Nenhuma bomba selecionada <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
-								+ "<span aria-hidden='true'>&times;</span>"
-								+ "</button>");
-	} else {
-		$.post("ctrl?acao=pegarBomba&id=" + id, function(resposta) {
-			<%
-			Fachada fa = Fachada.getInstance();
-			%>
-	var dados = resposta.split(",");
+	function alterar() {
+		var id = $("input[name='bomba-selected']:checked").val();
+		if (id == null) {
+			$('#msg').removeClass().addClass('alert alert-danger');
+			$('#msg')
+					.html(
+							"Nenhuma bomba selecionada <button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+									+ "<span aria-hidden='true'>&times;</span>"
+									+ "</button>");
+		} else {
+			$.post("ctrl?acao=pegarBomba&id=" + id, function(resposta) {
+				var dados = resposta.split(",");
 				$('#alterar-bomba-modal').modal('show');
-				$('.modal #nome').val(dados);
-				$('.modal #id').val(id);
+				$('.modal #id').val(dados[0]);
+				$('.modal #descricao').val(dados[1]);
+				$('.modal #potencia').val(dados[2]);
+				$('.modal #vazao').val(dados[3]);
+				$('.modal #acionamento').val(dados[4]);
+				$(".modal #enche option[value=" + dados[5] + "]").attr(
+						"selected", true);
+				$(".modal #seca option[value=" + dados[6] + "]").attr(
+						"selected", true);
+				$('.modal #status').val(dados[7]);
 			})
 
 		}
@@ -80,6 +87,7 @@ function alterar() {
 	}
 	Fachada f = Fachada.getInstance();
 	List<Bomba> bombas = f.bombaListar();
+	List<Repositorio> repositorios = f.repositorioListar();
 %>
 </head>
 <body>
@@ -242,7 +250,8 @@ function alterar() {
 					<form class="" action="/WaterLevel/ctrl" method="POST">
 						<input type="hidden" name="acao" value="alterarBomba" /> <input
 							type="hidden" name="id" id="id" />
-						<div class="form-group col-md-12">
+							<input type="hidden" name="status" id="status" />
+						<div class="form-group col-md-4">
 							<label for="descricao">Descrição</label> <input type="text"
 								class="form-control" id="descricao" name="descricao"
 								required="required" placeholder="Insira uma descrição" />
@@ -270,11 +279,31 @@ function alterar() {
 								<option>MANUAL</option>
 							</select>
 						</div>
+						<div class="form-group col-md-4">
+							<label for="enche">Enche</label> <select class="form-control"
+								id="enche" name="enche">
+								<option value="0"></option>
+								<c:forEach var="repositorio" items="<%=repositorios%>">
+									<option value="${repositorio.id}">${repositorio.id}-
+										${repositorio.descricao}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+							<label for="seca">Seca</label> <select class="form-control"
+								id="seca" name="seca">
+								<option value="0"></option>
+								<c:forEach var="repositorio" items="<%=repositorios%>">
+									<option value="${repositorio.id}">${repositorio.id}-
+										${repositorio.descricao}</option>
+								</c:forEach>
+							</select>
+						</div>
 						<div class="clear"></div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-warning"
 								data-dismiss="modal">Cancelar</button>
-							<button type="button" class="btn btn-success">Salvar
+							<button type="submit" class="btn btn-success">Salvar
 								Alterações</button>
 						</div>
 					</form>

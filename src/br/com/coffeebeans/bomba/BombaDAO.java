@@ -25,14 +25,13 @@ public class BombaDAO implements IBombaDAO {
 		try {
 			String sql = "INSERT INTO BOMBA (DESCRICAO,STATUS,POTENCIA,VAZAO,ACIONAMENTO,ID_REPOSITORIO_ENC,ID_REPOSITORIO_SEC)"
 					+ "VALUES(?,?,?,?,?,?,?)";
-			stmt = this.connection.prepareStatement(sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, bomba.getDescricao());
 			stmt.setString(2, bomba.getStatus());
 			stmt.setDouble(3, bomba.getPotencia());
 			stmt.setDouble(4, bomba.getVazao());
 			stmt.setString(5, bomba.getAcionamento());
-			
+
 			stmt.setInt(6, bomba.getRepositorioEnche().getId());
 			stmt.setInt(7, bomba.getRepositorioSeca().getId());
 			stmt.execute();
@@ -68,7 +67,7 @@ public class BombaDAO implements IBombaDAO {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -97,7 +96,7 @@ public class BombaDAO implements IBombaDAO {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -122,11 +121,9 @@ public class BombaDAO implements IBombaDAO {
 						rs.getInt("ID_REPOSITORIO_ENC"));
 				bomba.setCodigo(rs.getInt("ID"));
 				bomba.setIdRepositorioSeca(rs.getInt("ID_REPOSITORIO_SEC"));
-
 			}
-
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -154,7 +151,7 @@ public class BombaDAO implements IBombaDAO {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 		}
@@ -168,7 +165,7 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setInt(1, id);
 			stmt.execute();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new SQLException(e);
 		} finally {
 			stmt.close();
 		}
