@@ -8,9 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -94,28 +97,36 @@ public class ServletController extends HttpServlet {
 					request.getSession().invalidate();
 					url = "/index.jsp";
 				}
-			} catch (UsuarioInativoException | RepositorioException
-					| SQLException e) {
-				erros.add(e.getMessage());
+			} catch (UsuarioInativoException e) {
+				erros.add("Erro ao logar => " + e.getMessage());
+				url = "/index.jsp";
+			} catch (RepositorioException e) {
+				erros.add("Erro ao logar => " + e.getMessage());
+				url = "/index.jsp";
+			} catch (SQLException e) {
+				erros.add("Erro ao logar => " + e.getMessage());
+				url = "/index.jsp";
+			} catch (Exception e) {
+				erros.add("Erro ao logar => " + e.getMessage());
+				url = "/index.jsp";
 			}
 
 		} else if (acao.equals("loginFacebook")) {
 			String email = request.getParameter("usuario");
+			Usuario u;
 			try {
-				Usuario u = fachada.loginFacebook(email);
-				if (u != null) {
-					request.getSession().setAttribute("usuarioLogado", u);
-					response.setStatus(200);
-					System.out.println("Logou");
-				} else {
-					erros.add("Login Inválido");
-					request.getSession().invalidate();
-					System.out.println("não logou");
-				}
-			} catch (RepositorioException | SQLException e) {
-				erros.add(e.getMessage());
+				u = fachada.loginFacebook(email);
+				request.getSession().setAttribute("usuarioLogado", u);
+				response.setStatus(200);
+			} catch (RepositorioException e) {
+				erros.add("Login Inválido => " + e.getMessage());
+				request.getSession().invalidate();
+				response.setStatus(4);
+			} catch (SQLException e) {
+				erros.add("Login Inválido => " + e.getMessage());
+				request.getSession().invalidate();
+				response.setStatus(4);
 			}
-
 		} else if (acao.equals("sair")) {
 			request.getSession().invalidate();
 			for (Enumeration<String> e = request.getSession()
@@ -174,7 +185,7 @@ public class ServletController extends HttpServlet {
 			url = "/usuario-inserir.jsp";
 		} else if (acao.equals("nivel")) {
 			System.out.println(request.getParameter("nivel"));
-			
+
 		} else if (acao.equals("pegarUsuario")) {
 			try {
 				String id = request.getParameter("id");
@@ -253,7 +264,8 @@ public class ServletController extends HttpServlet {
 			String novaSenha = request.getParameter("novaSenha");
 			int id = Integer.parseInt(request.getParameter("id"));
 			try {
-				if (fachada.usuarioProcurar(id).getSenha() == senhaAtual) {
+				if (fachada.usuarioProcurar(id).getSenha()
+						.equals(md5(senhaAtual))) {
 					fachada.alterarSenhaUsuario(id, novaSenha);
 					sucessos.add("Senha alterada");
 				} else {
@@ -286,8 +298,14 @@ public class ServletController extends HttpServlet {
 		} else if (acao.equals("inserirRepositorio")) {
 			String nome = request.getParameter("nome");
 			String formato = request.getParameter("formato");
-			double area = Double.parseDouble(request.getParameter("area")
-					.replace(",", "."));
+			double area = 0;
+			if (request.getParameter("area") != null)
+				area = Double.parseDouble(request.getParameter("area").replace(
+						",", "."));
+			double diametro = 0;
+			if (request.getParameter("diametro") != null)
+				diametro = Double.parseDouble(request.getParameter("diametro")
+						.replace(",", "."));
 			double profundidade = Double.parseDouble(request.getParameter(
 					"profundidade").replace(",", "."));
 			double limiteMin = Double.parseDouble(request.getParameter(
@@ -296,11 +314,11 @@ public class ServletController extends HttpServlet {
 					"limiteMax").replace(",", "."));
 			try {
 				Repositorio r;
-				if (formato.equals("Circular"))
-					r = new RepositorioCircular(nome, 0.0, profundidade,
-							limiteMin, limiteMax, 0.0);
+				if (formato.equals("circular"))
+					r = new RepositorioCircular(nome, profundidade, limiteMin,
+							limiteMax, diametro);
 				else
-					r = new RepositorioRetangular(nome, 0.0, profundidade,
+					r = new RepositorioRetangular(nome, profundidade,
 							limiteMin, limiteMax, area);
 				fachada.cadastrar(r);
 				sucessos.add("Repósitorio inserido");
@@ -317,7 +335,14 @@ public class ServletController extends HttpServlet {
 				os.print(r.getDescricao() + ",");
 				os.print(r.getLimiteMaximo() + ",");
 				os.print(r.getLimiteMinimo() + ",");
-				os.print(r.getProfundidade());
+				os.print(r.getProfundidade() + ",");
+				if (r instanceof RepositorioCircular) {
+					os.print("circular,");
+					os.print(((RepositorioCircular) r).getDiametroMedio());
+				} else {
+					os.print("retangular,");
+					os.print(((RepositorioRetangular) r).getAreaBase());
+				}
 				os.close();
 				url = "";
 			} catch (SQLException e) {
@@ -331,8 +356,14 @@ public class ServletController extends HttpServlet {
 			int id = Integer.parseInt(request.getParameter("id"));
 			String nome = request.getParameter("nome");
 			String formato = request.getParameter("formato");
-			double area = Double.parseDouble(request.getParameter("area")
-					.replace(",", "."));
+			double area = 0;
+			if (request.getParameter("area") != null)
+				area = Double.parseDouble(request.getParameter("area").replace(
+						",", "."));
+			double diametro = 0;
+			if (request.getParameter("diametro") != null)
+				diametro = Double.parseDouble(request.getParameter("diametro")
+						.replace(",", "."));
 			double profundidade = Double.parseDouble(request.getParameter(
 					"profundidade").replace(",", "."));
 			double limiteMin = Double.parseDouble(request.getParameter(
@@ -341,11 +372,11 @@ public class ServletController extends HttpServlet {
 					"limiteMax").replace(",", "."));
 			try {
 				Repositorio r;
-				if (formato.equals("Circular"))
-					r = new RepositorioCircular(nome, 0.0, profundidade,
-							limiteMin, limiteMax, 0.0);
+				if (formato.equals("circular"))
+					r = new RepositorioCircular(nome, profundidade, limiteMin,
+							limiteMax, diametro);
 				else
-					r = new RepositorioRetangular(nome, 0.0, profundidade,
+					r = new RepositorioRetangular(nome, profundidade,
 							limiteMin, limiteMax, area);
 				r.setId(id);
 				fachada.atualizar(r);
@@ -464,8 +495,65 @@ public class ServletController extends HttpServlet {
 				erros.add("Erro ao inserir bomba => " + e.getMessage());
 			}
 			url = "/bomba-inserir.jsp";
+		} else if (acao.equals("pegarBomba")) {
+			try {
+				String id = request.getParameter("id");
+				Bomba b = fachada.bombaProcurar(Integer.parseInt(id));
+				request.setAttribute("bombaProcurar", b);
+				ServletOutputStream os = response.getOutputStream();
+				os.print(b.getCodigo() + ",");
+				os.print(b.getDescricao() + ",");
+				os.print(b.getPotencia() + ",");
+				os.print(b.getVazao() + ",");
+				os.print(b.getAcionamento() + ",");
+				os.print(b.getIdRepositorioEnche() + ",");
+				os.print(b.getIdRepositorioSeca() + ",");
+				os.print(b.getStatus());
+				os.flush();
+				os.close();
+				url = "";
+			} catch (SQLException e) {
+				erros.add("Erro ao pegar bomba => " + e.getMessage());
+			} catch (NumberFormatException e) {
+				erros.add("Erro ao pegar bomba => " + e.getMessage());
+			} catch (BombaNaoEncontradaException e) {
+				erros.add("Erro ao pegar bomba => " + e.getMessage());
+			}
+		} else if (acao.equals("alterarBomba")) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			String descricao = request.getParameter("descricao");
+			String status = request.getParameter("status");
+			double potencia = Double.parseDouble(request.getParameter(
+					"potencia").replace(",", "."));
+			double vazao = Double.parseDouble(request.getParameter("vazao")
+					.replace(",", "."));
+			String acionamento = request.getParameter("acionamento");
+			int idEnche = Integer.parseInt(request.getParameter("enche"));
+			int idSeca = Integer.parseInt(request.getParameter("seca"));
+			try {
+				Bomba b = new Bomba(descricao, potencia, vazao, acionamento);
+				if (idEnche != 0) {
+					Repositorio enche = fachada.repositorioProcurar(idEnche);
+					b.setRepositorioEnche(enche);
+				}
+				if (idSeca != 0) {
+					Repositorio seca = fachada.repositorioProcurar(idSeca);
+					b.setRepositorioSeca(seca);
+				}
+				if (idSeca == 0 && idEnche == 0)
+					throw new IllegalArgumentException(
+							"Algum repositório tem que ser selecionado");
+				b.setStatus(status);
+				b.setCodigo(id);
+				fachada.atualizar(b);
+				sucessos.add("Bomba Alterada");
+			} catch (Exception e) {
+				erros.add("Erro ao alterar bomba => " + e.getMessage());
+			}
+			url = "/bomba.jsp";
 		} else {
 			System.out.println("Erro");
+			url = "/home.jsp";
 		}
 		request.setAttribute("sucessos", sucessos);
 		request.setAttribute("erros", erros);
@@ -490,10 +578,18 @@ public class ServletController extends HttpServlet {
 		}
 		return null;
 	}
-	
-	public double getDist(){
-		
-		return 0;
+
+	public String md5(String senha) {
+		String sen = "";
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
+		sen = hash.toString(16);
+		return sen;
 	}
 
 }

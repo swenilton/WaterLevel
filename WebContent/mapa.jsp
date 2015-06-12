@@ -4,28 +4,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="utf-8">
-<title>Inserir Atividade - Water Level</title>
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mapa do Site - Water Level</title>
 <link rel="shortcut icon" href="img/ico.png" />
 <link rel="stylesheet" type="text/css" href="css/estilo2.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+<link rel="stylesheet" type="text/css"
+	href="css/bootstrap.vertical-tabs.css" />
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
+<script type="text/javascript" src="js/jquery.rwdImageMaps.js"></script>
 <script type="text/javascript">
-	//<![CDATA[ 
 	controllerMenu = new ControllerMenu();
 	$(window).scroll(function() {
 		controllerMenu.activeScrollTopMenu();
 	});
+	$(document).ready(function(e) {
+		$('img[usemap]').rwdImageMaps();
+	});
 </script>
 </head>
-<%
-	if (request.getSession().getAttribute("usuarioLogado") == null) {
-		response.sendRedirect("index.jsp");
-	}
-%>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
@@ -42,7 +42,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="navbar">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="home.jsp">Inicio </a></li>
+					<li><a href="home.jsp">Inicio</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-expanded="false">Cadastros
 							<span class="caret"></span>
@@ -50,7 +50,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="usuario.jsp">Usuário</a></li>
 							<li><a href="repositorio.jsp">Repositório</a></li>
-							<li class="active"><a href="atividade.jsp">Atividade</a></li>
+							<li><a href="atividade.jsp">Atividade</a></li>
 							<li><a href="bomba.jsp">Bomba</a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -58,14 +58,16 @@
 							<span class="caret"></span>
 					</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="consumo-periodico.jsp">Consumo periódico</a></li>
+							<li class="active"><a href="consumo-periodico.jsp">Consumo
+									periódico <span class="sr-only">(current)</span>
+							</a></li>
 							<li><a href="#">Gráficos</a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
 						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
-							src="i${sessionScope.usuarioLogado.foto}" id="perfil"
-							width="40px" /><span class="caret"></span></a>
+							src="${sessionScope.usuarioLogado.foto}" id="perfil" width="40px" /><span
+							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"
 								data-target="#alterar-usuario-logado">Editar perfil</a></li>
@@ -89,55 +91,58 @@
 			<div class="page-header page-titulo">
 				<!-- migalhas de pão -->
 				<ol class="breadcrumb migalhas">
-					<li><a href="home.jsp">Inicio</a></li>
-					<li><a href="atividade.jsp">Atividade</a></li>
-					<li class="active">Inserir</li>
+					<li><a href="home.jsp">Início</a></li>
+					<li class="active">Mapa do site</li>
 				</ol>
 				<!-- titulo -->
 				<h1>
-					Atividade <small>Inserir</small>
+					Mapa do Site <small>Ajuda</small>
 				</h1>
 			</div>
 			<!-- fim page-header -->
-			<form action="/WaterLevel/ctrl" method="POST">
-			<input type="hidden" name="acao" value="inserirAtividade" />
-				<div class="form-group">
-					<label for="nome">Descrição</label> <input type="text"
-						class="form-control" id="nome" name="nome" placeholder="Ex: Tomar Banho" required="required"/>
-				</div>
-				<button type="reset" class="btn btn-warning" />
-				Limpar
-				</button>
-				<button type="submit" class="btn btn-success" />
-				Inserir
-				</button>
-			</form>
-			<c:if test="${erros.existeErros}">
-				<div id="status" class="alert alert-danger" style="margin-top: 20px;">
-					<button type='button' class='close' data-dismiss='alert'
-						aria-label='Close'>
-						<span aria-hidden='true'>&times;</span>
-					</button>
-					<ul>
-						<c:forEach var="erro" items="${erros.erros}">
-							<li>${erro}</li>
-						</c:forEach>
-					</ul>
-				</div>
-			</c:if>
-			<c:if test="${sucessos.existeSucessos}">
-				<div class="alert alert-success" style="margin-top: 20px;">
-					<button type='button' class='close' data-dismiss='alert'
-						aria-label='Close'>
-						<span aria-hidden='true'>&times;</span>
-					</button>
-					<ul>
-						<c:forEach var="sucesso" items="${sucessos.sucessos}">
-							<li>${sucesso}</li>
-						</c:forEach>
-					</ul>
-				</div>
-			</c:if>
+<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<map name="map">
+					<area shape="rect" alt="Início" coords="68,
+						105, 165, 163"
+						href="home.jsp" />
+					<area shape="rect" alt="Atividade" coords="0,
+						331, 97, 390"
+						href="atividade.jsp" />
+					<area shape="rect" alt="Usuário" coords="133,
+						331, 226, 390"
+						href="usuario.jsp" />
+					<area shape="rect" alt="Repositório"
+						coords="265,
+						331, 360, 390" href="repositorio.jsp" />
+					<area shape="rect" alt="Bomba" coords="396,
+						331, 492, 390"
+						href="bomba.jsp" />
+					<area shape="rect" alt="Relatório Periódico"
+						coords="464,
+						208, 561, 267" href="consumo-periodico.jsp" />
+					<area shape="rect" alt="Editar Usuário Logado"
+						coords="276,
+						444, 373, 503" href="#" data-toggle="modal"
+						data-target="#alterar-usuario-logado" />
+					<area shape="rect" alt="Ver Rank"
+						coords="408,
+						444, 505, 503" href="#" data-toggle="modal"
+						data-target="#ver-rank" />
+					<area shape="rect" alt="Ver Gastos"
+						coords="540,
+						444, 636, 503" href="#" data-toggle="modal"
+						data-target="#ver-gastos" />
+					<area shape="rect" alt="Sair do Sistema"
+						coords="672,
+						444, 768, 503"
+						href="/WaterLevel/ctrl?acao=sair" />
+				</map>
+				<img class="img-responsive" alt="Mapa do Site"
+					src="img/Mapa do site2.png" usemap="#map" />
+			</div>
+			<div class="col-md-1"></div>
+			<div class="clear"></div>
 		</div>
 		<!-- fim conteudo -->
 	</div>

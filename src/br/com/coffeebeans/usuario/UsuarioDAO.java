@@ -1,5 +1,8 @@
 package br.com.coffeebeans.usuario;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +36,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getNome());
 			stmt.setString(2, usuario.getLogin());
-			stmt.setString(3, usuario.getSenha());
+			stmt.setString(3, md5(usuario.getSenha()));
 			stmt.setString(4, usuario.getEmail());
 			stmt.setString(5, usuario.getTelefone());
 			stmt.setString(6, usuario.getAtivo());
@@ -152,7 +155,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 				try {
 					String sql = "UPDATE USUARIO SET SENHA= ? WHERE ID = ?";
 					stmt = this.connection.prepareStatement(sql);
-					stmt.setString(1, senha);
+					stmt.setString(1, md5(senha));
 					stmt.setInt(2, id);
 					Integer resultado = stmt.executeUpdate();
 					if (resultado == 0)
@@ -223,7 +226,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			String sql = "SELECT * FROM USUARIO WHERE LOGIN = ? AND SENHA = ?";
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, usuario);
-			stmt.setString(2, senha);
+			stmt.setString(2, md5(senha));
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				if (rs.getString("ATIVO").equals("Nao"))
@@ -239,6 +242,20 @@ public class UsuarioDAO implements IUsuarioDAO {
 			stmt.close();
 		}
 	}
+	
+	public String md5(String senha) {
+		String sen = "";
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
+		sen = hash.toString(16);
+		return sen;
+	}
+
 
 	public static Usuario getUsuarioLogado() {
 		return usuarioLogado;

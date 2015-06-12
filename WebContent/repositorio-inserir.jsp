@@ -20,7 +20,31 @@
 	$(window).scroll(function() {
 		controllerMenu.activeScrollTopMenu();
 	});
-	
+
+	$(function() {
+		$('#formato')
+				.on(
+						'change',
+						function() {
+							if ($('#formato').val() == 'circular') {
+								$('#opcformato')
+										.html(
+												"<label for='diametro'>Diametro Medio</label>"
+														+ "<div class='input-group'>"
+														+ "<input type='number' class='form-control' id='diametro' name='diametro' required='required' placeholder='Ex: 1000' />"
+														+ "<div class='input-group-addon'>cm</div>"
+														+ "</div>");
+							} else {
+								$('#opcformato')
+										.html(
+												"<label for='area'>Area da Base</label>"
+														+ "<div class='input-group'>"
+														+ "<input type='number' class='form-control' id='area' name='area' required='required' placeholder='Ex: 1000' />"
+														+ "<div class='input-group-addon'>cm</div>"
+														+ "</div>");
+							}
+						})
+	})
 </script>
 </head>
 <%
@@ -66,7 +90,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
 						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
-							src="${sessionScope.usuarioLogado.nome}" id="perfil" width="40px" /><span
+							src="${sessionScope.usuarioLogado.foto}" id="perfil" width="40px" /><span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"
@@ -108,12 +132,12 @@
 				</div>
 				<div class="col-md-6">
 					<form method="POST" action="/WaterLevel/ctrl">
-					<input type="hidden" name="acao" value="inserirRepositorio">
+						<input type="hidden" name="acao" value="inserirRepositorio">
 						<div class="form-group col-md-12">
 							<label for="formato">Formato</label> <select class="form-control"
 								id="formato" name="formato">
-								<option>Circular</option>
-								<option>Retangular</option>
+								<option value="circular">Circular</option>
+								<option value="retangular" selected="selected">Retangular</option>
 							</select>
 						</div>
 						<div class="form-group col-md-12">
@@ -124,32 +148,32 @@
 						<div class="form-group col-md-6">
 							<label for="profundidade">Profundidade</label>
 							<div class="input-group">
-								<input type="number" class="form-control" id="profundidade" name="profundidade" required="required"
-									placeholder="Ex: 120" />
+								<input type="number" class="form-control" id="profundidade"
+									name="profundidade" required="required" placeholder="Ex: 120" />
 								<div class="input-group-addon">cm</div>
 							</div>
 						</div>
-						<div class="form-group col-md-6">
-							<label for="area">Area da Base</label>
-							<div class="input-group">
-								<input type="number" class="form-control" id="area" name="area" required="required"
-									placeholder="Ex: 1000" />
-								<div class="input-group-addon">cm</div>
+						<div class="form-group col-md-6" id="opcformato">
+							<label for='area'>Area da Base</label>
+							<div class='input-group'>
+								<input type='number' class='form-control' id='area' name='area'
+									required='required' placeholder='Ex: 1000' />
+								<div class='input-group-addon'>cm</div>
 							</div>
 						</div>
 						<div class="form-group col-md-6">
 							<label for="limiteMin">Limite mínimo</label>
 							<div class="input-group">
-								<input type="number" class="form-control" id="limiteMin" name="limiteMin" required="required"
-									placeholder="Ex: 20" />
+								<input type="number" class="form-control" id="limiteMin"
+									name="limiteMin" required="required" placeholder="Ex: 20" />
 								<div class="input-group-addon">L</div>
 							</div>
 						</div>
 						<div class="form-group col-md-6">
 							<label for="limiteMax">Limite máximo</label>
 							<div class="input-group">
-								<input type="number" class="form-control" id="limiteMax" name="limiteMax" required="required"
-									placeholder="Ex: 1800" />
+								<input type="number" class="form-control" id="limiteMax"
+									name="limiteMax" required="required" placeholder="Ex: 1800" />
 								<div class="input-group-addon">L</div>
 							</div>
 						</div>
@@ -196,21 +220,6 @@
 		<!-- fim conteudo -->
 	</div>
 	<!-- fim container -->
-	<footer class="rodape">
-		<div id="footer">
-			<div class="container">
-				<a href="home.jsp">Início</a> | <a href="#">Termos e Condições</a> |
-				<a href="#">Ajuda e Suporte</a> | <a href="#">Mapa do site</a> | <a
-					href="#">Sobre a Coffee Beans</a> <br />
-				<br /> Water Level &copy 2015 - Todos os direitos reservados. <br />
-				Desenvolvido por <a href="http://coffeebeansdev.com.br"
-					target="_blank"><img src="img/coffee-logo.png"
-					alt="Logo Coffee Beans" width="70px"></a> <a
-					href="http://facebook.com.br/coffeebeansdev" target="_blank"><img
-					src="img/facebook.jpeg" alt="Logo Facebook" width="25px"></a><br />
-				<small>Version 1.0</small>
-			</div>
-		</div>
-	</footer>
+	<jsp:include page="rodape.jsp"></jsp:include>
 </body>
 </html>

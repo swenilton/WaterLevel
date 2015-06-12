@@ -20,7 +20,7 @@
 <script type="text/javascript" src="js/toggle.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
 <script type="text/javascript">
-	var url = 'http://192.168.1.15';
+	var url = 'http://192.168.1.11';
 
 	$(function() {
 		$('#caixa1.skill div').load('.inner', geraCaixa1());
@@ -43,7 +43,7 @@
 			var valor = $('#msg div#nivel').text();
 			geraCaixa1(valor);
 			geraCaixa2();
-		}, 2000);
+		}, 3000);
 	});
 
 	//setInterval(function() {		 
@@ -73,8 +73,8 @@
 		var skillBar = $('#caixa1.skill div').siblings().find('.inner');
 		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
 		var profundidade = 18;
-		var altura = profundidade - nivel;
-		var percent = (altura / profundidade * 100).toFixed(2);
+		//var altura = profundidade - nivel;
+		var percent = ((nivel / profundidade) * 100).toFixed(2);
 		if(nivel > 0 && percent < 101){
 			var skillVal = percent + "%";
 			$('#progress').html("<h1>" + skillVal + "</h1>");
@@ -83,6 +83,7 @@
 			}, 1000);
 		} else {
 			$('#progress').html("<h1> aguarde... </h1>");
+			//$('#progress').html("<br /><img src='img/aguarde3.gif' />");
 			$(skillBar).animate({
 				height : 0
 			}, 1000);
@@ -428,19 +429,6 @@
 		<!-- fim conteudo -->
 	</div>
 	<!-- fim container -->
-	<footer class="rodape">
-		<div id="footer">
-			<div class="container">
-				<a href="home.jsp">Início</a> | <a href="#">Termos e Condições</a> |
-				<a href="#">Ajuda e Suporte</a> | <a href="#">Mapa do site</a> | <a
-					href="#">Sobre a Coffee Beans</a> <br /> <br /> Water Level &copy
-				2015 - Todos os direitos reservados. <br /> Desenvolvido por <a
-					href="http://coffeebeansdev.com.br" target="_blank"><img
-					src="img/coffee-logo.png" alt="Logo Coffee Beans" width="70px"></a>
-				<a href="http://facebook.com.br/coffeebeansdev" target="_blank"><img
-					src="img/facebook.jpeg" alt="Logo Facebook" width="25px"></a><br />
-				<small>Version 1.0</small>
-			</div>
-	</footer>
+	<jsp:include page="rodape.jsp"></jsp:include>
 </body>
 </html>

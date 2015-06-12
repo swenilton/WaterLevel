@@ -68,16 +68,10 @@ public class ControladorRepositorio {
 
 	public void remover(int id) throws SQLException,
 			RepositorioNaoEncontradoException {
-		//if (irepositorio.procurar(id) == null) {
-		//	throw new RepositorioNaoEncontradoException();
-		//} else {
+		if (irepositorio.procurar(id) == null) {
+			throw new RepositorioNaoEncontradoException();
+		} else {
 			irepositorio.excluir(id);
-		//}
-	}
-
-	// m�todo ainda ser� codificado
-	public Double calcularCapacidade(Double arg1, Double arg2) {
-		// esse retorno � s� para o m�todo n�o dar erro
-		return 0.00;
+		}
 	}
 }
