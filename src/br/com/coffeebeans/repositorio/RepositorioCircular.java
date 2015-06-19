@@ -25,7 +25,7 @@ public class RepositorioCircular extends Repositorio {
 
 	protected static double calcularCapacidade(double diametro,
 			double profundidade) {
-		return Math.PI * (diametro / 2) * profundidade;
+		return Math.PI * Math.pow((diametro / 2), 2) * profundidade;
 	}
 
 }

@@ -48,6 +48,7 @@ import br.com.coffeebeans.repositorio.RepositorioRetangular;
 import br.com.coffeebeans.usuario.Usuario;
 import br.com.coffeebeans.usuario.UsuarioDAO;
 import br.com.coffeebeans.util.Erro;
+import br.com.coffeebeans.util.SerialTest;
 import br.com.coffeebeans.util.Sucesso;
 
 /**
@@ -61,6 +62,7 @@ maxRequestSize = 1024 * 1024 * 4 // 4MB
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Fachada fachada;
+	private SerialTest main;
 
 	/**
 	 * Default constructor
@@ -68,6 +70,22 @@ public class ServletController extends HttpServlet {
 	public ServletController() {
 		try {
 			fachada = Fachada.getInstance();
+			main = new SerialTest();
+			main.initialize();
+			Thread t = new Thread() {
+				public void run() {
+					// the following line will keep this app alive for 1000
+					// seconds,
+					// waiting for events to occur and responding to them
+					// (printing incoming messages to console).
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException ie) {
+					}
+				}
+			};
+			t.start();
+			System.out.println("Started");
 		} catch (Exception e) {
 			System.out.println("Erro ao instanciar Fachada => "
 					+ e.getMessage());
@@ -184,8 +202,39 @@ public class ServletController extends HttpServlet {
 			}
 			url = "/usuario-inserir.jsp";
 		} else if (acao.equals("nivel")) {
-			System.out.println(request.getParameter("nivel"));
-
+			//request.setAttribute("nivel", main.getNivel());
+			ServletOutputStream os = response.getOutputStream();
+			os.print(main.getNivel());
+			os.close();
+			url = "";
+		} else if (acao.equals("ligaBomba")) {
+			byte[] b = new byte[1];
+			b[0] = '2';
+			main.sendMesssage(b);
+		} else if (acao.equals("desligaBomba")) {
+			byte[] b = new byte[1];
+			b[0] = '1';
+			main.sendMesssage(b);
+		} else if (acao.equals("acionamento")) {
+			byte[] b = new byte[1];
+			if(request.getParameter("ac").equals("auto")) {
+				b[0] = '3';
+			} else {
+				b[0] = '4';
+			}			
+			main.sendMesssage(b);
+		} else if (acao.equals("defLimiteMax")) {
+			float limMax = Float.parseFloat(request.getParameter("limiteMax"));
+			byte[] b = new byte[1];
+			b[0] = '5';
+			main.sendMesssage(b);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				System.err.println(e.getMessage());
+			}
+			b = Float.toString(limMax).getBytes();
+			main.sendMesssage(b);
 		} else if (acao.equals("pegarUsuario")) {
 			try {
 				String id = request.getParameter("id");

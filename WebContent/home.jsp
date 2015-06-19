@@ -20,8 +20,6 @@
 <script type="text/javascript" src="js/toggle.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
 <script type="text/javascript">
-	var url = 'http://192.168.1.11';
-
 	$(function() {
 		$('#caixa1.skill div').load('.inner', geraCaixa1());
 		$('#caixa2.skill div').load('.inner', geraCaixa2());
@@ -29,65 +27,37 @@
 
 	$(function() {
 		setInterval(function() {
-			$.ajax({
-				url : url,
-				type : 'GET',
-				timeout : 3000,
-				success : function(retorno) {
-					$('#msg').html(retorno);
-				},
-				error : function(erro) {
-					$('#msg').html(erro);
-				}
-			})
-			var valor = $('#msg div#nivel').text();
-			geraCaixa1(valor);
+			$.post("ctrl?acao=nivel", function(retorno) {
+				//valor = retorno;
+				geraCaixa1(parseFloat(retorno));
+			});
 			geraCaixa2();
-		}, 3000);
+		}, 2000);
 	});
-
-	//setInterval(function() {		 
-		 /*
-		$.ajax({
-			url : url,
-			data : {
-				'' : ''
-			}, // usaremos em proximas versões
-			dataType : 'jsonp', // IMPORTANTE
-			crossDomain : true, // IMPORTANTE
-			jsonp : false,
-			jsonpCallback : 'dados', // IMPORTANTE
-			success : function(data, status, xhr) {
-				$('#msg').removeClass().addClass('alert alert-success');
-				$('#msg').html("foi > " + data.sensor1);
-			},
-			error : function(erro) {
-				$('#msg').removeClass().addClass('alert alert-danger');
-				$('#msg').html("nao foi > " + erro);
-			}
-		});
-		*/
-	//}, 2000);
 
 	function geraCaixa1(nivel) {
 		var skillBar = $('#caixa1.skill div').siblings().find('.inner');
 		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
-		var profundidade = 18;
-		//var altura = profundidade - nivel;
-		var percent = ((nivel / profundidade) * 100).toFixed(2);
-		if(nivel > 0 && percent < 101){
-			var skillVal = percent + "%";
+		var profundidade = 19;
+		var altura = profundidade - nivel;
+		var percent = (altura / profundidade) * 100;
+		var capacidade = 3.14 * (10 * 10 * profundidade);
+		var qtd = capacidade * ((altura / profundidade) * 100);
+		$('#capacidade').text(capacidade + " ml");
+		$('#qtd').text(qtd.toFixed(2) / 100 + " ml");
+		if (nivel > 0 && percent < 101) {
+			var skillVal = percent.toFixed(2) + "%";
 			$('#progress').html("<h1>" + skillVal + "</h1>");
 			$(skillBar).animate({
 				height : skillVal
 			}, 1000);
 		} else {
-			$('#progress').html("<h1> aguarde... </h1>");
+			$('#progress').html("<h1>Aguarde...</h1>");
 			//$('#progress').html("<br /><img src='img/aguarde3.gif' />");
 			$(skillBar).animate({
 				height : 0
 			}, 1000);
-		}		
+		}
 	}
 
 	function geraCaixa2() {
@@ -108,6 +78,25 @@
 			});
 		});
 	});
+
+	function acionamento(ac) {
+		if (ac == 'auto') {
+			$.post("ctrl?acao=acionamento&ac=auto", function(retorno) {
+
+			});
+		} else {
+			$.post("ctrl?acao=acionamento&ac=man", function(retorno) {
+
+			});
+		}
+	}
+
+	function defineLimiteMax() {
+		$.post("ctrl?acao=defineLimiteMax&limiteMax=" + $('#limite-max').val(),
+				function(retorno) {
+
+				});
+	}
 
 	controllerMenu = new ControllerMenu();
 	$(window).scroll(function() {
@@ -233,11 +222,11 @@
 											</tr>
 											<tr>
 												<td class="tdd">Capacidade:</td>
-												<td class="tde">2.000 L</td>
+												<td class="tde" id="capacidade"></td>
 											</tr>
 											<tr>
 												<td class="tdd">Quantidade de água:</td>
-												<td class="tde">850 L</td>
+												<td class="tde" id="qtd"></td>
 											</tr>
 											<tr>
 												<td class="tdd">Gasto Hoje:</td>
@@ -251,9 +240,11 @@
 										Acionamento da bomba
 										<ul class="nav nav-pills pull-right" id="tab">
 											<li role="presentation" class="active"><a href="#auto"
-												data-toggle="pill" aria-controls="auto" role="tab">Automático</a></li>
+												onclick="acionamento('auto');" data-toggle="pill"
+												aria-controls="auto" role="tab">Automático</a></li>
 											<li role="presentation"><a href="#manual"
-												data-toggle="pill" aria-controls="manual" role="tab">Manual</a></li>
+												onclick="acionamento('manual');" data-toggle="pill"
+												aria-controls="manual" role="tab">Manual</a></li>
 										</ul>
 									</div>
 									<div class="tab-content">
@@ -274,13 +265,14 @@
 										</div>
 										<div role="tabpanel" class="tab-pane fade" id="manual">
 											<form class="form-inline">
+												<input type="hidden" name="acao" value="defLimiteMax" />
 												<div class="form-group form-grupo">
 													<label for="limite-max">Limite Max</label> <input
 														type="text" class="form-control" id="limite-max"
 														placeholder="Litros">
 												</div>
 												<button type="button" class="btn btn-danger btn-salvar"
-													id="liga">Ligar Bomba</button>
+													id="liga" onclick="defineLimiteMax();">Ligar Bomba</button>
 											</form>
 										</div>
 									</div>

@@ -126,6 +126,7 @@
 													.assign("/WaterLevel/home.jsp");
 										},
 										error : function(erro) {
+											alert('Email ' + response.email + ' não cadastrado.');
 											$('#status').html('Email ' + response.email + ' não cadastrado.');
 											$('#status').addClass("alert alert-danger");
 										}
@@ -283,7 +284,7 @@ div#background3 {
 				<input type="hidden" name="acao" value="login" />
 				<div class="form-group">
 					<input type="text" class="form-control" id="usuario" name="usuario"
-						placeholder="Usuario" required="required" autofocus="autofocus" />
+						placeholder="Usuario" required="required" />
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" id="senha" name="senha"
