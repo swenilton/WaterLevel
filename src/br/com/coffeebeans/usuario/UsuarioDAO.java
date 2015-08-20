@@ -222,8 +222,10 @@ public class UsuarioDAO implements IUsuarioDAO {
 			throws UsuarioInativoException, RepositorioException, SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs;
+		String sql = "";
 		try {
-			String sql = "SELECT * FROM USUARIO WHERE LOGIN = ? AND SENHA = ?";
+			if(usuario.contains("@")) sql = "SELECT * FROM USUARIO WHERE EMAIL = ? AND SENHA = ?";
+			else sql = "SELECT * FROM USUARIO WHERE LOGIN = ? AND SENHA = ?";
 			stmt = this.connection.prepareStatement(sql);
 			stmt.setString(1, usuario);
 			stmt.setString(2, md5(senha));

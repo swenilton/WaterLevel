@@ -77,13 +77,13 @@
 	window.fbAsyncInit = function() {
 		FB.init({
 			appId : '1632493973636313',
-			cookie : true, // enable cookies to allow the server to access 
+			cookie : true, // enable cookies to allow the server to access
 			// the session
 			xfbml : true, // parse social plugins on this page
 			version : 'v2.2' // use version 2.2
 		});
 
-		// Now that we've initialized the JavaScript SDK, we call 
+		// Now that we've initialized the JavaScript SDK, we call
 		// FB.getLoginStatus().  This function gets the state of the
 		// person visiting this page and can return one of three states to
 		// the callback you provide.  They can be:
@@ -132,6 +132,17 @@
 										}
 									})
 						});
+	}
+
+	function recuperaSenha(){
+		usuario = $('#usuario').val();
+		if(usuario == ""){
+			alert('Preencha o campo Email ou Usuário');
+			return;
+		} else {
+			alert('Enviamos as intruções de recuperação da senha para seu email.');
+			return;
+		}
 	}
 </script>
 <style>
@@ -284,21 +295,25 @@ div#background3 {
 				<input type="hidden" name="acao" value="login" />
 				<div class="form-group">
 					<input type="text" class="form-control" id="usuario" name="usuario"
-						placeholder="Usuario" required="required" />
+						placeholder="Email ou Usuario" required="required" />
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" id="senha" name="senha"
 						placeholder="Senha" required="required" />
 				</div>
-				<label class="checkbox pull-left"> <input type="checkbox"
-					name="lembre-se">Lembre-se</input>
-				</label> <input type="submit" class="btn btn-large btn-primary pull-right"
-					value="Entrar" />
+				<div class="row" style="margin: 0px;">
+					<label class="checkbox pull-left"> <input type="checkbox"
+						name="lembre-se">Lembre-se</input>
+					</label> <input type="submit" class="btn btn-large btn-primary pull-right"
+						value="Entrar" />
+				</div>
+				<div class="row clear" style="margin: 0px;">
+					<a href="#" onclick="recuperaSenha()">Esqueceu a senha?</a>
+				</div>
 			</form>
-			<div class="clear" style="margin-top: 50px;"></div>
 			<div id="status"></div>
 			<c:if test="${erros.existeErros}">
-				<div class="alert alert-danger">
+				<div class="alert alert-danger" style="margin-top: 20px;">
 					<button type='button' class='close' data-dismiss='alert'
 						aria-label='Close'>
 						<span aria-hidden='true'>&times;</span>
@@ -311,7 +326,7 @@ div#background3 {
 				</div>
 			</c:if>
 			<c:if test="${sucessos.existeSucessos}">
-				<div class="alert alert-success" style="margin-top: 65px;">
+				<div class="alert alert-success" style="margin-top: 20px;">
 					<button type='button' class='close' data-dismiss='alert'
 						aria-label='Close'>
 						<span aria-hidden='true'>&times;</span>

@@ -70,8 +70,8 @@ public class ServletController extends HttpServlet {
 	public ServletController() {
 		try {
 			fachada = Fachada.getInstance();
-			main = new SerialTest();
-			main.initialize();
+//			main = new SerialTest();
+//			main.initialize();
 			Thread t = new Thread() {
 				public void run() {
 					// the following line will keep this app alive for 1000
@@ -203,9 +203,9 @@ public class ServletController extends HttpServlet {
 			url = "/usuario-inserir.jsp";
 		} else if (acao.equals("nivel")) {
 			//request.setAttribute("nivel", main.getNivel());
-			ServletOutputStream os = response.getOutputStream();
-			os.print(main.getNivel());
-			os.close();
+//			ServletOutputStream os = response.getOutputStream();
+//			os.print(main.getNivel());
+//			os.close();
 			url = "";
 		} else if (acao.equals("ligaBomba")) {
 			byte[] b = new byte[1];
