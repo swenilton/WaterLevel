@@ -15,9 +15,9 @@ public class Conexao {
 		String senha = "";
 
 		if (sistema == "mysql") {
-			conexao = "jdbc:mysql://localhost/waterlevel";
+			conexao = "jdbc:mysql://localhost/water level";
 			usuario = "root";
-			senha = "root";
+			senha = "181290";
 		} else if (sistema == "oracle") {
 			/*
 			 * conexao = "jdbc:oracle:thin:@0.0.0.0:1521:XE"; usuario = "";
@@ -32,7 +32,7 @@ public class Conexao {
 		} else {
 			conexao = null;
 		}
-		if (connection == null) {
+		if (connection == null || connection.isClosed()  ) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				connection = DriverManager.getConnection(conexao, usuario,
@@ -49,7 +49,7 @@ public class Conexao {
 	}
 
 	/**
-	 * Aten��o, este m�todo fecha o Statement!
+	 * Atencao, este metodo fecha o Statement!
 	 * 
 	 * @throws SQLException
 	 */
