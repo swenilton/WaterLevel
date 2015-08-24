@@ -18,14 +18,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.engine.JRQuery;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.util.JRLoader;
 import br.com.coffeebeans.util.Conexao;
 
-@WebServlet("/GerarRelConsumoHora")
-public class GerarRelConsumoHora extends HttpServlet {
+@WebServlet("/GerarRelConsumoHorario")
+public class GerarRelConsumoHorario extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	ResultSet rs;
@@ -39,8 +38,9 @@ public class GerarRelConsumoHora extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 
-			dataIniString = request.getParameter("data-inicio");
-			dataFimString = request.getParameter("data-fim");
+			dataIniString = request.getParameter("hora-inicial");
+			dataFimString = request.getParameter("hora-final");
+
 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			sdf.setLenient(false);
@@ -62,7 +62,7 @@ public class GerarRelConsumoHora extends HttpServlet {
 
 			JasperReport relatorioJasper = (JasperReport) JRLoader
 					.loadObjectFromFile(context
-							.getRealPath("/WEB-INF/RelConsumo.jasper"));
+							.getRealPath("/WEB-INF/RelConsumoHorario.jasper"));
 
 			// Na variavel pathJasper ficara o caminho do diretório para
 			// os relatórios compilados (.jasper)

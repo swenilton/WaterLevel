@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-08-19T05:00:36 -->
+<!-- 2015-08-24T18:11:31 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelConsumo" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ced95029-b569-4027-895c-af2843a4e088">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
@@ -13,11 +13,11 @@
 			<style backcolor="#E6DAC3"/>
 		</conditionalStyle>
 	</style>
-	<parameter name="dtHoraIni" class="java.sql.Timestamp"/>
-	<parameter name="dtHoraFim" class="java.sql.Timestamp"/>
+	<parameter name="dtIni" class="java.lang.String"/>
+	<parameter name="dtFim" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select  GASTO,DATA_HORA from consumo where DATA_HORA between $P{dtHoraIni} 
- and $P{dtHoraFim}]]>
+		<![CDATA[select  GASTO,DATA_HORA from consumo where DATA_HORA like '%$P!{dtIni}%' 
+ or DATA_HORA like '%$P!{dtFim}%']]>
 	</queryString>
 	<field name="GASTO" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -54,7 +54,7 @@
 				<textElement>
 					<font fontName="Times New Roman"/>
 				</textElement>
-				<text><![CDATA[Horario:]]></text>
+				<text><![CDATA[Periodo:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="232" y="93" width="87" height="20" uuid="3220a969-fa79-404e-8f05-0c131311690d">
@@ -66,7 +66,7 @@
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{dtHoraIni}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{dtIni}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="330" y="93" width="87" height="20" uuid="60bc089b-0ad1-4576-9b26-f0c616b43565">
@@ -78,7 +78,7 @@
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{dtHoraFim}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{dtFim}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="318" y="93" width="15" height="20" uuid="fdba5f97-00ca-4959-913a-25ffce20bcc8">
