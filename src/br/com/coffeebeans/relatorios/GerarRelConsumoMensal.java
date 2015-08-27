@@ -3,10 +3,9 @@ package br.com.coffeebeans.relatorios;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.Calendar;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
@@ -22,48 +21,35 @@ import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.util.JRLoader;
 import br.com.coffeebeans.util.Conexao;
 
-@WebServlet("/GerarRelConsumoHorario")
-public class GerarRelConsumoHorario extends HttpServlet {
+/**
+ * Servlet implementation class GerarRelConsumoMensal
+ */
+@WebServlet("/GerarRelConsumoMensal")
+public class GerarRelConsumoMensal extends HttpServlet {
+	
+	private String dataString;
+	private Connection conectar;
 
 	private static final long serialVersionUID = 1L;
-	private Timestamp dataIniStamp;
-	private String dataIniString;
-	private Timestamp dataFimStamp;
-	private String dataFimString;
-	private Connection conectar;
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+	
 		try {
 
-			dataIniString = request.getParameter("hora-inicial");
-			dataFimString = request.getParameter("hora-final");
+			dataString = request.getParameter("mes");
 			
-			dataIniString=dataIniString.replace("T"," ");
-			dataFimString=dataFimString.replace("T"," ");
-			
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			sdf.setLenient(false);
-
-			Calendar c = Calendar.getInstance();
-
-			c.setTime(sdf.parse(dataIniString));
-			dataIniStamp = new Timestamp(c.getTimeInMillis());
-
-			c.setTime(sdf.parse(dataFimString));
-			dataFimStamp = new Timestamp(c.getTimeInMillis());
-
 			conectar = Conexao.conectar("mysql");
 
 			ServletContext context = getServletContext();
 			byte[] bytes = null;
+			
 
 			// carrega o arquivo jasper
 
 			JasperReport relatorioJasper = (JasperReport) JRLoader
 					.loadObjectFromFile(context
-							.getRealPath("/WEB-INF/RelConsumoHorario.jasper"));
+							.getRealPath("/WEB-INF/RelConsumoMensal.jasper"));
 
 			// Na variavel pathJasper ficara o caminho do diretório para
 			// os relatórios compilados (.jasper)
@@ -77,9 +63,8 @@ public class GerarRelConsumoHorario extends HttpServlet {
 
 			// parâmetros
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
-			parametros.put("dtHoraIni", dataIniStamp);
-			parametros.put("dtHoraFim", dataFimStamp);
-
+			parametros.put("ano-mes", dataString);
+			
 			// direciona a saída do relatório para um stream
 			bytes = JasperRunManager.runReportToPdf(relatorioJasper,
 					parametros, conectar);
@@ -128,4 +113,6 @@ public class GerarRelConsumoHorario extends HttpServlet {
 			}
 		}
 	}
+
+
 }

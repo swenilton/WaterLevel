@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -26,11 +25,8 @@ import br.com.coffeebeans.util.Conexao;
 public class GerarRelConsumoDiario extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	ResultSet rs;
-	Date dataIniDate;
-	Date dataFimDate;
-	String dataIniString;
-	String dataFimString;
+	private String dataIniString;
+	private String dataFimString;
 	
 	private Connection conectar;
 
@@ -41,12 +37,6 @@ public class GerarRelConsumoDiario extends HttpServlet {
 			dataIniString = request.getParameter("data-inicio");
 			dataFimString = request.getParameter("data-fim");
 
-			dataIniDate=new SimpleDateFormat("dd/MM/yyyy").parse(dataIniString);
-			dataFimDate=new SimpleDateFormat("dd/MM/yyyy").parse(dataFimString);
-			
-			dataIniString=new SimpleDateFormat("yyyy-MM-dd").format(dataIniDate);
-			dataFimString=new SimpleDateFormat("yyyy-MM-dd").format(dataFimDate);
-			
 			conectar = Conexao.conectar("mysql");
 
 			ServletContext context = getServletContext();
