@@ -8,10 +8,11 @@ import java.util.Date;
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 
 public interface IAcionamentoDAO {
 	public void cadastrar(Acionamento acionamento) throws SQLException,
-			AcionamentoJaExistenteException;
+			AcionamentoJaExistenteException, RepositorioException;
 
 	public ArrayList<Acionamento> listar() throws SQLException,
 			ListaVaziaException;

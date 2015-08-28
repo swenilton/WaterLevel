@@ -70,8 +70,9 @@ public class ServletController extends HttpServlet {
 	public ServletController() {
 		try {
 			fachada = Fachada.getInstance();
-//			main = new SerialTest();
-//			main.initialize();
+			/*
+			main = new SerialTest();
+			main.initialize();
 			Thread t = new Thread() {
 				public void run() {
 					// the following line will keep this app alive for 1000
@@ -86,6 +87,7 @@ public class ServletController extends HttpServlet {
 			};
 			t.start();
 			System.out.println("Started");
+			*/
 		} catch (Exception e) {
 			System.out.println("Erro ao instanciar Fachada => "
 					+ e.getMessage());
@@ -600,6 +602,14 @@ public class ServletController extends HttpServlet {
 				erros.add("Erro ao alterar bomba => " + e.getMessage());
 			}
 			url = "/bomba.jsp";
+		} else if (acao.equals("consumoPorHora")) {
+			
+			try {
+				
+			} catch (Exception e) {
+				erros.add("Erro ao alterar bomba => " + e.getMessage());
+			}
+			url = "/consumo-periodico.jsp";
 		} else {
 			System.out.println("Erro");
 			url = "/home.jsp";

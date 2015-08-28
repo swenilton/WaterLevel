@@ -2,11 +2,14 @@ package br.com.coffeebeans.atividade;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.AtividadeJaExistenteException;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
+import br.com.coffeebeans.fachada.Fachada;
 
 public class ControladorAtividadeRealizada {
 	private IAtividadeRealizadaDAO iAtividadeRealizada;
@@ -17,7 +20,8 @@ public class ControladorAtividadeRealizada {
 
 	public void cadastrar(AtividadeRealizada atividadeRealizada)
 			throws SQLException, AtividadeJaExistenteException,
-			ViolacaoChaveEstrangeiraException, AtividadeNaoEncontradaException {
+			ViolacaoChaveEstrangeiraException, AtividadeNaoEncontradaException,
+			RepositorioException {
 
 		if (atividadeRealizada == null) {
 			throw new NullPointerException();
@@ -30,23 +34,35 @@ public class ControladorAtividadeRealizada {
 				|| atividadeRealizada.getDataHoraInicio().equals(
 						atividadeRealizada.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
+					"ImpossÃ­vel a data hora de inicio ser maior ou igual a data hora fim");
 
 		}
 		iAtividadeRealizada.cadastrar(atividadeRealizada);
 	}
 
-	public ArrayList<AtividadeRealizada> listar() throws SQLException,
-			ListaVaziaException {
-		if (iAtividadeRealizada.listar().isEmpty()) {
-			throw new ListaVaziaException();
+	public List<AtividadeRealizada> listar() throws SQLException,
+			ListaVaziaException, RepositorioException {
+		List<AtividadeRealizada> ar = iAtividadeRealizada.listar();
+		List<AtividadeRealizada> ar2 = new ArrayList<AtividadeRealizada>();
+		try {
+			Fachada f = Fachada.getInstance();
+			for (AtividadeRealizada atividadeRealizada : ar) {
+				ar2.add(new AtividadeRealizada(
+						f.atividadeProcurar(atividadeRealizada.getIdAtividade()),
+						atividadeRealizada.getDataHoraInicio(),
+						atividadeRealizada.getDataHoraFim(), f
+								.usuarioProcurar(atividadeRealizada
+										.getIdUsuario()), atividadeRealizada
+								.getGasto()));
+			}
+		} catch (Exception e) {
+			throw new RepositorioException(e);
 		}
-		return iAtividadeRealizada.listar();
-
+		return ar2;
 	}
 
 	public AtividadeRealizada procurar(int id) throws SQLException,
-			AtividadeNaoEncontradaException {
+			AtividadeNaoEncontradaException, RepositorioException {
 		if (iAtividadeRealizada.procurar(id) == null) {
 			throw new AtividadeNaoEncontradaException();
 		}
@@ -55,7 +71,7 @@ public class ControladorAtividadeRealizada {
 	}
 
 	public AtividadeRealizada procurar(String descricao) throws SQLException,
-			AtividadeNaoEncontradaException {
+			AtividadeNaoEncontradaException, RepositorioException {
 		if (iAtividadeRealizada.procurar(descricao) == null) {
 			throw new AtividadeNaoEncontradaException();
 		}
@@ -63,7 +79,8 @@ public class ControladorAtividadeRealizada {
 	}
 
 	public void atualizar(AtividadeRealizada atividadeRealizada)
-			throws AtividadeNaoEncontradaException, SQLException {
+			throws AtividadeNaoEncontradaException, SQLException,
+			RepositorioException {
 
 		if (atividadeRealizada == null) {
 			throw new NullPointerException();
@@ -74,18 +91,40 @@ public class ControladorAtividadeRealizada {
 				|| atividadeRealizada.getDataHoraInicio().equals(
 						atividadeRealizada.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
+					"ImpossÃ­vel a data hora de inicio ser maior ou igual a data hora fim");
 
 		}
 		iAtividadeRealizada.atualizar(atividadeRealizada);
 	}
 
 	public void excluir(int id) throws AtividadeNaoEncontradaException,
-			SQLException {
+			SQLException, RepositorioException {
 		if (iAtividadeRealizada.procurar(id) == null) {
 			throw new AtividadeNaoEncontradaException();
 		} else {
 			iAtividadeRealizada.excluir(id);
 		}
+	}
+
+	public List<AtividadeRealizada> getUltimasAtividades(int idUsuario)
+			throws RepositorioException, SQLException {
+		List<AtividadeRealizada> ar = iAtividadeRealizada
+				.getUltimasAtividades(idUsuario);
+		List<AtividadeRealizada> ar2 = new ArrayList<AtividadeRealizada>();
+		try {
+			Fachada f = Fachada.getInstance();
+			for (AtividadeRealizada atividadeRealizada : ar) {
+				ar2.add(new AtividadeRealizada(
+						f.atividadeProcurar(atividadeRealizada.getIdAtividade()),
+						atividadeRealizada.getDataHoraInicio(),
+						atividadeRealizada.getDataHoraFim(), f
+								.usuarioProcurar(atividadeRealizada
+										.getIdUsuario()), atividadeRealizada
+								.getGasto()));
+			}
+		} catch (Exception e) {
+			throw new RepositorioException(e);
+		}
+		return ar2;
 	}
 }

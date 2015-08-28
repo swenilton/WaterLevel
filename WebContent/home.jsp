@@ -1,3 +1,9 @@
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="br.com.coffeebeans.acionamento.Acionamento"%>
+<%@page import="br.com.coffeebeans.usuario.Usuario"%>
+<%@page import="br.com.coffeebeans.atividade.AtividadeRealizada"%>
 <%@page import="br.com.coffeebeans.util.Erro"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -5,6 +11,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="pt-BR" />
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -24,42 +32,42 @@
 		$('#caixa1.skill div').load('.inner', geraCaixa1());
 		$('#caixa2.skill div').load('.inner', geraCaixa2());
 	});
+	/*
+	 $(function() {
+	 setInterval(function() {
+	 $.post("ctrl?acao=nivel", function(retorno) {
+	 //valor = retorno;
+	 geraCaixa1(parseFloat(retorno));
+	 });
+	 geraCaixa2();
+	 }, 2000);
+	 });
 
-	$(function() {
-		setInterval(function() {
-			$.post("ctrl?acao=nivel", function(retorno) {
-				//valor = retorno;
-				geraCaixa1(parseFloat(retorno));
-			});
-			geraCaixa2();
-		}, 2000);
-	});
-
-	function geraCaixa1(nivel) {
-		var skillBar = $('#caixa1.skill div').siblings().find('.inner');
-		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
-		var profundidade = 19;
-		var altura = profundidade - nivel;
-		var percent = (altura / profundidade) * 100;
-		var capacidade = 3.14 * (10 * 10 * profundidade);
-		var qtd = capacidade * ((altura / profundidade) * 100);
-		$('#capacidade').text(capacidade + " ml");
-		$('#qtd').text(qtd.toFixed(2) / 100 + " ml");
-		if (nivel > 0 && percent < 101) {
-			var skillVal = percent.toFixed(2) + "%";
-			$('#progress').html("<h1>" + skillVal + "</h1>");
-			$(skillBar).animate({
-				height : skillVal
-			}, 1000);
-		} else {
-			$('#progress').html("<h1>Aguarde...</h1>");
-			//$('#progress').html("<br /><img src='img/aguarde3.gif' />");
-			$(skillBar).animate({
-				height : 0
-			}, 1000);
-		}
-	}
-
+	 function geraCaixa1(nivel) {
+	 var skillBar = $('#caixa1.skill div').siblings().find('.inner');
+	 //var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
+	 var profundidade = 19;
+	 var altura = profundidade - nivel;
+	 var percent = (altura / profundidade) * 100;
+	 var capacidade = 3.14 * (10 * 10 * profundidade);
+	 var qtd = capacidade * ((altura / profundidade) * 100);
+	 $('#capacidade').text(capacidade + " ml");
+	 $('#qtd').text(qtd.toFixed(2) / 100 + " ml");
+	 if (nivel > 0 && percent < 101) {
+	 var skillVal = percent.toFixed(2) + "%";
+	 $('#progress').html("<h1>" + skillVal + "</h1>");
+	 $(skillBar).animate({
+	 height : skillVal
+	 }, 1000);
+	 } else {
+	 $('#progress').html("<h1>Aguarde...</h1>");
+	 //$('#progress').html("<br /><img src='img/aguarde3.gif' />");
+	 $(skillBar).animate({
+	 height : 0
+	 }, 1000);
+	 }
+	 }
+	 */
 	function geraCaixa2() {
 		var skillBar = $('#caixa2.skill div').siblings().find('.inner');
 		var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
@@ -105,8 +113,15 @@
 </script>
 </head>
 <%
-	if (request.getSession().getAttribute("usuarioLogado") == null) {
+	Fachada f = Fachada.getInstance();
+	List<AtividadeRealizada> ultimasAtividades = new ArrayList<AtividadeRealizada>();
+	List<Acionamento> acionamentos = f.acionamentoListar();
+	Usuario u = (Usuario) request.getSession().getAttribute(
+			"usuarioLogado");
+	if (u == null) {
 		response.sendRedirect("index.jsp");
+	} else {
+		ultimasAtividades = f.getUltimasAtividades(u.getId());
 	}
 %>
 <body>
@@ -359,23 +374,23 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>Escovar os Dentes</td>
-											<td>10/04/2015 - 17:30</td>
-											<td>10/04/2015 - 17:35</td>
-											<td>1,75 L</td>
-										</tr>
-										<tr>
-											<td>Tomar Banho</td>
-											<td>10/04/2015 - 17:36</td>
-											<td>10/04/2015 - 17:48</td>
-											<td>13,15 L</td>
-										</tr>
+										<c:forEach var="atividade" items="<%=ultimasAtividades%>">
+											<tr>
+												<td>${atividade.atividade.descricao}</td>
+												<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+														value="${atividade.dataHoraInicio}" /></td>
+												<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+														value="${atividade.dataHoraFim}" /></td>
+												<td><fmt:formatNumber value="${atividade.gasto}"
+														minFractionDigits="2" />L</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<!-- fim painel atividades -->
+						<a href="#" class="pull-right btn btn-default">Ver mais</a>
 					</div>
 					<!-- fim coluna -->
 					<div class="col-md-6">
@@ -397,21 +412,37 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>10/04/2015 - 08:35</td>
-											<td>10/04/2015 - 10:20</td>
-											<td>1:45 hrs</td>
-										</tr>
-										<tr>
-											<td>08/04/2015 - 14:30</td>
-											<td>08/04/2015 - 15:30</td>
-											<td>1:00 hrs</td>
-										</tr>
+									<% SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); %>
+										<%for(int i = 0; i < acionamentos.size(); i++){ %>
+											<tr>
+												<td><%=sdf.format(acionamentos.get(i).getDataHoraInicio()) %></td>
+												<td><%=sdf.format(acionamentos.get(i).getDataHoraFim()) %></td>
+												<%
+													Calendar dataInicio = Calendar.getInstance();
+											        dataInicio.setTime(acionamentos.get(i).getDataHoraInicio());
+											        Calendar dataFinal = Calendar.getInstance();
+											        dataFinal.setTime(acionamentos.get(i).getDataHoraFim());
+											        long diff = dataFinal.getTimeInMillis() - dataInicio.getTimeInMillis();
+											        long hours = (60 * 60 * 1000);
+											        long minutos = (60 * 1000);
+											        long diffHoras = diff / hours;
+											        long diffMinutos = diffHoras / minutos;
+											        long diffHorasMinutos = (diff % hours) / (60 * 1000);
+											        long diffHorasMinutosSegundos = (diff % minutos) / (1000);
+											        Calendar resultado = Calendar.getInstance();
+											        resultado.set(Calendar.HOUR_OF_DAY, Integer.parseInt(Long.toString(diffHoras)));
+											        resultado.set(Calendar.MINUTE, Integer.parseInt(Long.toString(diffHorasMinutos)));
+											        resultado.set(Calendar.SECOND, Integer.parseInt(Long.toString(diffHorasMinutosSegundos)));
+												%>
+												<td><%=sdf.format(new Date(resultado.getTimeInMillis()))%></td>
+											</tr>
+											<%} %>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<!-- fim painel atividades -->
+						<a href="#" class="pull-right btn btn-default">Ver mais</a>
 					</div>
 					<!-- fim coluna -->
 				</div>

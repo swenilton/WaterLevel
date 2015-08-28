@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.RepositorioException;
 
 public class ControladorAcionamento {
 	private IAcionamentoDAO iAcionamento;
@@ -16,14 +17,14 @@ public class ControladorAcionamento {
 	}
 
 	public void cadastrar(Acionamento acionamento) throws SQLException,
-			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException {
+			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException, RepositorioException {
 		if (acionamento == null) {
 			throw new NullPointerException();
 		}
 		if (iAcionamento.procurar(acionamento.getId()) != null) {
 			throw new AcionamentoJaExistenteException();
 		}
-		// se já tiver um acionamento nesse instante
+		// se jï¿½ tiver um acionamento nesse instante
 		if (iAcionamento.procurarIni(acionamento.getDataHoraInicio(),
 				acionamento.getDataHoraInicio()) != null) {
 			throw new AcionamentoJaExistenteException();
@@ -32,16 +33,13 @@ public class ControladorAcionamento {
 				|| acionamento.getDataHoraInicio().equals(
 						acionamento.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
+					"Impossï¿½vel a data hora de inicio ser maior ou igual a data hora fim");
 		}
 		iAcionamento.cadastrar(acionamento);
 	}
 
 	public ArrayList<Acionamento> listar() throws SQLException,
 			ListaVaziaException {
-		if (iAcionamento.listar().isEmpty()) {
-			throw new ListaVaziaException();
-		}
 		return iAcionamento.listar();
 
 	}
@@ -81,7 +79,7 @@ public class ControladorAcionamento {
 		if (iAcionamento.procurar(acionamento.getId()) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
-		// se já tiver um acionamento nesse instante
+		// se jï¿½ tiver um acionamento nesse instante
 		if (iAcionamento.procurarIni(acionamento.getDataHoraInicio(),
 				acionamento.getDataHoraInicio()) != null) {
 			throw new AcionamentoJaExistenteException();
@@ -90,7 +88,7 @@ public class ControladorAcionamento {
 				|| acionamento.getDataHoraInicio().equals(
 						acionamento.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
+					"Impossï¿½vel a data hora de inicio ser maior ou igual a data hora fim");
 		}
 		iAcionamento.atualizar(acionamento);
 	}

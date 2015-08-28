@@ -13,23 +13,34 @@ public class AtividadeRealizada {
 	private Usuario usuario;
 	private int idUsuario;
 	private int idAtividade;
+	private double gasto;
 
 	public AtividadeRealizada(Atividade atividade, Date dataHoraInicio,
-			Date dataHoraFim, Usuario usuario) {
+			Date dataHoraFim, Usuario usuario, double gasto) {
 		super();
 		this.atividade = atividade;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
 		this.usuario = usuario;
+		this.gasto = gasto;
 	}
 
 	public AtividadeRealizada(Date dataHoraInicio, Date dataHoraFim,
-			int idUsuario, int idAtividade) {
+			int idUsuario, int idAtividade, double gasto) {
 		super();
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
 		this.idUsuario = idUsuario;
 		this.idAtividade = idAtividade;
+		this.gasto = gasto;
+	}
+
+	public double getGasto() {
+		return gasto;
+	}
+
+	public void setGasto(double gasto) {
+		this.gasto = gasto;
 	}
 
 	public int getIdUsuario() {

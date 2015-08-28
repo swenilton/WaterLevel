@@ -10,6 +10,7 @@ import java.util.Date;
 
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 import br.com.coffeebeans.exception.ListaVaziaException;
 import br.com.coffeebeans.util.Conexao;
@@ -24,39 +25,24 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 
 	@Override
 	public void cadastrar(Acionamento acionamento) throws SQLException,
-			AcionamentoJaExistenteException {
+			AcionamentoJaExistenteException, RepositorioException {
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		int id = 0;
 		try {
-			String sql = "INSERT INTO ACIONAMENTO(INICIO,DATA_HORA_FIM,ID_BOMBA)VALUES(?,?,?)";
+			String sql = "INSERT INTO ACIONAMENTO(INICIO ,DATA_HORA_FIM, ID_BOMBA) "
+					+ "VALUES(?, ?, ?)";
 			stmt = this.conexao.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio().getTime()));
 			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim().getTime()));
-			stmt.setInt(3, acionamento.getIdBomba());
+			stmt.setInt(3, acionamento.getBomba().getCodigo());
 			stmt.execute();
-
-			if (sistema.equals("mysql")) {
-				rs = stmt.getGeneratedKeys();
-			}
-
-			while (rs.next()) {
-
-				id = rs.getInt(1);
-			}
-			acionamento.setId(id);
 		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
 			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
-			System.out.println(exc.getMessage());
-
-			// throw new ViolacaoChaveEstrangeiraException();
-
+			throw new RepositorioException(exc);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
-			rs.close();
 		}
 	}
 

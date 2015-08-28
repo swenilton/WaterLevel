@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -38,11 +39,10 @@ public class AtividadeDAO implements IAtividadeDAO {
 		}
 	}
 	
-	public ArrayList<Atividade> listar() throws SQLException, RepositorioException {
-		ArrayList<Atividade> atividades = new ArrayList<Atividade>();
+	public List<Atividade> listar() throws SQLException, RepositorioException {
+		List<Atividade> atividades = new ArrayList<Atividade>();
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
+		ResultSet rs = null;		
 		try {
 			String sql = "SELECT * FROM ATIVIDADE";
 			stmt = this.connection.prepareStatement(sql);
@@ -76,7 +76,7 @@ public class AtividadeDAO implements IAtividadeDAO {
 				atividade = new Atividade(rs.getString("DESCRICAO"));
 				atividade.setId(rs.getInt("ID"));
 			} else {
-				throw new IllegalArgumentException("Atividade n„o encontrada");
+				throw new IllegalArgumentException("Atividade n√£o encontrada");
 			}
 		} catch (SQLException e) {
 			throw new RepositorioException(e);
@@ -127,5 +127,4 @@ public class AtividadeDAO implements IAtividadeDAO {
 			stmt.close();
 		}
 	}
-
 } 

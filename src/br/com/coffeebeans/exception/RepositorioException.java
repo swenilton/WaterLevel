@@ -6,11 +6,15 @@ public class RepositorioException extends Exception {
     private Exception exception;
 
     public RepositorioException(Exception exception) {
-        super("Exce��o encapsulada");
+        super("Exceçãoo encapsulada");
         this.exception = exception;
     }
 
-    public String getMessage() {
+    public RepositorioException(String message) {
+    	super("Exceçãoo encapsulada");
+	}
+
+	public String getMessage() {
         return exception.getMessage();
     }
 
