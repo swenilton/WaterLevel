@@ -111,7 +111,7 @@ public class Fachada {
 	}
 
 	public void acionamentoRemover(int id) throws SQLException,
-			AcionamentoNaoEncontradoException {
+			AcionamentoNaoEncontradoException, RepositorioException {
 		controladorAcionamento.excluir(id);
 	}
 
@@ -139,10 +139,20 @@ public class Fachada {
 			throws SQLException, ListaVaziaException, RepositorioException {
 		return controladorAtividadeRealizada.listar();
 	}
+	
+	public List<AtividadeRealizada> atividadeRealizadaListar(int id)
+			throws SQLException, ListaVaziaException, RepositorioException {
+		return controladorAtividadeRealizada.listar(id);
+	}
 
 	public ArrayList<Acionamento> acionamentoListar() throws SQLException,
-			ListaVaziaException {
+			ListaVaziaException, RepositorioException {
 		return controladorAcionamento.listar();
+	}
+
+	public ArrayList<Acionamento> getUltimosAcionamentos() throws SQLException,
+			ListaVaziaException, RepositorioException {
+		return controladorAcionamento.getUltimosAcionamentos();
 	}
 
 	public ArrayList<Bomba> bombaListar() throws SQLException,
@@ -175,7 +185,8 @@ public class Fachada {
 	}
 
 	public Acionamento acionamentoProcurar(int id)
-			throws AcionamentoNaoEncontradoException, SQLException {
+			throws AcionamentoNaoEncontradoException, SQLException,
+			RepositorioException {
 		return controladorAcionamento.procurar(id);
 	}
 
@@ -214,9 +225,9 @@ public class Fachada {
 		return controladorUsuario.login(usuario, senha);
 	}
 
-	public List<AtividadeRealizada> getUltimasAtividades(int idUsuario)
+	public List<AtividadeRealizada> getUltimasAtividades()
 			throws RepositorioException, SQLException {
-		return controladorAtividadeRealizada.getUltimasAtividades(idUsuario);
+		return controladorAtividadeRealizada.getUltimasAtividades();
 	}
 
 }

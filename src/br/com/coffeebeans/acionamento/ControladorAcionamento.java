@@ -8,6 +8,7 @@ import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
 import br.com.coffeebeans.exception.ListaVaziaException;
 import br.com.coffeebeans.exception.RepositorioException;
+import br.com.coffeebeans.fachada.Fachada;
 
 public class ControladorAcionamento {
 	private IAcionamentoDAO iAcionamento;
@@ -17,7 +18,8 @@ public class ControladorAcionamento {
 	}
 
 	public void cadastrar(Acionamento acionamento) throws SQLException,
-			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException, RepositorioException {
+			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException,
+			RepositorioException {
 		if (acionamento == null) {
 			throw new NullPointerException();
 		}
@@ -39,13 +41,36 @@ public class ControladorAcionamento {
 	}
 
 	public ArrayList<Acionamento> listar() throws SQLException,
-			ListaVaziaException {
-		return iAcionamento.listar();
+			ListaVaziaException, RepositorioException {
+		ArrayList<Acionamento> acs = iAcionamento.listar();
+		try {
+			for (Acionamento ac : acs) {
+				ac.setBomba(Fachada.getInstance()
+						.bombaProcurar(ac.getIdBomba()));
+			}
+		} catch (Exception e) {
+			throw new RepositorioException(e);
+		}
+		return acs;
+	}
 
+	public ArrayList<Acionamento> getUltimosAcionamentos() throws SQLException,
+			ListaVaziaException, RepositorioException {
+		ArrayList<Acionamento> acs = iAcionamento.getUltimosAcionamentos();
+		try {
+			for (Acionamento ac : acs) {
+				ac.setBomba(Fachada.getInstance()
+						.bombaProcurar(ac.getIdBomba()));
+			}
+		} catch (Exception e) {
+			throw new RepositorioException(e);
+		}
+		return acs;
 	}
 
 	public Acionamento procurar(int id)
-			throws AcionamentoNaoEncontradoException, SQLException {
+			throws AcionamentoNaoEncontradoException, SQLException,
+			RepositorioException {
 		if (iAcionamento.procurar(id) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
@@ -54,7 +79,8 @@ public class ControladorAcionamento {
 	}
 
 	public Acionamento procurarIni(Timestamp data1, Timestamp data2)
-			throws SQLException, AcionamentoNaoEncontradoException {
+			throws SQLException, AcionamentoNaoEncontradoException,
+			RepositorioException {
 		if (iAcionamento.procurarIni(data1, data2) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
@@ -63,7 +89,8 @@ public class ControladorAcionamento {
 	}
 
 	public Acionamento procurarFim(Timestamp data1, Timestamp data2)
-			throws SQLException, AcionamentoNaoEncontradoException {
+			throws SQLException, AcionamentoNaoEncontradoException,
+			RepositorioException {
 		if (iAcionamento.procurarIni(data1, data2) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
@@ -72,7 +99,8 @@ public class ControladorAcionamento {
 	}
 
 	public void atualizar(Acionamento acionamento) throws SQLException,
-			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException {
+			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException,
+			RepositorioException {
 		if (acionamento == null) {
 			throw new NullPointerException();
 		}
@@ -94,7 +122,7 @@ public class ControladorAcionamento {
 	}
 
 	public void excluir(int id) throws SQLException,
-			AcionamentoNaoEncontradoException {
+			AcionamentoNaoEncontradoException, RepositorioException {
 		if (iAcionamento.procurar(id) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		} else {

@@ -61,6 +61,27 @@ public class ControladorAtividadeRealizada {
 		return ar2;
 	}
 
+	public List<AtividadeRealizada> listar(int id) throws SQLException,
+			ListaVaziaException, RepositorioException {
+		List<AtividadeRealizada> ar = iAtividadeRealizada.listar(id);
+		List<AtividadeRealizada> ar2 = new ArrayList<AtividadeRealizada>();
+		try {
+			Fachada f = Fachada.getInstance();
+			for (AtividadeRealizada atividadeRealizada : ar) {
+				ar2.add(new AtividadeRealizada(
+						f.atividadeProcurar(atividadeRealizada.getIdAtividade()),
+						atividadeRealizada.getDataHoraInicio(),
+						atividadeRealizada.getDataHoraFim(), f
+								.usuarioProcurar(atividadeRealizada
+										.getIdUsuario()), atividadeRealizada
+								.getGasto()));
+			}
+		} catch (Exception e) {
+			throw new RepositorioException(e);
+		}
+		return ar2;
+	}
+
 	public AtividadeRealizada procurar(int id) throws SQLException,
 			AtividadeNaoEncontradaException, RepositorioException {
 		if (iAtividadeRealizada.procurar(id) == null) {
@@ -106,10 +127,10 @@ public class ControladorAtividadeRealizada {
 		}
 	}
 
-	public List<AtividadeRealizada> getUltimasAtividades(int idUsuario)
+	public List<AtividadeRealizada> getUltimasAtividades()
 			throws RepositorioException, SQLException {
 		List<AtividadeRealizada> ar = iAtividadeRealizada
-				.getUltimasAtividades(idUsuario);
+				.getUltimasAtividades();
 		List<AtividadeRealizada> ar2 = new ArrayList<AtividadeRealizada>();
 		try {
 			Fachada f = Fachada.getInstance();

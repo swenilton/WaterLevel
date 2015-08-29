@@ -15,21 +15,24 @@ public interface IAcionamentoDAO {
 			AcionamentoJaExistenteException, RepositorioException;
 
 	public ArrayList<Acionamento> listar() throws SQLException,
-			ListaVaziaException;
+			ListaVaziaException, RepositorioException;
 
 	public Acionamento procurar(int id) throws SQLException,
-			AcionamentoNaoEncontradoException;
+			AcionamentoNaoEncontradoException, RepositorioException;
 
 	public Acionamento procurarIni(Date data1, Date data2)
-			throws SQLException, AcionamentoNaoEncontradoException;
+			throws SQLException, AcionamentoNaoEncontradoException, RepositorioException;
 
 	public Acionamento procurarFim(Timestamp data1, Timestamp data2)
-			throws SQLException, AcionamentoNaoEncontradoException;
+			throws SQLException, AcionamentoNaoEncontradoException, RepositorioException;
 
 	public void atualizar(Acionamento acionamento)
 			throws AcionamentoNaoEncontradoException, SQLException;
 
 	public void excluir(int id) throws SQLException,
-			AcionamentoNaoEncontradoException;
+			AcionamentoNaoEncontradoException, RepositorioException;
+
+	public ArrayList<Acionamento> getUltimosAcionamentos() throws SQLException,
+			ListaVaziaException, RepositorioException;
 
 }

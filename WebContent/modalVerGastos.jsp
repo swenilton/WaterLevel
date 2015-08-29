@@ -1,13 +1,23 @@
+<%@page import="br.com.coffeebeans.usuario.Usuario"%>
+<%@page import="br.com.coffeebeans.atividade.AtividadeRealizada"%>
+<%@page import="br.com.coffeebeans.fachada.Fachada"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="pt-BR" />
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<meta charset="utf-8" />
 </head>
+<%
+	Fachada f = Fachada.getInstance();
+	Usuario u = (Usuario) request.getSession().getAttribute(
+			"usuarioLogado");
+%>
 <body>
-<div class="modal fade" id="ver-gastos" tabindex="-1" role="dialog"
+	<div class="modal fade" id="ver-gastos" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -16,10 +26,37 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<br />
+					<h4 class="modal-title" id="myModalLabel">Minhas Atividades Realizadas</h4>
 				</div>
 				<div class="modal-body">
-					<h2>Esta função será implementada na próxima versão.</h2>
+					<div class="panel panel-default">
+						<div class="panel-heading">Atividades</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Atividade</th>
+										<th>Início</th>
+										<th>Fim</th>
+										<th>Gasto</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="atividade" items="<%=f.atividadeRealizadaListar(u.getId())%>">
+										<tr>
+											<td>${atividade.atividade.descricao}</td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+													value="${atividade.dataHoraInicio}" /></td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+													value="${atividade.dataHoraFim}" /></td>
+											<td><fmt:formatNumber value="${atividade.gasto}"
+													minFractionDigits="2" />L</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>

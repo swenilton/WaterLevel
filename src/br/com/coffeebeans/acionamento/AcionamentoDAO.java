@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
@@ -32,8 +33,10 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 					+ "VALUES(?, ?, ?)";
 			stmt = this.conexao.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio().getTime()));
-			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim().getTime()));
+			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio()
+					.getTime()));
+			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim()
+					.getTime()));
 			stmt.setInt(3, acionamento.getBomba().getCodigo());
 			stmt.execute();
 		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
@@ -48,13 +51,13 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 
 	@Override
 	public ArrayList<Acionamento> listar() throws SQLException,
-			ListaVaziaException {
+			ListaVaziaException, RepositorioException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Acionamento acionamento=null;
+		Acionamento acionamento = null;
 		ArrayList<Acionamento> acionamentos = new ArrayList<Acionamento>();
 		try {
-			String sql = "SELECT * FROM ACIONAMENTO";
+			String sql = "SELECT * FROM ACIONAMENTO ORDER BY DATA_HORA_FIM DESC";
 			stmt = this.conexao.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
@@ -62,13 +65,43 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 			while (rs.next()) {
 				acionamento = new Acionamento(rs.getTimestamp("INICIO"),
 						rs.getTimestamp("DATA_HORA_FIM"), rs.getInt("ID_BOMBA"));
-				
+
 				acionamento.setId(rs.getInt("ID"));
 				acionamentos.add(acionamento);
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
+		} finally {
+			stmt.close();
+			rs.close();
+		}
+		return acionamentos;
+	}
+	
+	@Override
+	public ArrayList<Acionamento> getUltimosAcionamentos() throws SQLException,
+			ListaVaziaException, RepositorioException {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Acionamento acionamento = null;
+		ArrayList<Acionamento> acionamentos = new ArrayList<Acionamento>();
+		try {
+			String sql = "SELECT * FROM ACIONAMENTO ORDER BY DATA_HORA_FIM DESC LIMIT 3";
+			stmt = this.conexao.prepareStatement(sql);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				acionamento = new Acionamento(rs.getTimestamp("INICIO"),
+						rs.getTimestamp("DATA_HORA_FIM"), rs.getInt("ID_BOMBA"));
+
+				acionamento.setId(rs.getInt("ID"));
+				acionamentos.add(acionamento);
+			}
+
+		} catch (Exception e) {
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -78,7 +111,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 
 	@Override
 	public Acionamento procurar(int id) throws SQLException,
-			AcionamentoNaoEncontradoException {
+			AcionamentoNaoEncontradoException, RepositorioException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Acionamento acionamento = null;
@@ -96,7 +129,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 				acionamento.setId(rs.getInt("ID"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -105,8 +138,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 	}
 
 	@Override
-	public Acionamento procurarIni(Date data1, Date data2)
-			throws SQLException, AcionamentoNaoEncontradoException {
+	public Acionamento procurarIni(Date data1, Date data2) throws SQLException,
+			AcionamentoNaoEncontradoException, RepositorioException {
 		Acionamento acionamento = null;
 
 		PreparedStatement stmt = null;
@@ -125,7 +158,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 				acionamento.setId(rs.getInt("ID"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -136,7 +169,8 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 
 	@Override
 	public Acionamento procurarFim(Timestamp data1, Timestamp data2)
-			throws SQLException, AcionamentoNaoEncontradoException {
+			throws SQLException, AcionamentoNaoEncontradoException,
+			RepositorioException {
 		Acionamento acionamento = null;
 
 		PreparedStatement stmt = null;
@@ -155,7 +189,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 				acionamento.setId(rs.getInt("ID"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 			rs.close();
@@ -171,8 +205,10 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 		try {
 			String sql = "UPDATE ACIONAMENTO SET INICIO=?,DATA_HORA_FIM=?,ID_BOMBA=? WHERE ID=?";
 			stmt = this.conexao.prepareStatement(sql);
-			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio().getTime()));
-			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim().getTime()));
+			stmt.setTimestamp(1, new Timestamp(acionamento.getDataHoraInicio()
+					.getTime()));
+			stmt.setTimestamp(2, new Timestamp(acionamento.getDataHoraFim()
+					.getTime()));
 			stmt.setInt(3, acionamento.getIdBomba());
 			stmt.setInt(4, acionamento.getId());
 
@@ -190,7 +226,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 
 	@Override
 	public void excluir(int id) throws SQLException,
-			AcionamentoNaoEncontradoException {
+			AcionamentoNaoEncontradoException, RepositorioException {
 		PreparedStatement stmt = null;
 		try {
 			String sql = "DELETE FROM ACIONAMENTO WHERE ID=?";
@@ -198,7 +234,7 @@ public class AcionamentoDAO implements IAcionamentoDAO {
 			stmt.setInt(1, id);
 			stmt.execute();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new RepositorioException(e);
 		} finally {
 			stmt.close();
 		}

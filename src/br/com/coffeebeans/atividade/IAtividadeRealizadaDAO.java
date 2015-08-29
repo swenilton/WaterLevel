@@ -31,5 +31,8 @@ public interface IAtividadeRealizadaDAO {
 	public void excluir(int id) throws AtividadeNaoEncontradaException,
 			SQLException, RepositorioException;
 	
-	public List<AtividadeRealizada> getUltimasAtividades(int idUsuario) throws RepositorioException, SQLException;
+	public List<AtividadeRealizada> getUltimasAtividades() throws RepositorioException, SQLException;
+
+	public List<AtividadeRealizada> listar(int id) throws SQLException,
+			ListaVaziaException, RepositorioException;
 }

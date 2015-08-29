@@ -1,6 +1,3 @@
-<%@page import="java.util.Calendar"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="br.com.coffeebeans.acionamento.Acionamento"%>
 <%@page import="br.com.coffeebeans.usuario.Usuario"%>
 <%@page import="br.com.coffeebeans.atividade.AtividadeRealizada"%>
@@ -29,6 +26,7 @@
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
 <script type="text/javascript">
 	$(function() {
+		$('[data-toggle="tooltip"]').tooltip();
 		$('#caixa1.skill div').load('.inner', geraCaixa1());
 		$('#caixa2.skill div').load('.inner', geraCaixa2());
 	});
@@ -114,14 +112,11 @@
 </head>
 <%
 	Fachada f = Fachada.getInstance();
-	List<AtividadeRealizada> ultimasAtividades = new ArrayList<AtividadeRealizada>();
-	List<Acionamento> acionamentos = f.acionamentoListar();
+	List<Acionamento> acionamentos = f.getUltimosAcionamentos();
 	Usuario u = (Usuario) request.getSession().getAttribute(
 			"usuarioLogado");
 	if (u == null) {
 		response.sendRedirect("index.jsp");
-	} else {
-		ultimasAtividades = f.getUltimasAtividades(u.getId());
 	}
 %>
 <body>
@@ -367,6 +362,7 @@
 								<table class="table">
 									<thead>
 										<tr>
+											<th>Usuario</th>
 											<th>Atividade</th>
 											<th>Início</th>
 											<th>Fim</th>
@@ -374,8 +370,9 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="atividade" items="<%=ultimasAtividades%>">
-											<tr>
+										<c:forEach var="atividade" items="<%=f.getUltimasAtividades()%>">
+											<tr style="font-size:12px;">
+												<td class="center"><img src="${atividade.usuario.foto}" id="perfil" alt="${atividade.usuario.nome}" data-toggle="tooltip" data-placement="left" title="${atividade.usuario.nome}" /></td>
 												<td>${atividade.atividade.descricao}</td>
 												<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
 														value="${atividade.dataHoraInicio}" /></td>
@@ -390,7 +387,8 @@
 							</div>
 						</div>
 						<!-- fim painel atividades -->
-						<a href="#" class="pull-right btn btn-default">Ver mais</a>
+						<a href="#" class="pull-right btn btn-default" data-toggle="modal"
+								data-target="#ver-atividades">Ver mais</a>
 					</div>
 					<!-- fim coluna -->
 					<div class="col-md-6">
@@ -406,43 +404,30 @@
 								<table class="table">
 									<thead>
 										<tr>
+											<th>Bomba</th>																						
 											<th>Início</th>
 											<th>Fim</th>
 											<th>Tempo</th>
 										</tr>
 									</thead>
 									<tbody>
-									<% SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); %>
-										<%for(int i = 0; i < acionamentos.size(); i++){ %>
-											<tr>
-												<td><%=sdf.format(acionamentos.get(i).getDataHoraInicio()) %></td>
-												<td><%=sdf.format(acionamentos.get(i).getDataHoraFim()) %></td>
-												<%
-													Calendar dataInicio = Calendar.getInstance();
-											        dataInicio.setTime(acionamentos.get(i).getDataHoraInicio());
-											        Calendar dataFinal = Calendar.getInstance();
-											        dataFinal.setTime(acionamentos.get(i).getDataHoraFim());
-											        long diff = dataFinal.getTimeInMillis() - dataInicio.getTimeInMillis();
-											        long hours = (60 * 60 * 1000);
-											        long minutos = (60 * 1000);
-											        long diffHoras = diff / hours;
-											        long diffMinutos = diffHoras / minutos;
-											        long diffHorasMinutos = (diff % hours) / (60 * 1000);
-											        long diffHorasMinutosSegundos = (diff % minutos) / (1000);
-											        Calendar resultado = Calendar.getInstance();
-											        resultado.set(Calendar.HOUR_OF_DAY, Integer.parseInt(Long.toString(diffHoras)));
-											        resultado.set(Calendar.MINUTE, Integer.parseInt(Long.toString(diffHorasMinutos)));
-											        resultado.set(Calendar.SECOND, Integer.parseInt(Long.toString(diffHorasMinutosSegundos)));
-												%>
-												<td><%=sdf.format(new Date(resultado.getTimeInMillis()))%></td>
-											</tr>
-											<%} %>
+										<c:forEach var="ac" items="<%=acionamentos%>" varStatus="i">
+												<tr style="font-size:12px;">
+													<td>${ac.bomba.descricao}</td>
+													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+															value="${ac.dataHoraInicio}" /></td>
+													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+															value="${ac.dataHoraFim}" /></td>
+													<td>${ac.tempo}</td>
+												</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<!-- fim painel atividades -->
-						<a href="#" class="pull-right btn btn-default">Ver mais</a>
+						<a href="#" class="pull-right btn btn-default" data-toggle="modal"
+								data-target="#ver-acionamentos">Ver mais</a>
 					</div>
 					<!-- fim coluna -->
 				</div>
@@ -452,6 +437,101 @@
 		<!-- fim conteudo -->
 	</div>
 	<!-- fim container -->
+	<div class="modal fade" id="ver-atividades" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Ver Atividades Realizadas</h4>
+				</div>
+				<div class="modal-body">
+					<div class="panel panel-default">
+						<div class="panel-heading">Atividades</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Usuario</th>
+										<th>Atividade</th>
+										<th>Início</th>
+										<th>Fim</th>
+										<th>Gasto</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="atividade" items="<%=f.atividadeRealizadaListar()%>">
+										<tr>
+											<td class="center"><img src="${atividade.usuario.foto}" id="perfil" alt="${atividade.usuario.nome}" data-toggle="tooltip" data-placement="left" title="${atividade.usuario.nome}" /></td>
+											<td>${atividade.atividade.descricao}</td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+													value="${atividade.dataHoraInicio}" /></td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+													value="${atividade.dataHoraFim}" /></td>
+											<td><fmt:formatNumber value="${atividade.gasto}"
+													minFractionDigits="2" />L</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="ver-acionamentos" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Ver Acionamentos</h4>
+				</div>
+				<div class="modal-body">
+					<div class="panel panel-default">
+							<div class="panel-heading">Acionamentos</div>
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Bomba</th>
+											<th>Início</th>
+											<th>Fim</th>
+											<th>Tempo</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="ac" items="<%=f.acionamentoListar()%>" varStatus="i">
+												<tr>
+													<td>${ac.bomba.descricao}</td>
+													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+															value="${ac.dataHoraInicio}" /></td>
+													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+															value="${ac.dataHoraFim}" /></td>
+													<td>${ac.tempo}</td>
+												</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<jsp:include page="rodape.jsp"></jsp:include>
 </body>
 </html>

@@ -166,7 +166,7 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 		AtividadeRealizada atividadeRealizada = null;
 		List<AtividadeRealizada> atividades = new ArrayList<AtividadeRealizada>();
 		try {
-			String sql = "SELECT * FROM ATIVIDADE_REALIZADA";
+			String sql = "SELECT * FROM ATIVIDADE_REALIZADA ORDER BY DATA_HORA_FIM";
 			stmt = this.conexao.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -188,16 +188,46 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 		return atividades;
 	}
 
-	public List<AtividadeRealizada> getUltimasAtividades(int idUsuario)
+	@Override
+	public List<AtividadeRealizada> listar(int id) throws SQLException,
+			ListaVaziaException, RepositorioException {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		AtividadeRealizada atividadeRealizada = null;
+		List<AtividadeRealizada> atividades = new ArrayList<AtividadeRealizada>();
+		try {
+			String sql = "SELECT * FROM ATIVIDADE_REALIZADA WHERE ID_USUARIO = ? ORDER BY DATA_HORA_FIM";
+			stmt = this.conexao.prepareStatement(sql);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				atividadeRealizada = new AtividadeRealizada(
+						rs.getTimestamp("DATA_HORA_INICIO"),
+						rs.getTimestamp("DATA_HORA_FIM"),
+						rs.getInt("ID_USUARIO"), rs.getInt("ID_ATIVIDADE"),
+						rs.getDouble("GASTO"));
+				atividadeRealizada.setId(rs.getInt("ID"));
+				atividades.add(atividadeRealizada);
+			}
+
+		} catch (Exception e) {
+			throw new RepositorioException(e);
+		} finally {
+			stmt.close();
+			rs.close();
+		}
+		return atividades;
+	}
+
+	public List<AtividadeRealizada> getUltimasAtividades()
 			throws RepositorioException, SQLException {
 		List<AtividadeRealizada> atividades = new ArrayList<AtividadeRealizada>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		AtividadeRealizada atividadeRealizada = null;
 		try {
-			String sql = "SELECT * FROM ATIVIDADE_REALIZADA WHERE ID_USUARIO = ? ORDER BY DATA_HORA_FIM DESC LIMIT 3";
+			String sql = "SELECT * FROM ATIVIDADE_REALIZADA ORDER BY DATA_HORA_FIM DESC LIMIT 3";
 			stmt = this.conexao.prepareStatement(sql);
-			stmt.setInt(1, idUsuario);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				atividadeRealizada = new AtividadeRealizada(
