@@ -295,7 +295,7 @@ div#background3 {
 				<input type="hidden" name="acao" value="login" />
 				<div class="form-group">
 					<input type="text" class="form-control" id="usuario" name="usuario"
-						placeholder="Email ou Usuario" required="required" />
+						placeholder="Email ou Usuario" required="required" autofocus="autofocus"/>
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" id="senha" name="senha"

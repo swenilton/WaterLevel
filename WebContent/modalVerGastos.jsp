@@ -15,6 +15,9 @@
 	Fachada f = Fachada.getInstance();
 	Usuario u = (Usuario) request.getSession().getAttribute(
 			"usuarioLogado");
+	if (u == null) {
+		response.sendRedirect("index.jsp");
+	}
 %>
 <body>
 	<div class="modal fade" id="ver-gastos" tabindex="-1" role="dialog"
@@ -60,6 +63,10 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+					<div class="btn-group pull-left" role="group">
+						<button type="button" class="btn btn-default">Exportar</button>
+						<button type="button" class="btn btn-default">Imprimir</button>
+					</div>
 				</div>
 			</div>
 		</div>

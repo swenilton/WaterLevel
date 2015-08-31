@@ -31,13 +31,9 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setDouble(3, bomba.getPotencia());
 			stmt.setDouble(4, bomba.getVazao());
 			stmt.setString(5, bomba.getAcionamento());
-
 			stmt.setInt(6, bomba.getRepositorioEnche().getId());
 			stmt.setInt(7, bomba.getRepositorioSeca().getId());
 			stmt.execute();
-		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
-			ViolacaoChaveEstrangeiraException exc = new ViolacaoChaveEstrangeiraException();
-			System.out.println(exc.getMessage());
 		} catch (Exception e) {
 			throw new RepositorioException(e);
 		} finally {
@@ -114,6 +110,32 @@ public class BombaDAO implements IBombaDAO {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 
+			if (rs.next()) {
+				bomba = new Bomba(rs.getString("DESCRICAO"),
+						rs.getString("STATUS"), rs.getDouble("POTENCIA"),
+						rs.getDouble("VAZAO"), rs.getString("ACIONAMENTO"),
+						rs.getInt("ID_REPOSITORIO_ENC"));
+				bomba.setCodigo(rs.getInt("ID"));
+				bomba.setIdRepositorioSeca(rs.getInt("ID_REPOSITORIO_SEC"));
+			}
+		} catch (Exception e) {
+			throw new SQLException(e);
+		} finally {
+			stmt.close();
+			rs.close();
+		}
+		return bomba;
+	}
+	
+	public Bomba procurarPorRepositorio(int idRepositorio) throws SQLException {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Bomba bomba = null;
+		try {
+			String sql = "SELECT * FROM BOMBA WHERE ID_REPOSITORIO_ENC = ?";
+			stmt = this.connection.prepareStatement(sql);
+			stmt.setInt(1, idRepositorio);
+			rs = stmt.executeQuery();
 			if (rs.next()) {
 				bomba = new Bomba(rs.getString("DESCRICAO"),
 						rs.getString("STATUS"), rs.getDouble("POTENCIA"),

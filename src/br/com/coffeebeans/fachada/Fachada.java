@@ -139,7 +139,7 @@ public class Fachada {
 			throws SQLException, ListaVaziaException, RepositorioException {
 		return controladorAtividadeRealizada.listar();
 	}
-	
+
 	public List<AtividadeRealizada> atividadeRealizadaListar(int id)
 			throws SQLException, ListaVaziaException, RepositorioException {
 		return controladorAtividadeRealizada.listar(id);
@@ -193,6 +193,11 @@ public class Fachada {
 	public Bomba bombaProcurar(int id) throws SQLException,
 			BombaNaoEncontradaException {
 		return controladorBomba.procurar(id);
+	}
+
+	public Bomba bombaProcurarPorRepositorio(int idRepositorio) throws SQLException,
+			BombaNaoEncontradaException {
+		return controladorBomba.procurarPorRepositorio(idRepositorio);
 	}
 
 	public Repositorio repositorioProcurar(int id) throws SQLException,

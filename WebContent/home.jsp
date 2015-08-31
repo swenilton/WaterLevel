@@ -179,7 +179,13 @@
 		<!-- fim container -->
 	</nav>
 	<jsp:include page="modalAlterarUsuario.jsp"></jsp:include>
+	<%
+		if (u != null) {
+	%>
 	<jsp:include page="modalVerGastos.jsp"></jsp:include>
+	<%
+		}
+	%>
 	<jsp:include page="modalVerRank.jsp"></jsp:include>
 	<div class="container">
 		<div class="conteudo">
@@ -197,154 +203,133 @@
 			<div id="msg" style="display: none;"></div>
 			<!-- abas -->
 			<ul class="nav nav-tabs grupo-abas">
-				<li role="presentation" class="active"><a href="#caixa1"
-					data-toggle="tab" aria-controls="caixa1" role="tab">Caixa 1</a></li>
-				<li role="presentation"><a href="#caixa2" data-toggle="tab"
-					aria-controls="caixa2" role="tab">Caixa 2</a></li>
+				<c:forEach var="repositorio" items="<%=f.repositorioListar()%>"
+					varStatus="id">
+					<li role="presentation" class="${id.count == 1 ? 'active' : '' }"><a
+						href="#${repositorio.id }" data-toggle="tab"
+						aria-controls="${repositorio.id }" role="tab">${repositorio.descricao }</a></li>
+				</c:forEach>
 			</ul>
 			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active" id="caixa1">
-					<section class="caixa">
-						<div class="row">
-							<div class="col-md-6">
-								<div class='skill' id="caixa1">
-									<div class='outer'>
-										<div class='inner'>
-											<div></div>
+				<c:forEach var="repositorio" items="<%=f.repositorioListar()%>"
+					varStatus="id">
+					<div role="tabpanel"
+						class="tab-pane fade in ${id.count == 1 ? 'active' : '' }"
+						id="${repositorio.id }">
+						<section class="caixa">
+							<div class="row">
+								<div class="col-md-6">
+									<div class='skill' id="caixa1">
+										<div class='outer'>
+											<div class='inner'>
+												<div></div>
+											</div>
+											<div class="progress" id="progress"></div>
 										</div>
-										<div class="progress" id="progress"></div>
+										<div id='caixa'>
+											<img src='img/caixa-800px.png' class="img-responsive"
+												alt="Imagem ilustrativa do nivél de água" />
+										</div>
 									</div>
-									<div id='caixa'>
-										<img src='img/caixa-800px.png' class="img-responsive"
-											alt="Imagem ilustrativa do nivél de água" />
-									</div>
+									<!-- fim skill -->
 								</div>
-								<!-- fim skill -->
+								<div class="col-md-6">
+									<div class="panel panel-default informacoes">
+										<div class="panel-heading">Informações em tempo real</div>
+										<div class="table-responsive">
+											<table class="table">
+												<tr>
+													<td class="tdd">Repositorio:</td>
+													<td class="tde">${repositorio.descricao }</td>
+												</tr>
+												<tr>
+													<td class="tdd">Capacidade:</td>
+													<td class="tde"><fmt:formatNumber
+															value="${repositorio.capacidade }" minFractionDigits="2" />L</td>
+												</tr>
+												<tr>
+													<td class="tdd">Quantidade de água:</td>
+													<td class="tde" id="qtd"></td>
+												</tr>
+												<tr>
+													<td class="tdd">Gasto Hoje:</td>
+													<td class="tde">250 L</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+
+									<div class="panel panel-default bomba">
+										<div class="panel-heading">
+											Acionamento da bomba
+											<ul class="nav nav-pills pull-right" id="tab">
+												<li role="presentation" class="active"><a href="#auto"
+													onclick="acionamento('auto');" data-toggle="pill"
+													aria-controls="auto" role="tab">Automático</a></li>
+												<li role="presentation"><a href="#manual"
+													onclick="acionamento('manual');" data-toggle="pill"
+													aria-controls="manual" role="tab">Manual</a></li>
+											</ul>
+										</div>
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane fade in active"
+												id="auto">
+												<form class="form-inline">
+													<br />
+													<div class="row">
+														<div class="form-group col-md-10">
+															<label for="limite-max" class="col-md-4">Limite
+																Max</label>
+															<div class="input-group col-md-6">
+																<input type="number" class="form-control"
+																	placeholder="Litros" value="${repositorio.limiteMaximo }">
+																<div class="input-group-addon">litros</div>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="form-group col-md-10">
+															<label for="limite-min" class="col-md-4">Limite
+																Min</label>
+															<div class="input-group col-md-6">
+																<input type="number" class="form-control"
+																	placeholder="Litros" value="${repositorio.limiteMinimo }">
+																<div class="input-group-addon">litros</div>
+															</div>															
+														</div>
+														<div class="form-group col-md-2">
+															<input type="submit" class="btn btn-success"
+																value="Salvar" />
+														</div>
+													</div>
+												</form>
+											</div>
+											<div role="tabpanel" class="tab-pane fade" id="manual">
+												<form class="form-inline">
+													<input type="hidden" name="acao" value="defLimiteMax" />
+													<div class="form-group form-grupo">
+														<label for="limite-max">Limite Max</label> <input
+															type="text" class="form-control" id="limite-max"
+															placeholder="Litros">
+													</div>
+													<button type="button" class="btn btn-danger btn-salvar"
+														id="liga" onclick="defineLimiteMax();">Ligar
+														Bomba</button>
+												</form>
+											</div>
+										</div>
+									</div>
+									<!-- fim painel bomba -->
+
+								</div>
+								<!-- fim coluna -->
 							</div>
-							<div class="col-md-6">
-								<div class="panel panel-default informacoes">
-									<div class="panel-heading">Informações em tempo real</div>
-									<div class="table-responsive">
-										<table class="table">
-											<tr>
-												<td class="tdd">Repositorio:</td>
-												<td class="tde">Caixa Superior</td>
-											</tr>
-											<tr>
-												<td class="tdd">Capacidade:</td>
-												<td class="tde" id="capacidade"></td>
-											</tr>
-											<tr>
-												<td class="tdd">Quantidade de água:</td>
-												<td class="tde" id="qtd"></td>
-											</tr>
-											<tr>
-												<td class="tdd">Gasto Hoje:</td>
-												<td class="tde">250 L</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="panel panel-default bomba">
-									<div class="panel-heading">
-										Acionamento da bomba
-										<ul class="nav nav-pills pull-right" id="tab">
-											<li role="presentation" class="active"><a href="#auto"
-												onclick="acionamento('auto');" data-toggle="pill"
-												aria-controls="auto" role="tab">Automático</a></li>
-											<li role="presentation"><a href="#manual"
-												onclick="acionamento('manual');" data-toggle="pill"
-												aria-controls="manual" role="tab">Manual</a></li>
-										</ul>
-									</div>
-									<div class="tab-content">
-										<div role="tabpanel" class="tab-pane fade in active" id="auto">
-											<form class="form-inline">
-												<div class="form-group form-grupo">
-													<label for="limite-max">Limite Max</label> <input
-														type="text" class="form-control" id="limite-max"
-														placeholder="Litros">
-												</div>
-												<div class="form-group form-grupo">
-													<label for="limite-min">Limite Min </label> <input
-														type="text" class="form-control" id="limite-min"
-														placeholder="Litros">
-												</div>
-												<button type="submit" class="btn btn-success btn-salvar">Salvar</button>
-											</form>
-										</div>
-										<div role="tabpanel" class="tab-pane fade" id="manual">
-											<form class="form-inline">
-												<input type="hidden" name="acao" value="defLimiteMax" />
-												<div class="form-group form-grupo">
-													<label for="limite-max">Limite Max</label> <input
-														type="text" class="form-control" id="limite-max"
-														placeholder="Litros">
-												</div>
-												<button type="button" class="btn btn-danger btn-salvar"
-													id="liga" onclick="defineLimiteMax();">Ligar Bomba</button>
-											</form>
-										</div>
-									</div>
-								</div>
-								<!-- fim painel bomba -->
-							</div>
-							<!-- fim coluna -->
-						</div>
-						<!-- fim row -->
-					</section>
-					<!-- fim section caixa -->
-				</div>
+							<!-- fim row -->
+						</section>
+						<!-- fim section caixa -->
+					</div>
+				</c:forEach>
 				<!-- fim tab1 -->
-				<div role="tabpanel" class="tab-pane fade" id="caixa2">
-					<section class="caixa">
-						<div class="row">
-							<div class="col-md-6">
-								<div class='skill' id="caixa2">
-									<div class='outer'>
-										<div class='inner'>
-											<div></div>
-										</div>
-										<div class="progress" id="progress2"></div>
-									</div>
-									<div id='caixa'>
-										<img src='img/caixa-800px.png' class="img-responsive"
-											alt="Imagem ilustrativa do nivél de água" />
-									</div>
-								</div>
-								<!-- fim skill -->
-							</div>
-							<div class="col-md-6">
-								<div class="panel panel-default informacoes">
-									<div class="panel-heading">Informações em tempo real</div>
-									<div class="table-responsive">
-										<table class="table">
-											<tr>
-												<td class="tdd">Repositorio:</td>
-												<td class="tde">Caixa Subterrânea</td>
-											</tr>
-											<tr>
-												<td class="tdd">Capacidade:</td>
-												<td class="tde">8.000 L</td>
-											</tr>
-											<tr>
-												<td class="tdd">Quantidade de água:</td>
-												<td class="tde">5.000 L</td>
-											</tr>
-											<tr>
-												<td class="tdd">Gasto Hoje:</td>
-												<td class="tde">500 L</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- fim row -->
-					</section>
-					<!-- fim section caixa -->
-				</div>
-				<!-- fim tab 2 -->
 			</div>
 			<!-- fim tab content -->
 			<section class="ultimas-atividades">
@@ -370,9 +355,13 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="atividade" items="<%=f.getUltimasAtividades()%>">
-											<tr style="font-size:12px;">
-												<td class="center"><img src="${atividade.usuario.foto}" id="perfil" alt="${atividade.usuario.nome}" data-toggle="tooltip" data-placement="left" title="${atividade.usuario.nome}" /></td>
+										<c:forEach var="atividade"
+											items="<%=f.getUltimasAtividades()%>">
+											<tr style="font-size: 12px;">
+												<td class="center"><img src="${atividade.usuario.foto}"
+													id="perfil" alt="${atividade.usuario.nome}"
+													data-toggle="tooltip" data-placement="left"
+													title="${atividade.usuario.nome}" /></td>
 												<td>${atividade.atividade.descricao}</td>
 												<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
 														value="${atividade.dataHoraInicio}" /></td>
@@ -388,7 +377,7 @@
 						</div>
 						<!-- fim painel atividades -->
 						<a href="#" class="pull-right btn btn-default" data-toggle="modal"
-								data-target="#ver-atividades">Ver mais</a>
+							data-target="#ver-atividades">Ver mais</a>
 					</div>
 					<!-- fim coluna -->
 					<div class="col-md-6">
@@ -404,7 +393,7 @@
 								<table class="table">
 									<thead>
 										<tr>
-											<th>Bomba</th>																						
+											<th>Bomba</th>
 											<th>Início</th>
 											<th>Fim</th>
 											<th>Tempo</th>
@@ -412,14 +401,14 @@
 									</thead>
 									<tbody>
 										<c:forEach var="ac" items="<%=acionamentos%>" varStatus="i">
-												<tr style="font-size:12px;">
-													<td>${ac.bomba.descricao}</td>
-													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
-															value="${ac.dataHoraInicio}" /></td>
-													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
-															value="${ac.dataHoraFim}" /></td>
-													<td>${ac.tempo}</td>
-												</tr>
+											<tr style="font-size: 12px;">
+												<td>${ac.bomba.descricao}</td>
+												<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+														value="${ac.dataHoraInicio}" /></td>
+												<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+														value="${ac.dataHoraFim}" /></td>
+												<td>${ac.tempo}</td>
+											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
@@ -427,7 +416,7 @@
 						</div>
 						<!-- fim painel atividades -->
 						<a href="#" class="pull-right btn btn-default" data-toggle="modal"
-								data-target="#ver-acionamentos">Ver mais</a>
+							data-target="#ver-acionamentos">Ver mais</a>
 					</div>
 					<!-- fim coluna -->
 				</div>
@@ -446,7 +435,8 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Ver Atividades Realizadas</h4>
+					<h4 class="modal-title" id="myModalLabel">Ver Atividades
+						Realizadas</h4>
 				</div>
 				<div class="modal-body">
 					<div class="panel panel-default">
@@ -463,9 +453,13 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="atividade" items="<%=f.atividadeRealizadaListar()%>">
+									<c:forEach var="atividade"
+										items="<%=f.atividadeRealizadaListar()%>">
 										<tr>
-											<td class="center"><img src="${atividade.usuario.foto}" id="perfil" alt="${atividade.usuario.nome}" data-toggle="tooltip" data-placement="left" title="${atividade.usuario.nome}" /></td>
+											<td class="center"><img src="${atividade.usuario.foto}"
+												id="perfil" alt="${atividade.usuario.nome}"
+												data-toggle="tooltip" data-placement="left"
+												title="${atividade.usuario.nome}" /></td>
 											<td>${atividade.atividade.descricao}</td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
 													value="${atividade.dataHoraInicio}" /></td>
@@ -482,12 +476,16 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+					<div class="btn-group pull-left" role="group">
+						<button type="button" class="btn btn-default">Exportar</button>
+						<button type="button" class="btn btn-default">Imprimir</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="ver-acionamentos" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="ver-acionamentos" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -499,35 +497,40 @@
 				</div>
 				<div class="modal-body">
 					<div class="panel panel-default">
-							<div class="panel-heading">Acionamentos</div>
-							<div class="table-responsive">
-								<table class="table">
-									<thead>
+						<div class="panel-heading">Acionamentos</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Bomba</th>
+										<th>Início</th>
+										<th>Fim</th>
+										<th>Tempo</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="ac" items="<%=f.acionamentoListar()%>"
+										varStatus="i">
 										<tr>
-											<th>Bomba</th>
-											<th>Início</th>
-											<th>Fim</th>
-											<th>Tempo</th>
+											<td>${ac.bomba.descricao}</td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+													value="${ac.dataHoraInicio}" /></td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
+													value="${ac.dataHoraFim}" /></td>
+											<td>${ac.tempo}</td>
 										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="ac" items="<%=f.acionamentoListar()%>" varStatus="i">
-												<tr>
-													<td>${ac.bomba.descricao}</td>
-													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
-															value="${ac.dataHoraInicio}" /></td>
-													<td><fmt:formatDate pattern="dd/MM/yyyy - HH:mm:ss"
-															value="${ac.dataHoraFim}" /></td>
-													<td>${ac.tempo}</td>
-												</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
+									</c:forEach>
+								</tbody>
+							</table>
 						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+					<div class="btn-group pull-left" role="group">
+						<button type="button" class="btn btn-default">Exportar</button>
+						<button type="button" class="btn btn-default">Imprimir</button>
+					</div>
 				</div>
 			</div>
 		</div>

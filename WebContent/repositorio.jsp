@@ -1,3 +1,4 @@
+<%@page import="br.com.coffeebeans.usuario.Usuario"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="br.com.coffeebeans.fachada.Fachada"%>
@@ -5,6 +6,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="br.com.coffeebeans.repositorio.Repositorio"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="pt-BR" />
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -108,7 +111,8 @@
 			})
 </script>
 <%
-	if (request.getSession().getAttribute("usuarioLogado") == null) {
+	Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogado");
+	if (u == null) {
 		response.sendRedirect("index.jsp");
 	}
 	Fachada f = Fachada.getInstance();
@@ -171,7 +175,13 @@
 		<!-- fim container -->
 	</nav>
 	<jsp:include page="modalAlterarUsuario.jsp"></jsp:include>
+	<%
+		if (u != null) {
+	%>
 	<jsp:include page="modalVerGastos.jsp"></jsp:include>
+	<%
+		}
+	%>
 	<jsp:include page="modalVerRank.jsp"></jsp:include>
 	<div class="container">
 		<div class="conteudo">
@@ -218,10 +228,10 @@
 											test="${repositorio.getClass().getName()  eq 'br.com.coffeebeans.repositorio.RepositorioRetangular'}">
 										Retangular
 									</c:if></td>
-									<td>${repositorio.capacidade}L</td>
-									<td>${repositorio.profundidade}cm</td>
-									<td>${repositorio.limiteMinimo}</td>
-									<td>${repositorio.limiteMaximo}</td>
+									<td><fmt:formatNumber value="${repositorio.capacidade}" minFractionDigits="2" />L</td>
+									<td><fmt:formatNumber value="${repositorio.profundidade}" minFractionDigits="2" />cm</td>
+									<td><fmt:formatNumber value="${repositorio.limiteMinimo}" minFractionDigits="2" />L</td>
+									<td><fmt:formatNumber value="${repositorio.limiteMaximo}" minFractionDigits="2" />L</td>
 								</tr>
 							</c:forEach>
 						</tbody>

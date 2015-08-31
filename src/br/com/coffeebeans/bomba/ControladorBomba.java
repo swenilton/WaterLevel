@@ -17,7 +17,8 @@ public class ControladorBomba {
 	}
 
 	public void cadastrar(Bomba bomba) throws SQLException,
-			BombaJaExistenteException, BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException, RepositorioException {
+			BombaJaExistenteException, BombaNaoEncontradaException,
+			ViolacaoChaveEstrangeiraException, RepositorioException {
 		if (bomba == null) {
 			throw new NullPointerException();
 		}
@@ -44,7 +45,11 @@ public class ControladorBomba {
 		}
 
 		return iBomba.procurar(id);
+	}
 
+	public Bomba procurarPorRepositorio(int idRepositorio) throws SQLException,
+			BombaNaoEncontradaException {
+		return iBomba.procurarPorRepositorio(idRepositorio);
 	}
 
 	public Bomba procurar(String descricao) throws SQLException,

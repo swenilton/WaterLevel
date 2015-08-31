@@ -166,7 +166,7 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 		AtividadeRealizada atividadeRealizada = null;
 		List<AtividadeRealizada> atividades = new ArrayList<AtividadeRealizada>();
 		try {
-			String sql = "SELECT * FROM ATIVIDADE_REALIZADA ORDER BY DATA_HORA_FIM";
+			String sql = "SELECT * FROM ATIVIDADE_REALIZADA ORDER BY DATA_HORA_FIM DESC";
 			stmt = this.conexao.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -196,7 +196,7 @@ public class AtividadeRealizadaDAO implements IAtividadeRealizadaDAO {
 		AtividadeRealizada atividadeRealizada = null;
 		List<AtividadeRealizada> atividades = new ArrayList<AtividadeRealizada>();
 		try {
-			String sql = "SELECT * FROM ATIVIDADE_REALIZADA WHERE ID_USUARIO = ? ORDER BY DATA_HORA_FIM";
+			String sql = "SELECT * FROM ATIVIDADE_REALIZADA WHERE ID_USUARIO = ? ORDER BY DATA_HORA_FIM DESC";
 			stmt = this.conexao.prepareStatement(sql);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
