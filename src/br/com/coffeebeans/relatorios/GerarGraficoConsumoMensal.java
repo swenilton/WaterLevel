@@ -36,6 +36,7 @@ public class GerarGraficoConsumoMensal extends HttpServlet {
 	private PreparedStatement stmt = null;
 	private ResultSet rs = null;
 	private String dataString;
+	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
