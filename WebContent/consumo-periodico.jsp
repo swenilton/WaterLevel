@@ -118,7 +118,7 @@
 			<div class="tab-content">
 				<div role="tabpanel" class="tab-pane fade in active" id="hora">
 					<section class="relatorio">
-						<form class="form-inline">
+						<form class="form-inline"method="get"action="/WaterLevel/GerarRelConsumoHorario">
 							<div class="form-group">
 								<label for="hora">Data e Hora Inicial</label> <input
 									class="form-control" type="datetime-local" name="hora-inicial"
@@ -162,7 +162,7 @@
 				<!-- fim tab 1 -->
 				<div role="tabpanel" class="tab-pane" id="diario">
 					<section class="relatorio">
-						<form class="form-inline">
+						<form class="form-inline"method="get"action="/WaterLevel/GerarRelConsumoDiario">
 							<div class="form-group">
 								<label for="data-inicio">Data de Início</label> <input
 									class="form-control" type="date" name="data-inicio"
@@ -204,7 +204,7 @@
 				<!-- fim tab 2 -->
 				<div role="tabpanel" class="tab-pane fade" id="mensal">
 					<section class="relatorio">
-						<form class="form-inline">
+						<form class="form-inline"method="get"action="/WaterLevel/GerarRelConsumoMensal">
 							<div class="form-group">
 								<label for="mes">Mês</label> <input class="form-control"
 									type="month" name="mes" id="mes" />
