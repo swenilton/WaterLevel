@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-08-24T14:26:26 -->
+<!-- 2015-09-24T14:33:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelConsumo" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ced95029-b569-4027-895c-af2843a4e088">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
@@ -38,7 +38,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="115" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<staticText>
 				<reportElement style="Title" x="1" y="0" width="490" height="84" uuid="1a652692-054a-40f3-ade5-68d8da36626d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -56,8 +56,8 @@
 				</textElement>
 				<text><![CDATA[Periodo:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="232" y="93" width="87" height="20" uuid="3220a969-fa79-404e-8f05-0c131311690d">
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="227" y="95" width="100" height="20" uuid="3220a969-fa79-404e-8f05-0c131311690d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -68,8 +68,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dtHoraIni}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="330" y="93" width="87" height="20" uuid="60bc089b-0ad1-4576-9b26-f0c616b43565">
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="350" y="95" width="110" height="20" uuid="60bc089b-0ad1-4576-9b26-f0c616b43565">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -81,7 +81,7 @@
 				<textFieldExpression><![CDATA[$P{dtHoraFim}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="318" y="93" width="15" height="20" uuid="fdba5f97-00ca-4959-913a-25ffce20bcc8">
+				<reportElement x="330" y="95" width="15" height="20" uuid="fdba5f97-00ca-4959-913a-25ffce20bcc8">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -119,7 +119,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20">
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm">
 				<reportElement style="Detail" x="180" y="5" width="185" height="15" uuid="15c91ec2-6379-4ebf-adaa-7b1be9dae3ff"/>
 				<textFieldExpression><![CDATA[$F{DATA_HORA}]]></textFieldExpression>
 			</textField>

@@ -54,8 +54,10 @@ public class GerarRelConsumoHorario extends HttpServlet {
 			c.setTime(sdf.parse(dataFimString));
 			dataFimStamp = new Timestamp(c.getTimeInMillis());
 
+			
 			conectar = Conexao.conectar("mysql");
 
+			//System.out.println(dataIniStamp);
 			ServletContext context = getServletContext();
 			byte[] bytes = null;
 
@@ -98,6 +100,10 @@ public class GerarRelConsumoHorario extends HttpServlet {
 				ouputStream.close();
 
 			}
+			
+			/*System.out.println(relatorioJasper.getQuery().getText().toString());
+			System.out.println(dataIniStamp);
+			System.out.println(dataFimStamp); */
 
 			/*
 			 * catch (JRException e) { e.printStackTrace(); e.getCause();

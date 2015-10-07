@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-08-27T15:20:37 -->
+<!-- 2015-09-24T21:22:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelConsumo" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ced95029-b569-4027-895c-af2843a4e088">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
@@ -55,16 +55,11 @@
 				<text><![CDATA[Periodo:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="232" y="93" width="87" height="20" uuid="3220a969-fa79-404e-8f05-0c131311690d">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
+				<reportElement x="232" y="93" width="133" height="20" uuid="71c4b2a1-c746-4baf-bb1a-19b23c51354d"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ano-mes}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{ano-mes}.substring(5,7).equals("01")?"Janeiro de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("02")?"Fevereiro de " +$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("03")?"Março de " +$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("04")?"Abril de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("05")?"Maio de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("06")?"Junho de "+$P{ano-mes}.substring(0,4) :$P{ano-mes}.substring(5,7).equals("07")?"Julho de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("08")?"Agosto de " +$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("09")?"Setembro de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("10")?"Outubro de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("11")?"Novembro de "+$P{ano-mes}.substring(0,4):$P{ano-mes}.substring(5,7).equals("12")?"Dezembro de "+$P{ano-mes}.substring(0,4):""]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -94,7 +89,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20">
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm">
 				<reportElement style="Detail" x="180" y="5" width="185" height="15" uuid="15c91ec2-6379-4ebf-adaa-7b1be9dae3ff"/>
 				<textFieldExpression><![CDATA[$F{DATA_HORA}]]></textFieldExpression>
 			</textField>

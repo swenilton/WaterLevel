@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -26,7 +28,7 @@ import br.com.coffeebeans.util.Conexao;
  */
 @WebServlet("/GerarRelConsumoMensal")
 public class GerarRelConsumoMensal extends HttpServlet {
-	
+
 	private String dataString;
 	private Connection conectar;
 
@@ -34,7 +36,7 @@ public class GerarRelConsumoMensal extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-	
+
 		try {
 
 			dataString = request.getParameter("mes");
@@ -43,7 +45,6 @@ public class GerarRelConsumoMensal extends HttpServlet {
 
 			ServletContext context = getServletContext();
 			byte[] bytes = null;
-			
 
 			// carrega o arquivo jasper
 
@@ -64,7 +65,7 @@ public class GerarRelConsumoMensal extends HttpServlet {
 			// parâmetros
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("ano-mes", dataString);
-			
+
 			// direciona a saída do relatório para um stream
 			bytes = JasperRunManager.runReportToPdf(relatorioJasper,
 					parametros, conectar);
@@ -113,6 +114,5 @@ public class GerarRelConsumoMensal extends HttpServlet {
 			}
 		}
 	}
-
 
 }
