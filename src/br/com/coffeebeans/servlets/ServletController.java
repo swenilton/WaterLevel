@@ -36,8 +36,8 @@ import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
-import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
-import br.com.coffeebeans.exception.RepositorioException;
+import br.com.coffeebeans.exception.DAOException;
+import br.com.coffeebeans.exception.PermissaoException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
@@ -108,9 +108,10 @@ public class ServletController extends HttpServlet {
 			String usuario = request.getParameter("usuario");
 			String senha = request.getParameter("senha");
 			try {
+				UsuarioDAO userOn=null;
 				if (fachada.login(usuario, senha)) {
 					request.getSession().setAttribute("usuarioLogado",
-							UsuarioDAO.getUsuarioLogado());
+							userOn.getUsuarioLogado());
 					url = "/home.jsp";
 				} else {
 					erros.add("Usuário ou senha inválidos");
@@ -120,7 +121,7 @@ public class ServletController extends HttpServlet {
 			} catch (UsuarioInativoException e) {
 				erros.add("Erro ao logar => " + e.getMessage());
 				url = "/index.jsp";
-			} catch (RepositorioException e) {
+			} catch (DAOException e) {
 				erros.add("Erro ao logar => " + e.getMessage());
 				url = "/index.jsp";
 			} catch (SQLException e) {
@@ -138,7 +139,7 @@ public class ServletController extends HttpServlet {
 				u = fachada.loginFacebook(email);
 				request.getSession().setAttribute("usuarioLogado", u);
 				response.setStatus(200);
-			} catch (RepositorioException e) {
+			} catch (DAOException e) {
 				erros.add("Login Inválido => " + e.getMessage());
 				request.getSession().invalidate();
 				response.setStatus(4);
@@ -253,7 +254,7 @@ public class ServletController extends HttpServlet {
 				url = "";
 			} catch (SQLException e) {
 				erros.add("Erro ao pegar usuario => " + e.getMessage());
-			} catch (RepositorioException e) {
+			} catch (DAOException e) {
 				erros.add("Erro ao pegar usuario => " + e.getMessage());
 			} catch (NumberFormatException e) {
 				erros.add("Erro ao pegar usuario => " + e.getMessage());
@@ -343,8 +344,11 @@ public class ServletController extends HttpServlet {
 				erros.add("erro ao remover usuario = > " + e.getMessage());
 			} catch (UsuarioNaoEncontradoException e) {
 				erros.add("erro ao remover usuario = > " + e.getMessage());
-			} catch (RepositorioException e) {
+			} catch (DAOException e) {
 				erros.add("erro ao remover usuario = > " + e.getMessage());
+			} catch (PermissaoException e) {
+				erros.add("erro ao remover usuario = > " + e.getMessage());
+					
 			}
 		} else if (acao.equals("inserirRepositorio")) {
 			String nome = request.getParameter("nome");
@@ -475,9 +479,13 @@ public class ServletController extends HttpServlet {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
 			} catch (AtividadeNaoEncontradaException e) {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
-			} catch (RepositorioException e) {
+			} catch (DAOException e) {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
 			}
+				/*} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 		} else if (acao.equals("alterarAtividade")) {
 			String nome = request.getParameter("nome");
 			Atividade a = new Atividade(nome);
@@ -501,7 +509,7 @@ public class ServletController extends HttpServlet {
 				erros.add("erro ao remover atividade = > " + e.getMessage());
 			} catch (AtividadeNaoEncontradaException e) {
 				erros.add("erro ao remover atividade = > " + e.getMessage());
-			} catch (RepositorioException e) {
+			} catch (DAOException e) {
 				erros.add("erro ao remover atividade = > " + e.getMessage());
 			}
 		} else if (acao.equals("removerBomba")) {

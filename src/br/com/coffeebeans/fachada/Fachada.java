@@ -18,8 +18,10 @@ import br.com.coffeebeans.exception.AtividadeJaExistenteException;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
-import br.com.coffeebeans.exception.ListaUsuarioVaziaException;
+import br.com.coffeebeans.exception.DAOException;
+import br.com.coffeebeans.exception.EmailJaExistenteException;
 import br.com.coffeebeans.exception.ListaVaziaException;
+import br.com.coffeebeans.exception.PermissaoException;
 import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.RepositorioJaExistenteException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
@@ -64,7 +66,8 @@ public class Fachada {
 			RepositorioException, BombaJaExistenteException,
 			BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException,
 			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException,
-			AtividadeJaExistenteException, AtividadeNaoEncontradaException {
+			AtividadeJaExistenteException, AtividadeNaoEncontradaException,
+			DAOException, EmailJaExistenteException, PermissaoException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.cadastrar((Repositorio) element);
 		} else if (element instanceof Usuario) {
@@ -84,9 +87,10 @@ public class Fachada {
 
 	public <E> void atualizar(E element) throws SQLException,
 			RepositorioNaoEncontradoException, UsuarioNaoEncontradoException,
-			RepositorioException, BombaNaoEncontradaException,
+			RepositorioException, DAOException, BombaNaoEncontradaException,
 			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException,
-			AtividadeNaoEncontradaException {
+			AtividadeNaoEncontradaException, DAOException,
+			AtividadeJaExistenteException, PermissaoException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.atualizar((Repositorio) element);
 		} else if (element instanceof Usuario) {
@@ -126,12 +130,12 @@ public class Fachada {
 	}
 
 	public void usuarioRemover(int id) throws SQLException,
-			UsuarioNaoEncontradoException, RepositorioException {
+			UsuarioNaoEncontradoException, DAOException, PermissaoException {
 		controladorUsuario.remover(id);
 	}
 
 	public void atividadeRemover(int id) throws SQLException,
-			AtividadeNaoEncontradaException, RepositorioException {
+			AtividadeNaoEncontradaException, DAOException {
 		controladorAtividade.remover(id);
 	}
 
@@ -166,14 +170,12 @@ public class Fachada {
 
 	}
 
-	public List<Atividade> atividadeListar() throws SQLException,
-			ListaVaziaException, RepositorioException,
-			ListaUsuarioVaziaException {
+	public List<Atividade> atividadeListar() throws SQLException, DAOException {
 		return controladorAtividade.listar();
 	}
 
 	public List<Usuario> getUsuarioLista() throws SQLException,
-			RepositorioException {
+			DAOException {
 		return controladorUsuario.getLista();
 
 	}
@@ -195,8 +197,8 @@ public class Fachada {
 		return controladorBomba.procurar(id);
 	}
 
-	public Bomba bombaProcurarPorRepositorio(int idRepositorio) throws SQLException,
-			BombaNaoEncontradaException {
+	public Bomba bombaProcurarPorRepositorio(int idRepositorio)
+			throws SQLException, BombaNaoEncontradaException {
 		return controladorBomba.procurarPorRepositorio(idRepositorio);
 	}
 
@@ -206,27 +208,27 @@ public class Fachada {
 	}
 
 	public Usuario usuarioProcurar(int id) throws SQLException,
-			UsuarioNaoEncontradoException, RepositorioException {
+			UsuarioNaoEncontradoException, DAOException {
 		return controladorUsuario.procurar(id);
 	}
 
 	public Atividade atividadeProcurar(int id) throws SQLException,
-			AtividadeNaoEncontradaException, RepositorioException {
+			AtividadeNaoEncontradaException, DAOException {
 		return controladorAtividade.procurar(id);
 	}
 
-	public Usuario loginFacebook(String email) throws RepositorioException,
+	public Usuario loginFacebook(String email) throws DAOException,
 			SQLException {
 		return controladorUsuario.loginFacebook(email);
 	}
 
 	public void alterarSenhaUsuario(int id, String senha) throws SQLException,
-			UsuarioNaoEncontradoException, RepositorioException {
+			UsuarioNaoEncontradoException, DAOException {
 		controladorUsuario.alterarSenha(id, senha);
 	}
 
 	public boolean login(String usuario, String senha)
-			throws UsuarioInativoException, RepositorioException, SQLException {
+			throws UsuarioInativoException, DAOException, SQLException {
 		return controladorUsuario.login(usuario, senha);
 	}
 

@@ -1,6 +1,8 @@
 package br.com.coffeebeans.usuario;
+//import javax.xml.bind.annotation.XmlRootElement;
 
-public class Usuario {
+//@XmlRootElement
+public class Usuario  {
 	private int id;
 	private String nome;
 	private String login;
@@ -100,5 +102,8 @@ public class Usuario {
 				+ telefone + ", ativo=" + ativo + ", foto=" + foto
 				+ ", perfil=" + perfil + "]";
 	}
-
+	
+	/*public Usuario() {
+		
+	}*/
 }

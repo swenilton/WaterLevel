@@ -5,20 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
+import br.com.coffeebeans.exception.DAOException;
 import br.com.coffeebeans.exception.RepositorioException;
 
 public interface IAtividadeDAO {
 	
 	public void cadastrar(Atividade atividade) throws SQLException,  
-	RepositorioException;
+	DAOException;
 	
-	public List<Atividade> listar() throws SQLException, RepositorioException;
+	public List<Atividade> listar() throws SQLException, DAOException;
 	
-	public Atividade procurar (int id) throws SQLException, RepositorioException;
+	public Atividade procurar (int id) throws SQLException, DAOException;
 	
-	public void atualizar(Atividade atividade) throws AtividadeNaoEncontradaException,
-	SQLException, RepositorioException;
+	public void atualizar(Atividade atividade) throws 
+	SQLException, DAOException;
 	
-	public void excluir (int id) throws SQLException, AtividadeNaoEncontradaException,
-	RepositorioException;
+	public void excluir (int id) throws SQLException, 
+	DAOException;
+	
+	public boolean existe(String descricao) throws SQLException,DAOException;
+
 }
