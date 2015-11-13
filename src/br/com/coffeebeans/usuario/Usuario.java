@@ -103,7 +103,7 @@ public class Usuario  {
 				+ ", perfil=" + perfil + "]";
 	}
 	
-	/*public Usuario() {
+	public Usuario() {
 		
-	}*/
+	}
 }
