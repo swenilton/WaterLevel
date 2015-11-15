@@ -1,26 +1,16 @@
 package br.com.coffeebeans.servlets;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
-
-import javax.imageio.stream.FileImageInputStream;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
@@ -29,9 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import sun.java2d.pipe.BufferedContext;
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
@@ -71,23 +58,13 @@ public class ServletController extends HttpServlet {
 		try {
 			fachada = Fachada.getInstance();
 			/*
-			main = new SerialTest();
-			main.initialize();
-			Thread t = new Thread() {
-				public void run() {
-					// the following line will keep this app alive for 1000
-					// seconds,
-					// waiting for events to occur and responding to them
-					// (printing incoming messages to console).
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException ie) {
-					}
-				}
-			};
-			t.start();
-			System.out.println("Started");
-			*/
+			 * main = new SerialTest(); main.initialize(); Thread t = new
+			 * Thread() { public void run() { // the following line will keep
+			 * this app alive for 1000 // seconds, // waiting for events to
+			 * occur and responding to them // (printing incoming messages to
+			 * console). try { Thread.sleep(2000); } catch (InterruptedException
+			 * ie) { } } }; t.start(); System.out.println("Started");
+			 */
 		} catch (Exception e) {
 			System.out.println("Erro ao instanciar Fachada => "
 					+ e.getMessage());
@@ -108,7 +85,7 @@ public class ServletController extends HttpServlet {
 			String usuario = request.getParameter("usuario");
 			String senha = request.getParameter("senha");
 			try {
-				UsuarioDAO userOn=null;
+				UsuarioDAO userOn = null;
 				if (fachada.login(usuario, senha)) {
 					request.getSession().setAttribute("usuarioLogado",
 							userOn.getUsuarioLogado());
@@ -134,11 +111,14 @@ public class ServletController extends HttpServlet {
 
 		} else if (acao.equals("loginFacebook")) {
 			String email = request.getParameter("usuario");
-			Usuario u;
+
 			try {
-				u = fachada.loginFacebook(email);
-				request.getSession().setAttribute("usuarioLogado", u);
-				response.setStatus(200);
+				UsuarioDAO userOn = null;
+				if (fachada.loginFacebook(email)) {
+					request.getSession().setAttribute("usuarioLogado",
+							userOn.getUsuarioLogado());
+					response.setStatus(200);
+				}
 			} catch (DAOException e) {
 				erros.add("Login Inválido => " + e.getMessage());
 				request.getSession().invalidate();
@@ -205,10 +185,10 @@ public class ServletController extends HttpServlet {
 			}
 			url = "/usuario-inserir.jsp";
 		} else if (acao.equals("nivel")) {
-			//request.setAttribute("nivel", main.getNivel());
-//			ServletOutputStream os = response.getOutputStream();
-//			os.print(main.getNivel());
-//			os.close();
+			// request.setAttribute("nivel", main.getNivel());
+			// ServletOutputStream os = response.getOutputStream();
+			// os.print(main.getNivel());
+			// os.close();
 			url = "";
 		} else if (acao.equals("ligaBomba")) {
 			byte[] b = new byte[1];
@@ -220,11 +200,11 @@ public class ServletController extends HttpServlet {
 			main.sendMesssage(b);
 		} else if (acao.equals("acionamento")) {
 			byte[] b = new byte[1];
-			if(request.getParameter("ac").equals("auto")) {
+			if (request.getParameter("ac").equals("auto")) {
 				b[0] = '3';
 			} else {
 				b[0] = '4';
-			}			
+			}
 			main.sendMesssage(b);
 		} else if (acao.equals("defLimiteMax")) {
 			float limMax = Float.parseFloat(request.getParameter("limiteMax"));
@@ -348,7 +328,7 @@ public class ServletController extends HttpServlet {
 				erros.add("erro ao remover usuario = > " + e.getMessage());
 			} catch (PermissaoException e) {
 				erros.add("erro ao remover usuario = > " + e.getMessage());
-					
+
 			}
 		} else if (acao.equals("inserirRepositorio")) {
 			String nome = request.getParameter("nome");
@@ -482,10 +462,10 @@ public class ServletController extends HttpServlet {
 			} catch (DAOException e) {
 				erros.add("Erro ao pegar atividade => " + e.getMessage());
 			}
-				/*} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
+			/*
+			 * } catch (DAOException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); }
+			 */
 		} else if (acao.equals("alterarAtividade")) {
 			String nome = request.getParameter("nome");
 			Atividade a = new Atividade(nome);
@@ -611,9 +591,9 @@ public class ServletController extends HttpServlet {
 			}
 			url = "/bomba.jsp";
 		} else if (acao.equals("consumoPorHora")) {
-			
+
 			try {
-				
+
 			} catch (Exception e) {
 				erros.add("Erro ao alterar bomba => " + e.getMessage());
 			}

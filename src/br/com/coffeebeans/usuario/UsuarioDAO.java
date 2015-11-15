@@ -20,8 +20,7 @@ import br.com.coffeebeans.exception.DAOException;
 import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.util.Conexao;
-
-//TODO //loginFace //md5  
+ 
 public class UsuarioDAO implements IUsuarioDAO {
 
 	private Connection connection = null;
@@ -144,7 +143,6 @@ public class UsuarioDAO implements IUsuarioDAO {
 	}
 
 	@Override
-	
 	public List<Usuario> getLista() throws SQLException, DAOException {
 		List<Usuario> usuarios = null;
 		PreparedStatement stmt = null;
@@ -338,9 +336,10 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	}
 
-	public Usuario loginFacebook(String email) throws DAOException,
+	public boolean loginFacebook(String email) throws DAOException,
 			SQLException {
-		Usuario usuario = null;
+		Usuario inativo = null;
+		boolean result = false;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -351,13 +350,16 @@ public class UsuarioDAO implements IUsuarioDAO {
 				stmt.setString(1, email);
 				rs = stmt.executeQuery();
 				if (rs.next()) {
-					usuario = new Usuario(rs.getString("NOME"),
-							rs.getString("LOGIN"), rs.getString("SENHA"),
-							rs.getString("EMAIL"), rs.getString("ATIVO"),
-							rs.getString("PERFIL"));
-					usuario.setId(rs.getInt("ID"));
-					usuario.setFoto(rs.getString("FOTO"));
-					usuario.setTelefone(rs.getString("TELEFONE"));
+					if (rs.getString("ATIVO").equals("Nao")) {
+						inativo = procurar(rs.getInt("id"));
+						throw new UsuarioInativoException(
+								procurar(rs.getInt("id")));
+					}
+					this.usuarioLogado = procurar(rs.getInt("id"));
+					result= true;
+				} else {
+					result= false;
+
 				}
 			} else {
 				throw new BDException();
@@ -376,7 +378,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 			 * this.connection.close();
 			 */
 		}
-		return usuario;
+		return result;
 	}
 
 	public boolean login(String usuario, String senha)
@@ -430,20 +432,21 @@ public class UsuarioDAO implements IUsuarioDAO {
 		}
 	}
 
-	public String md5(String senha) {
+	public String md5(String senha) throws DAOException {
 		String sen = "";
 		MessageDigest md = null;
 		try {
 			md = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
 		sen = hash.toString(16);
 		return sen;
 	}
 
-	public  Usuario getUsuarioLogado() {
+	public Usuario getUsuarioLogado() {
 		return usuarioLogado;
 	}
 

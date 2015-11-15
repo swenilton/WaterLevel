@@ -2,6 +2,7 @@ package br.com.coffeebeans.usuario;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import br.com.coffeebeans.exception.DAOException;
 import br.com.coffeebeans.exception.EmailJaExistenteException;
 import br.com.coffeebeans.exception.PermissaoException;
@@ -77,17 +78,16 @@ public class ControladorUsuario {
 		if (iusuario.procurar(id) == null) {
 			throw new UsuarioNaoEncontradoException();
 		}
-		if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) {
-			throw new PermissaoException();
-		}
-		if (iusuario.procurar(id).getId() == 1) {
-			throw new UnsupportedOperationException(
-					"o usuário ADMIN nao pode ser excluido");
-		}
+		/*
+		 * if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) { throw
+		 * new PermissaoException(); } if (iusuario.procurar(id).getId() == 1) {
+		 * throw new UnsupportedOperationException(
+		 * "o usuário ADMIN nao pode ser excluido"); }
+		 */
 		iusuario.excluir(id);
 	}
 
-	public Usuario loginFacebook(String email) throws DAOException,
+	public boolean loginFacebook(String email) throws DAOException,
 			SQLException {
 		return iusuario.loginFacebook(email);
 	}
@@ -114,4 +114,9 @@ public class ControladorUsuario {
 	public boolean existeEmail(String email) throws SQLException, DAOException {
 		return iusuario.existeEmail(email);
 	}
+
+	public String md5(String senha) throws DAOException {
+		return iusuario.md5(senha);
+	}
+
 }

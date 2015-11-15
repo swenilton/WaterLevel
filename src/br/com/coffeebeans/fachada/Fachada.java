@@ -217,7 +217,7 @@ public class Fachada {
 		return controladorAtividade.procurar(id);
 	}
 
-	public Usuario loginFacebook(String email) throws DAOException,
+	public boolean loginFacebook(String email) throws DAOException,
 			SQLException {
 		return controladorUsuario.loginFacebook(email);
 	}
@@ -235,6 +235,18 @@ public class Fachada {
 	public List<AtividadeRealizada> getUltimasAtividades()
 			throws RepositorioException, SQLException {
 		return controladorAtividadeRealizada.getUltimasAtividades();
+	}
+	
+	public boolean existeUsuario(String login) throws SQLException, DAOException {
+		return controladorUsuario.existe(login);
+	}
+	
+	public boolean existeEmail(String email) throws SQLException, DAOException {
+		return controladorUsuario.existeEmail(email);
+	}
+	
+	public String md5(String senha) throws DAOException {
+		return controladorUsuario.md5(senha);
 	}
 
 }

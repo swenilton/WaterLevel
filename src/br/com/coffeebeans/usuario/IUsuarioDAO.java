@@ -2,6 +2,7 @@ package br.com.coffeebeans.usuario;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import br.com.coffeebeans.exception.DAOException;
 import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
@@ -21,7 +22,7 @@ public interface IUsuarioDAO {
 	public void excluir(int id) throws SQLException,
 			UsuarioNaoEncontradoException, DAOException;
 	
-	public Usuario loginFacebook(String email) throws DAOException, SQLException;
+	public boolean loginFacebook(String email) throws DAOException, SQLException;
 	
 	public void alterarSenha(int id, String senha)
 			throws UsuarioNaoEncontradoException, SQLException,
@@ -32,5 +33,7 @@ public interface IUsuarioDAO {
     public boolean existe(String descricao) throws SQLException, DAOException;
 
 	public boolean existeEmail(String email) throws SQLException, DAOException;
+
+	public String md5(String senha) throws DAOException;
 
 }
