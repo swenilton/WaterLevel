@@ -160,7 +160,6 @@ public class UsuarioResource {
 	@Path("excluir/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public void excluir(@PathParam("id") int id) throws ResourceException {
-		// Usuario usuario = null;
 		try {
 			f.usuarioRemover(id);
 

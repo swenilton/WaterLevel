@@ -2,7 +2,7 @@
 <web-app>
 <!--  	<display-name>jersey-tutorial</display-name> -->
 	<servlet>
-		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-name>ServletUser</servlet-name>
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
 		</servlet-class>
 		<init-param>
@@ -13,7 +13,23 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-name>ServletUser</servlet-name>
 		<url-pattern>/WS/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ServletAtividade</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
+		</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>br.com.coffeebeans.atividade</param-value>
+			
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletAtividade</servlet-name>
+		<url-pattern>/WS2/*</url-pattern>
 	</servlet-mapping>
 </web-app> 

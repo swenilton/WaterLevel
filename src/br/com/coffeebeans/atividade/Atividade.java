@@ -1,10 +1,13 @@
 package br.com.coffeebeans.atividade;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Atividade {
-	
+
 	private int id;
 	private String descricao;
-	
+
 	public Atividade(String descricao) {
 		this.descricao = descricao;
 	}
@@ -27,7 +30,10 @@ public class Atividade {
 
 	@Override
 	public String toString() {
-		return "Atividade [id=" + id + ", descricao=" + descricao +"]";
-	}	
+		return "Atividade [id=" + id + ", descricao=" + descricao + "]";
+	}
 
+	public Atividade() {
+
+	}
 }

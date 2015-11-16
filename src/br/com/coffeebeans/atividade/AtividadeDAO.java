@@ -22,6 +22,42 @@ public class AtividadeDAO implements IAtividadeDAO {
 
 	}
 
+	@Override
+	public boolean existe(String descricao) throws SQLException, DAOException {
+		boolean existe = false;
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		try {
+			// this.connection = Conexao.conectar(sistema);
+			if (connection != null) {
+				String sql = "SELECT * FROM ATIVIDADE WHERE DESCRICAO = ?";
+				stmt = this.connection.prepareStatement(sql);
+				stmt.setString(1, descricao);
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					existe = true;
+				}
+			} else
+				throw new BDException();
+		} catch (SQLException e) {
+			throw new SQLException(e);
+		} catch (Exception e) {
+			throw new DAOException(e);
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (rs != null)
+				rs.close();
+			/*
+			 * if (connection != null) if (!connection.isClosed())
+			 * this.connection.close();
+			 */
+
+		}
+
+		return existe;
+	}
+
 	public void cadastrar(Atividade atividade) throws SQLException,
 			DAOException {
 		PreparedStatement stmt = null;
@@ -140,9 +176,9 @@ public class AtividadeDAO implements IAtividadeDAO {
 					stmt = this.connection.prepareStatement(sql);
 					stmt.setString(1, atividade.getDescricao());
 					stmt.setInt(2, atividade.getId());
+
+					Integer resultado = stmt.executeUpdate();
 					/*
-					 * Integer resultado = stmt.executeUpdate();
-					 * 
 					 * if (resultado == 0) throw new
 					 * AtividadeNaoEncontradaException();
 					 */
@@ -168,7 +204,7 @@ public class AtividadeDAO implements IAtividadeDAO {
 	public void excluir(int id) throws SQLException, DAOException {
 		PreparedStatement stmt = null;
 		try {
-			//this.connection = Conexao.conectar(sistema);
+			// this.connection = Conexao.conectar(sistema);
 			if (connection != null) {
 				String sql = "DELETE FROM ATIVIDADE WHERE ID = ?";
 				stmt = this.connection.prepareStatement(sql);
@@ -184,44 +220,10 @@ public class AtividadeDAO implements IAtividadeDAO {
 		} finally {
 			if (stmt != null)
 				stmt.close();
-			/*if (connection != null)
-				if (!connection.isClosed())
-					this.connection.close();*/
+			/*
+			 * if (connection != null) if (!connection.isClosed())
+			 * this.connection.close();
+			 */
 		}
-	}
-
-	@Override
-	public boolean existe(String descricao) throws SQLException, DAOException {
-		boolean existe = false;
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-		try {
-			//this.connection = Conexao.conectar(sistema);
-			if (connection != null) {
-				String sql = "SELECT * FROM ATIVIDADE WHERE DESCRICAO = ?";
-				stmt = this.connection.prepareStatement(sql);
-				stmt.setString(1, descricao);
-				rs = stmt.executeQuery();
-				if (rs.next()) {
-					existe = true;
-				}
-			} else
-				throw new BDException();
-		} catch (SQLException e) {
-			throw new SQLException(e);
-		} catch (Exception e) {
-			throw new DAOException(e);
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (rs != null)
-				rs.close();
-			/*if (connection != null)
-				if (!connection.isClosed())
-					this.connection.close();*/
-
-		}
-
-		return existe;
 	}
 }

@@ -17,7 +17,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import br.com.coffeebeans.usuario.Login;
 import br.com.coffeebeans.usuario.Usuario;
 
-public class ClientWebServiceExemplo {
+public class ClientWebServiceUser {
 
 	static WebResource webResource4;
 	static WebResource webResource6;

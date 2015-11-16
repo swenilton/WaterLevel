@@ -248,5 +248,9 @@ public class Fachada {
 	public String md5(String senha) throws DAOException {
 		return controladorUsuario.md5(senha);
 	}
+	
+	public boolean existeAtividade(String descricao) throws SQLException, DAOException {
+		return controladorAtividade.existe(descricao);
+	}
 
 }
