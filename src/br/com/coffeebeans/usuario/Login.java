@@ -3,18 +3,18 @@ package br.com.coffeebeans.usuario;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Senha {
+public class Login {
 	private int idUser;
 	private String senha;
 
-	public Senha(int idUser, String senha) {
+	public Login(int idUser, String senha) {
 		this.idUser = idUser;
 		this.senha = senha;
 	}
 
 	@Override
 	public String toString() {
-		return "Senha [idUser=" + idUser + ", senha=" + senha + "]";
+		return "Login [idUser=" + idUser + ", senha=" + senha + "]";
 	}
 
 	public int getIdUser() {
@@ -33,7 +33,7 @@ public class Senha {
 		this.senha = senha;
 	}
 
-	public Senha() {
+	public Login() {
 	}
 
 }

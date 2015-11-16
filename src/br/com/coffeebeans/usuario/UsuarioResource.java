@@ -1,7 +1,6 @@
 package br.com.coffeebeans.usuario;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -144,7 +143,7 @@ public class UsuarioResource {
 	@PUT
 	@Path("newPwd")
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public void alterarSenha(Senha senha) throws ResourceException {
+	public void alterarSenha(Login senha) throws ResourceException {
 		System.out.println("UserResource > alteraSenha>  : ");
 
 		try {

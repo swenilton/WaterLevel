@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Enumeration;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
 import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
@@ -85,7 +87,7 @@ public class ServletController extends HttpServlet {
 			String usuario = request.getParameter("usuario");
 			String senha = request.getParameter("senha");
 			try {
-				UsuarioDAO userOn = null;
+				UsuarioDAO userOn = new UsuarioDAO();
 				if (fachada.login(usuario, senha)) {
 					request.getSession().setAttribute("usuarioLogado",
 							userOn.getUsuarioLogado());
@@ -113,7 +115,7 @@ public class ServletController extends HttpServlet {
 			String email = request.getParameter("usuario");
 
 			try {
-				UsuarioDAO userOn = null;
+				UsuarioDAO userOn = new UsuarioDAO();
 				if (fachada.loginFacebook(email)) {
 					request.getSession().setAttribute("usuarioLogado",
 							userOn.getUsuarioLogado());
@@ -127,6 +129,9 @@ public class ServletController extends HttpServlet {
 				erros.add("Login Inválido => " + e.getMessage());
 				request.getSession().invalidate();
 				response.setStatus(4);
+			} catch (Exception e) {
+				erros.add(e.getMessage());
+				e.printStackTrace();
 			}
 		} else if (acao.equals("sair")) {
 			request.getSession().invalidate();

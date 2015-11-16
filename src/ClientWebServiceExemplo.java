@@ -14,7 +14,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-import br.com.coffeebeans.usuario.Senha;
+import br.com.coffeebeans.usuario.Login;
 import br.com.coffeebeans.usuario.Usuario;
 
 public class ClientWebServiceExemplo {
@@ -34,7 +34,7 @@ public class ClientWebServiceExemplo {
 			Client client = Client.create(clientConfig);
 
 			WebResource webResource = client
-					.resource("http://localhost:8080/WaterLevel/user/all");
+					.resource("http://localhost:8080/WaterLevel/WS/user/all");
 
 			ClientResponse response = webResource.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -45,7 +45,7 @@ public class ClientWebServiceExemplo {
 					});
 
 			WebResource webResource2 = client
-					.resource("http://localhost:8080/WaterLevel/user/existe/admin");
+					.resource("http://localhost:8080/WaterLevel/WS/user/existe/admin");
 
 			ClientResponse response2 = webResource2.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -56,7 +56,7 @@ public class ClientWebServiceExemplo {
 					});
 
 			WebResource webResource3 = client
-					.resource("http://localhost:8080/WaterLevel/user/existe2/andreilip@hotmail.com");
+					.resource("http://localhost:8080/WaterLevel/WS/user/existe2/andreilip@hotmail.com");
 
 			ClientResponse response3 = webResource3.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -70,14 +70,14 @@ public class ClientWebServiceExemplo {
 
 			/*
 			 * webResource4 = client
-			 * .resource("http://localhost:8080/WaterLevel/user/add");
+			 * .resource("http://localhost:8080/WaterLevel/WS/user/add");
 			 * 
 			 * Usuario usuario = new Usuario("Jorge", "josiasssss", "12345",
 			 * "a@b.comsssss", "SIM", "ADMINISTRADOR"); post(usuario);
 			 */
 
 			WebResource webResource5 = client
-					.resource("http://localhost:8080/WaterLevel/user/procurar/1");
+					.resource("http://localhost:8080/WaterLevel/WS/user/procurar/1");
 
 			ClientResponse response5 = webResource5.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -91,7 +91,7 @@ public class ClientWebServiceExemplo {
 
 			/*
 			 * webResource6 = client
-			 * .resource("http://localhost:8080/WaterLevel/user/update");
+			 * .resource("http://localhost:8080/WaterLevel/WS/user/update");
 			 * 
 			 * Usuario usuario3 = new Usuario("Jose", "josiao", "12345",
 			 * "a@b.comm", "SIM", "ADMINISTRADOR");
@@ -101,25 +101,26 @@ public class ClientWebServiceExemplo {
 
 			// TA FUNCIONANDO
 
-			/*
-			 * webResource7 = client
-			 * .resource("http://localhost:8080/WaterLevel/user/newPwd");
-			 * 
-			 * Senha senha = new Senha(2, "698dc19d489c4e4db73e28a713eab07b");
-			 * 
-			 * put2(senha);
-			 */
+			
+			  /*webResource7 = client
+			  .resource("http://localhost:8080/WaterLevel/WS/user/newPwd");
+			  
+			  Login login = new Login(2, "test");
+			 
+			  put2(login);*/
+			 
 
 			// TA FUNCIONANDO
 
-			WebResource webResource8 = client
-					.resource("http://localhost:8080/WaterLevel/user/excluir/8");
-
-			ClientResponse response6 = webResource8.type(
-					MediaType.APPLICATION_JSON).delete(ClientResponse.class);
-
+			/*
+			 * WebResource webResource8 = client
+			 * .resource("http://localhost:8080/WaterLevel/WS/user/excluir/8");
+			 * 
+			 * ClientResponse response6 = webResource8.type(
+			 * MediaType.APPLICATION_JSON).delete(ClientResponse.class);
+			 */
 			WebResource webResource9 = client
-					.resource("http://localhost:8080/WaterLevel/user/loginFace/a@b.c");
+					.resource("http://localhost:8080/WaterLevel/WS/user/loginFace/a@b.c");
 
 			ClientResponse response7 = webResource9.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -128,9 +129,9 @@ public class ClientWebServiceExemplo {
 					response7.getEntity(String.class),
 					new TypeReference<Boolean>() {
 					});
-			
+
 			WebResource webResource10 = client
-					.resource("http://localhost:8080/WaterLevel/user/login/admin/181290");
+					.resource("http://localhost:8080/WaterLevel/WS/user/login/admin/181290");
 
 			ClientResponse response8 = webResource10.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -139,15 +140,15 @@ public class ClientWebServiceExemplo {
 					response8.getEntity(String.class),
 					new TypeReference<Boolean>() {
 					});
-			
+
 			WebResource webResource11 = client
-					.resource("http://localhost:8080/WaterLevel/user/md5/181290");
+					.resource("http://localhost:8080/WaterLevel/WS/user/md5/181290");
 
 			ClientResponse response9 = webResource11.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
-			
-			String senhaCrip=response9.getEntity(String.class);
-			
+
+			String senhaCrip = response9.getEntity(String.class);
+
 			System.out.println("Server response .... \n");
 			System.out.println(list.toString());
 			System.out.println(existe);
@@ -158,8 +159,7 @@ public class ClientWebServiceExemplo {
 			System.out.println(logou);
 			System.out.println(logou2);
 			System.out.println(senhaCrip);
-				
-			
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
