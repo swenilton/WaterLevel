@@ -54,12 +54,13 @@ public class ClientWebServiceAtividade {
 					});
 
 			// TA FUNCIONANDO
-			/*
-			 * webResource3 = client
-			 * .resource("http://localhost:8080/WaterLevel/WS2/atividade/add");
-			 * 
-			 * Atividade atividade = new Atividade("TESTE"); post(atividade);
-			 */
+			
+			  /*webResource3 = client
+			  .resource("http://localhost:8080/WaterLevel/WS2/atividade/add");
+			 
+			  Atividade atividade = new Atividade("TESTE2"); 
+			  post(atividade);*/
+			 
 
 			WebResource webResource4 = client
 					.resource("http://localhost:8080/WaterLevel/WS2/atividade/procurar/1");

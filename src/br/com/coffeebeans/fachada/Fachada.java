@@ -174,8 +174,7 @@ public class Fachada {
 		return controladorAtividade.listar();
 	}
 
-	public List<Usuario> getUsuarioLista() throws SQLException,
-			DAOException {
+	public List<Usuario> getUsuarioLista() throws SQLException, DAOException {
 		return controladorUsuario.getLista();
 
 	}
@@ -207,6 +206,13 @@ public class Fachada {
 		return controladorRepositorio.procurar(id);
 	}
 
+	public Repositorio repositorioProcurar(String descricao)
+			throws SQLException, RepositorioNaoEncontradoException {
+
+		return controladorRepositorio.procurar(descricao);
+
+	}
+
 	public Usuario usuarioProcurar(int id) throws SQLException,
 			UsuarioNaoEncontradoException, DAOException {
 		return controladorUsuario.procurar(id);
@@ -236,20 +242,22 @@ public class Fachada {
 			throws RepositorioException, SQLException {
 		return controladorAtividadeRealizada.getUltimasAtividades();
 	}
-	
-	public boolean existeUsuario(String login) throws SQLException, DAOException {
+
+	public boolean existeUsuario(String login) throws SQLException,
+			DAOException {
 		return controladorUsuario.existe(login);
 	}
-	
+
 	public boolean existeEmail(String email) throws SQLException, DAOException {
 		return controladorUsuario.existeEmail(email);
 	}
-	
+
 	public String md5(String senha) throws DAOException {
 		return controladorUsuario.md5(senha);
 	}
-	
-	public boolean existeAtividade(String descricao) throws SQLException, DAOException {
+
+	public boolean existeAtividade(String descricao) throws SQLException,
+			DAOException {
 		return controladorAtividade.existe(descricao);
 	}
 
