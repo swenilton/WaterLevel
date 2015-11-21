@@ -29,14 +29,13 @@ public class ControladorAtividadeRealizada {
 		if (iAtividadeRealizada.procurar(atividadeRealizada.getId()) != null) {
 			throw new AtividadeJaExistenteException();
 		}
-		if (atividadeRealizada.getDataHoraInicio().after(
+		/*if (atividadeRealizada.getDataHoraInicio().after(
 				atividadeRealizada.getDataHoraFim())
 				|| atividadeRealizada.getDataHoraInicio().equals(
 						atividadeRealizada.getDataHoraFim())) {
 			throw new IllegalArgumentException(
 					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
-
-		}
+		}*/
 		iAtividadeRealizada.cadastrar(atividadeRealizada);
 	}
 
@@ -47,13 +46,15 @@ public class ControladorAtividadeRealizada {
 		try {
 			Fachada f = Fachada.getInstance();
 			for (AtividadeRealizada atividadeRealizada : ar) {
-				ar2.add(new AtividadeRealizada(
+				AtividadeRealizada obj = new AtividadeRealizada(
 						f.atividadeProcurar(atividadeRealizada.getIdAtividade()),
 						atividadeRealizada.getDataHoraInicio(),
 						atividadeRealizada.getDataHoraFim(), f
 								.usuarioProcurar(atividadeRealizada
 										.getIdUsuario()), atividadeRealizada
-								.getGasto()));
+								.getGasto());
+				obj.setId(atividadeRealizada.getId());
+				ar2.add(obj);
 			}
 		} catch (Exception e) {
 			throw new RepositorioException(e);
@@ -68,13 +69,15 @@ public class ControladorAtividadeRealizada {
 		try {
 			Fachada f = Fachada.getInstance();
 			for (AtividadeRealizada atividadeRealizada : ar) {
-				ar2.add(new AtividadeRealizada(
+				AtividadeRealizada obj = new AtividadeRealizada(
 						f.atividadeProcurar(atividadeRealizada.getIdAtividade()),
 						atividadeRealizada.getDataHoraInicio(),
 						atividadeRealizada.getDataHoraFim(), f
 								.usuarioProcurar(atividadeRealizada
 										.getIdUsuario()), atividadeRealizada
-								.getGasto()));
+								.getGasto());
+				obj.setId(atividadeRealizada.getId());
+				ar2.add(obj);
 			}
 		} catch (Exception e) {
 			throw new RepositorioException(e);

@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 
 import br.com.coffeebeans.exception.ResourceException;
 import br.com.coffeebeans.fachada.Fachada;
-import br.com.coffeebeans.usuario.Usuario;
 
 @Path("/atividade")
 public class AtividadeResource {

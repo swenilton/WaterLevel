@@ -1,9 +1,7 @@
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
-
 import br.com.coffeebeans.acionamento.Acionamento;
-import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
 import br.com.coffeebeans.fachada.Fachada;
 

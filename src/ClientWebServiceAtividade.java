@@ -1,15 +1,10 @@
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.ws.rs.core.MediaType;
-
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-
 import br.com.coffeebeans.atividade.Atividade;
-import br.com.coffeebeans.usuario.Usuario;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

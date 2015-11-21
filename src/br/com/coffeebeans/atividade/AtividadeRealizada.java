@@ -2,8 +2,16 @@ package br.com.coffeebeans.atividade;
 
 import java.util.Date;
 
-import br.com.coffeebeans.usuario.Usuario;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import br.com.coffeebeans.usuario.Usuario;
+import br.com.coffeebeans.util.CustomJsonDateDeserializer;
+import br.com.coffeebeans.util.CustomJsonDateSerializer;
+
+@XmlRootElement
 public class AtividadeRealizada {
 
 	private int id;
@@ -17,7 +25,6 @@ public class AtividadeRealizada {
 
 	public AtividadeRealizada(Atividade atividade, Date dataHoraInicio,
 			Date dataHoraFim, Usuario usuario, double gasto) {
-		super();
 		this.atividade = atividade;
 		this.dataHoraInicio = dataHoraInicio;
 		this.dataHoraFim = dataHoraFim;
@@ -75,18 +82,21 @@ public class AtividadeRealizada {
 		this.atividade = atividade;
 	}
 
+	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	public Date getDataHoraInicio() {
 		return dataHoraInicio;
 	}
-
+	@JsonDeserialize(using = CustomJsonDateDeserializer.class)
 	public void setDataHoraInicio(Date dataHoraInicio) {
 		this.dataHoraInicio = dataHoraInicio;
 	}
-
+	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	public Date getDataHoraFim() {
 		return dataHoraFim;
 	}
 
+
+	@JsonDeserialize(using = CustomJsonDateDeserializer.class)
 	public void setDataHoraFim(Date dataHoraFim) {
 		this.dataHoraFim = dataHoraFim;
 	}
@@ -106,4 +116,7 @@ public class AtividadeRealizada {
 				+ ", idAtividade=" + idAtividade + "\n";
 	}
 
+	public AtividadeRealizada() {
+
+	}
 }
