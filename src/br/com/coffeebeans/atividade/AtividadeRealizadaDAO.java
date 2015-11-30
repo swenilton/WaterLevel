@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.com.coffeebeans.exception.AtividadeJaExistenteException;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.ListaVaziaException;

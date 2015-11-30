@@ -1,15 +1,9 @@
 package br.com.coffeebeans.atividade;
-
 import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import br.com.coffeebeans.usuario.Usuario;
 import br.com.coffeebeans.util.CustomJsonDateDeserializer;
-import br.com.coffeebeans.util.CustomJsonDateSerializer;
 
 @XmlRootElement
 public class AtividadeRealizada {
@@ -22,7 +16,23 @@ public class AtividadeRealizada {
 	private int idUsuario;
 	private int idAtividade;
 	private double gasto;
+	private String dateHoraInicio;
+	private String dateHoraFim;
+	
+	
+	public AtividadeRealizada(Atividade atividade, Date dataHoraInicio,
+			Date dataHoraFim, Usuario usuario, double gasto,String dateHoraInicio,String dateHoraFim) {
+		this.atividade = atividade;
+		this.dataHoraInicio = dataHoraInicio;
+		this.dataHoraFim = dataHoraFim;
+		this.usuario = usuario;
+		this.gasto = gasto;
+		this.setDateHoraInicio(dateHoraInicio);
+		this.setDateHoraFim(dateHoraFim);
+	}
 
+	
+	
 	public AtividadeRealizada(Atividade atividade, Date dataHoraInicio,
 			Date dataHoraFim, Usuario usuario, double gasto) {
 		this.atividade = atividade;
@@ -82,7 +92,6 @@ public class AtividadeRealizada {
 		this.atividade = atividade;
 	}
 
-	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	public Date getDataHoraInicio() {
 		return dataHoraInicio;
 	}
@@ -90,7 +99,6 @@ public class AtividadeRealizada {
 	public void setDataHoraInicio(Date dataHoraInicio) {
 		this.dataHoraInicio = dataHoraInicio;
 	}
-	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	public Date getDataHoraFim() {
 		return dataHoraFim;
 	}
@@ -118,5 +126,29 @@ public class AtividadeRealizada {
 
 	public AtividadeRealizada() {
 
+	}
+
+
+
+	public String getDateHoraInicio() {
+		return dateHoraInicio;
+	}
+
+
+
+	public void setDateHoraInicio(String dateHoraInicio) {
+		this.dateHoraInicio = dateHoraInicio;
+	}
+
+
+
+	public String getDateHoraFim() {
+		return dateHoraFim;
+	}
+
+
+
+	public void setDateHoraFim(String dateHoraFim) {
+		this.dateHoraFim = dateHoraFim;
 	}
 }

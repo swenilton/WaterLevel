@@ -1,13 +1,10 @@
 package br.com.coffeebeans.atividade;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.BDException;
 import br.com.coffeebeans.exception.DAOException;
 import br.com.coffeebeans.util.Conexao;

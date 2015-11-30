@@ -29,13 +29,13 @@ public class ControladorAtividadeRealizada {
 		if (iAtividadeRealizada.procurar(atividadeRealizada.getId()) != null) {
 			throw new AtividadeJaExistenteException();
 		}
-		/*if (atividadeRealizada.getDataHoraInicio().after(
+		if (atividadeRealizada.getDataHoraInicio().after(
 				atividadeRealizada.getDataHoraFim())
 				|| atividadeRealizada.getDataHoraInicio().equals(
 						atividadeRealizada.getDataHoraFim())) {
 			throw new IllegalArgumentException(
 					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
-		}*/
+		}
 		iAtividadeRealizada.cadastrar(atividadeRealizada);
 	}
 
@@ -115,7 +115,7 @@ public class ControladorAtividadeRealizada {
 				|| atividadeRealizada.getDataHoraInicio().equals(
 						atividadeRealizada.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Impossível a data hora de inicio ser maior ou igual a data hora fim");
+					"Impossivel a data hora de inicio ser maior ou igual a data hora fim");
 
 		}
 		iAtividadeRealizada.atualizar(atividadeRealizada);
