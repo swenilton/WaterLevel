@@ -2,6 +2,7 @@ package br.com.coffeebeans.fachada;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.coffeebeans.acionamento.Acionamento;
@@ -16,6 +17,7 @@ import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
 import br.com.coffeebeans.exception.AtividadeJaExistenteException;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
+import br.com.coffeebeans.exception.AtividadeRealizadaJaExistenteException;
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.DAOException;
@@ -67,7 +69,7 @@ public class Fachada {
 			BombaNaoEncontradaException, ViolacaoChaveEstrangeiraException,
 			AcionamentoNaoEncontradoException, AcionamentoJaExistenteException,
 			AtividadeJaExistenteException, AtividadeNaoEncontradaException,
-			DAOException, EmailJaExistenteException, PermissaoException {
+			DAOException, EmailJaExistenteException, PermissaoException, AtividadeRealizadaJaExistenteException {
 		if (element instanceof Repositorio) {
 			controladorRepositorio.cadastrar((Repositorio) element);
 		} else if (element instanceof Usuario) {
@@ -178,6 +180,12 @@ public class Fachada {
 		return controladorUsuario.getLista();
 
 	}
+	
+	public List<AtividadeRealizada> atividadeRealizadaProcurar(String descricao)
+			throws SQLException, AtividadeNaoEncontradaException,
+			RepositorioException {
+		return controladorAtividadeRealizada.procurar(descricao);
+	}
 
 	public AtividadeRealizada atividadeRealizadaProcurar(int id)
 			throws SQLException, AtividadeNaoEncontradaException,
@@ -241,6 +249,12 @@ public class Fachada {
 	public List<AtividadeRealizada> getUltimasAtividades()
 			throws RepositorioException, SQLException {
 		return controladorAtividadeRealizada.getUltimasAtividades();
+	}
+
+	public boolean existeAtividadeRealizada(int id_usuario, int id_atividade,
+			Date dataHoraInicio, Date dataHoraFim) throws SQLException,
+			DAOException {
+		return controladorAtividadeRealizada.existe(id_usuario,id_atividade,dataHoraInicio,dataHoraFim);
 	}
 
 	public boolean existeUsuario(String login) throws SQLException,
