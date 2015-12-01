@@ -23,7 +23,7 @@ public interface IAcionamentoDAO {
 	public Acionamento procurarIni(Date data1, Date data2)
 			throws SQLException, AcionamentoNaoEncontradoException, RepositorioException;
 
-	public Acionamento procurarFim(Timestamp data1, Timestamp data2)
+	public Acionamento procurarFim(Date date3, Date date4)
 			throws SQLException, AcionamentoNaoEncontradoException, RepositorioException;
 
 	public void atualizar(Acionamento acionamento)

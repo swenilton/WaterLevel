@@ -23,7 +23,6 @@ import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.fachada.Fachada;
 
 public class ClientWebServiceAtividadeRealizada {
-	static WebResource webResource3;
 	public static Fachada fachada;
 
 	public static void main(String[] args) {
@@ -62,6 +61,8 @@ public class ClientWebServiceAtividadeRealizada {
 					new TypeReference<ArrayList<Object>>() {
 					});
 
+			// ////////////////////////////////////FUNCIONA
+
 			/*
 			 * WebResource webResource3 = client .resource(
 			 * "http://localhost:8080/WaterLevel/WS2/atividadeRealizada/add");
@@ -85,9 +86,6 @@ public class ClientWebServiceAtividadeRealizada {
 			 * 
 			 * //webResource3.type(MediaType.APPLICATION_JSON).post(ar);
 			 */
-
-			// ////////////////////////////////////FUNCIONA
-
 			WebResource webResource4 = client
 					.resource("http://localhost:8080/WaterLevel/WS2/atividadeRealizada/existe/2015-11-30%2019:55:46/2015-11-30%2019:55:46/1/1");
 

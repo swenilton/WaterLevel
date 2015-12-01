@@ -3,6 +3,7 @@ package br.com.coffeebeans.acionamento;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
@@ -26,17 +27,17 @@ public class ControladorAcionamento {
 		if (iAcionamento.procurar(acionamento.getId()) != null) {
 			throw new AcionamentoJaExistenteException();
 		}
-		// se j� tiver um acionamento nesse instante
+		// se ja tiver um acionamento nesse instante
 		if (iAcionamento.procurarIni(acionamento.getDataHoraInicio(),
 				acionamento.getDataHoraInicio()) != null) {
 			throw new AcionamentoJaExistenteException();
 		}
-		if (acionamento.getDataHoraInicio().after(acionamento.getDataHoraFim())
+		/*if (acionamento.getDataHoraInicio().after(acionamento.getDataHoraFim())
 				|| acionamento.getDataHoraInicio().equals(
 						acionamento.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Imposs�vel a data hora de inicio ser maior ou igual a data hora fim");
-		}
+					"Impossivel a data hora de inicio ser maior ou igual a data hora fim");
+		}*/
 		iAcionamento.cadastrar(acionamento);
 	}
 
@@ -78,7 +79,7 @@ public class ControladorAcionamento {
 
 	}
 
-	public Acionamento procurarIni(Timestamp data1, Timestamp data2)
+	public Acionamento procurarIni(Date data1, Date data2)
 			throws SQLException, AcionamentoNaoEncontradoException,
 			RepositorioException {
 		if (iAcionamento.procurarIni(data1, data2) == null) {
@@ -88,13 +89,13 @@ public class ControladorAcionamento {
 
 	}
 
-	public Acionamento procurarFim(Timestamp data1, Timestamp data2)
+	public Acionamento procurarFim(Date date3, Date date4)
 			throws SQLException, AcionamentoNaoEncontradoException,
 			RepositorioException {
-		if (iAcionamento.procurarIni(data1, data2) == null) {
+		if (iAcionamento.procurarFim(date3, date4) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
-		return iAcionamento.procurarFim(data1, data2);
+		return iAcionamento.procurarFim(date3, date4);
 
 	}
 
@@ -107,8 +108,8 @@ public class ControladorAcionamento {
 		if (iAcionamento.procurar(acionamento.getId()) == null) {
 			throw new AcionamentoNaoEncontradoException();
 		}
-		// se j� tiver um acionamento nesse instante
-		if (iAcionamento.procurarIni(acionamento.getDataHoraInicio(),
+		// se ja tiver um acionamento nesse instante
+		/*if (iAcionamento.procurarIni(acionamento.getDataHoraInicio(),
 				acionamento.getDataHoraInicio()) != null) {
 			throw new AcionamentoJaExistenteException();
 		}
@@ -116,8 +117,8 @@ public class ControladorAcionamento {
 				|| acionamento.getDataHoraInicio().equals(
 						acionamento.getDataHoraFim())) {
 			throw new IllegalArgumentException(
-					"Imposs�vel a data hora de inicio ser maior ou igual a data hora fim");
-		}
+					"Impossivel a data hora de inicio ser maior ou igual a data hora fim");
+		}*/
 		iAcionamento.atualizar(acionamento);
 	}
 

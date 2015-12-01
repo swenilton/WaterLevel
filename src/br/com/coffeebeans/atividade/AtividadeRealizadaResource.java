@@ -241,5 +241,4 @@ public class AtividadeRealizadaResource {
 		return new Gson().toJson(listUltimasAtividadesRealizadas);
 	}
 
-
 }

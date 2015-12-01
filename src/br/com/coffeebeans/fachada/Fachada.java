@@ -1,6 +1,7 @@
 package br.com.coffeebeans.fachada;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -273,6 +274,19 @@ public class Fachada {
 	public boolean existeAtividade(String descricao) throws SQLException,
 			DAOException {
 		return controladorAtividade.existe(descricao);
+	}
+	public Acionamento acionamentoProcurarIni(Date date3, Date date4)
+			throws SQLException, AcionamentoNaoEncontradoException,
+			RepositorioException {
+
+	return controladorAcionamento.procurarIni(date3, date4);	
+	}
+	
+	public Acionamento acionamentoProcurarFim(Date date3, Date date4)
+			throws SQLException, AcionamentoNaoEncontradoException,
+			RepositorioException {
+
+	return controladorAcionamento.procurarFim(date3, date4);	
 	}
 
 }
