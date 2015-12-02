@@ -27,7 +27,7 @@ public class ControladorBomba {
 		}
 		if (!(bomba.getAcionamento().equals(Bomba.ACIONAMENTO_AUTOMATICO))
 				&& (!bomba.getAcionamento().equals(Bomba.ACIONAMENTO_MANUAL))) {
-			throw new IllegalArgumentException("Modo de acionamento inválido");
+			throw new IllegalArgumentException("Modo de acionamento invalido");
 		}
 		iBomba.cadastrar(bomba);
 

@@ -289,4 +289,8 @@ public class Fachada {
 	return controladorAcionamento.procurarFim(date3, date4);	
 	}
 
+	public Bomba bombaProcurar(String descricao) throws SQLException, BombaNaoEncontradaException {
+		return controladorBomba.procurar(descricao);
+	}
+
 }

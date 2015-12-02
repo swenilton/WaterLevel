@@ -36,6 +36,7 @@ public class Bomba {
 		this.potencia = potencia;
 		this.vazao = vazao;
 		this.acionamento = acionamento;
+		this.idRepositorioEnche=idRepositorioEnche;
 	}
 
 	public int getIdRepositorioEnche() {

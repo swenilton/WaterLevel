@@ -88,7 +88,6 @@ public class BombaDAO implements IBombaDAO {
 						rs.getInt("ID_REPOSITORIO_ENC"));
 				bomba.setCodigo(rs.getInt("ID"));
 				bomba.setIdRepositorioSeca(rs.getInt("ID_REPOSITORIO_SEC"));
-
 			}
 
 		} catch (Exception e) {
@@ -126,7 +125,7 @@ public class BombaDAO implements IBombaDAO {
 		}
 		return bomba;
 	}
-	
+
 	public Bomba procurarPorRepositorio(int idRepositorio) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

@@ -47,6 +47,7 @@ public class ClientWebServiceAcionamento {
 					new TypeReference<ArrayList<Object>>() {
 					});
 
+			//FUNCIONANDO
 			/*
 			 * WebResource webResource2 = client
 			 * .resource("http://localhost:8080/WaterLevel/WS4/acionamento/add"
