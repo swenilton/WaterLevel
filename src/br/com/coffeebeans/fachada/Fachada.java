@@ -152,12 +152,12 @@ public class Fachada {
 		return controladorAtividadeRealizada.listar(id);
 	}
 
-	public ArrayList<Acionamento> acionamentoListar() throws SQLException,
+	public List<Acionamento> acionamentoListar() throws SQLException,
 			ListaVaziaException, RepositorioException {
 		return controladorAcionamento.listar();
 	}
 
-	public ArrayList<Acionamento> getUltimosAcionamentos() throws SQLException,
+	public List<Acionamento> getUltimosAcionamentos() throws SQLException,
 			ListaVaziaException, RepositorioException {
 		return controladorAcionamento.getUltimosAcionamentos();
 	}

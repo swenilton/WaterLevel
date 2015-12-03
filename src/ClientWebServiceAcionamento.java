@@ -98,7 +98,7 @@ public class ClientWebServiceAcionamento {
 			acionamento2.setDataHoraFim(date4);
 
 			WebResource webResource5 = client
-					.resource("http://localhost:8080/WaterLevel/WS4/acionamento/procurarIni/2015-05-25%2015:30:00/2015-05-25%2015:30:00");
+					.resource("http://localhost:8080/WaterLevel/WS4/acionamento/procurarIni/2015-12-01%2019:58:49/2015-12-01%2019:58:49");
 
 			ClientResponse response4 = webResource5.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -114,7 +114,7 @@ public class ClientWebServiceAcionamento {
 			acionamento3.setDataHoraFim(date6);
 
 			WebResource webResource6 = client
-					.resource("http://localhost:8080/WaterLevel/WS4/acionamento/procurarFim/2015-05-25%2015:35:00/2015-05-25%2015:35:00");
+					.resource("http://localhost:8080/WaterLevel/WS4/acionamento/procurarFim/2015-12-01%2019:58:49/2015-12-01%2019:58:49");
 
 			ClientResponse response5 = webResource6.type(
 					MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -129,7 +129,9 @@ public class ClientWebServiceAcionamento {
 			acionamento4.setDataHoraInicio(date7);
 			acionamento4.setDataHoraFim(date8);
 
-			WebResource webResource7 = client
+			
+			//TA FUNCIONANDO
+			/*WebResource webResource7 = client
 					.resource("http://localhost:8080/WaterLevel/WS4/acionamento/update");
 
 			Acionamento acionamento5 = fachada.acionamentoProcurar(2);
@@ -150,8 +152,9 @@ public class ClientWebServiceAcionamento {
 
 			acionamento5.setBomba(bomba2);
 
-			webResource7.type(MediaType.APPLICATION_JSON).put(acionamento5);
+			webResource7.type(MediaType.APPLICATION_JSON).put(acionamento5);*/
 
+			
 			// TA FUNCIONANDO
 			/*WebResource webResource8 = client
 					.resource("http://localhost:8080/WaterLevel/WS4/acionamento/excluir/1");

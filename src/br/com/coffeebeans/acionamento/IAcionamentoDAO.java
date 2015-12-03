@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import br.com.coffeebeans.exception.AcionamentoJaExistenteException;
 import br.com.coffeebeans.exception.AcionamentoNaoEncontradoException;
@@ -14,7 +15,7 @@ public interface IAcionamentoDAO {
 	public void cadastrar(Acionamento acionamento) throws SQLException,
 			AcionamentoJaExistenteException, RepositorioException;
 
-	public ArrayList<Acionamento> listar() throws SQLException,
+	public List<Acionamento> listar() throws SQLException,
 			ListaVaziaException, RepositorioException;
 
 	public Acionamento procurar(int id) throws SQLException,
@@ -32,7 +33,7 @@ public interface IAcionamentoDAO {
 	public void excluir(int id) throws SQLException,
 			AcionamentoNaoEncontradoException, RepositorioException;
 
-	public ArrayList<Acionamento> getUltimosAcionamentos() throws SQLException,
+	public List<Acionamento> getUltimosAcionamentos() throws SQLException,
 			ListaVaziaException, RepositorioException;
 
 }
