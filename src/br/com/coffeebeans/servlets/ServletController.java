@@ -147,6 +147,20 @@ public class ServletController extends HttpServlet {
 			}
 			sucessos.add("Logoff com sucesso");
 			url = "/index.jsp";
+		} else if (acao.equals("getFoto")) {
+			int id = Integer.parseInt(request.getParameter("id"));	
+			try {
+				System.out.println("getFoto");
+				Usuario u = fachada.usuarioProcurar(id);			
+				response.setContentType("image"); 
+				OutputStream os = response.getOutputStream();
+				os.write(u.getFoto());
+				os.flush();
+			} catch (Exception e) {
+				erros.add(e.getMessage());
+				e.printStackTrace();
+			}
+			url = "";
 		} else if (acao.equals("inserirUsuario")) {
 			try {
 				String nome = request.getParameter("nome");
@@ -163,9 +177,7 @@ public class ServletController extends HttpServlet {
 				Usuario u = new Usuario(nome, login, senha, email, ativo,
 						perfil);
 				u.setTelefone(telefone);
-				String arquivo = "";
-				File dir = new File(System.getProperty("user.dir")
-						+ "/WaterLevel/img/");
+				File dir = new File(getServletContext().getRealPath("/img"));
 				Part filePart = request.getPart("foto");
 				String fileName = filePart.getSubmittedFileName();
 				File f = null;
@@ -173,20 +185,10 @@ public class ServletController extends HttpServlet {
 				if (fileName.equals("")) {
 					f = new File(dir.getCanonicalPath() + "/default.jpg");
 					fileContent = new FileInputStream(f);
-					f = new File(dir.getCanonicalPath() + "/" + email + ".jpg");
-					arquivo = "/" + email + ".jpg";
 				} else {
 					fileContent = filePart.getInputStream();
-					String ext[] = fileName.split("\\.");
-					int i = ext.length;
-					f = new File(dir.getCanonicalPath() + "/" + email + "."
-							+ ext[i - 1]);
-					arquivo = "/" + email + "." + ext[i - 1];
 				}
-				OutputStream os = new FileOutputStream(f);
-				while (fileContent.available() > 0) {
-					os.write(fileContent.read());
-				}
+				u.setFoto(Usuario.getBytesFromInputStream(fileContent));
 				//u.setFoto("fotos" + arquivo);
 				fachada.cadastrar(u);
 				sucessos.add("Usuario inserido");
@@ -263,16 +265,8 @@ public class ServletController extends HttpServlet {
 			u.setTelefone(telefone);
 			int id = Integer.parseInt(request.getParameter("id"));
 			u.setId(id);
-			String arquivo = "";
 			try {
-				/*File f2 = new File(
-						System.getProperty("user.dir")
-								+ "/WaterLevel/img/"
-								+ new File(fachada.usuarioProcurar(id)
-										.getFoto()).getName());
-				f2.delete();*/
-				File dir = new File(System.getProperty("user.dir")
-						+ "/WaterLevel/img/");
+				File dir = new File(getServletContext().getRealPath("/img"));
 				Part filePart = request.getPart("foto");
 				String fileName = filePart.getSubmittedFileName();
 				File f = null;
@@ -280,20 +274,10 @@ public class ServletController extends HttpServlet {
 				if (fileName.equals("")) {
 					f = new File(dir.getCanonicalPath() + "/default.jpg");
 					fileContent = new FileInputStream(f);
-					f = new File(dir.getCanonicalPath() + "/" + email + ".jpg");
-					arquivo = "/" + email + ".jpg";
 				} else {
 					fileContent = filePart.getInputStream();
-					String ext[] = fileName.split("\\.");
-					int i = ext.length;
-					f = new File(dir.getCanonicalPath() + "/" + email + "."
-							+ ext[i - 1]);
-					arquivo = "/" + email + "." + ext[i - 1];
 				}
-				OutputStream os = new FileOutputStream(f);
-				while (fileContent.available() > 0) {
-					os.write(fileContent.read());
-				}
+				u.setFoto(Usuario.getBytesFromInputStream(fileContent));
 				//u.setFoto("fotos" + arquivo);
 				fachada.atualizar(u);
 				sucessos.add("Usuário alterado");

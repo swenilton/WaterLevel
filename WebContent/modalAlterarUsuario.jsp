@@ -24,12 +24,11 @@
 						<input type="hidden" name="acao" value="alterarUsuario" /> <input
 							type="hidden" name="id" value="${sessionScope.usuarioLogado.id}" />
 						<div id="foto-usuario" style="text-align: center;">
-							<img src="http://placehold.it/150x150" alt="Imagem do Usuário"
-								class="img-circle" />
+							<img src="ctrl?acao=getFoto&id=${sessionScope.usuarioLogado.id}" alt="Imagem do Usuário"
+								class="img-circle" width="150" height="150" />
 							<div class="form-group">
 								<label for="foto">Procurar Foto</label> <input type="file"
-									name="foto" id="foto"
-									value="${sessionScope.usuarioLogado.foto}" />
+									name="foto" id="foto"/>
 							</div>
 						</div>
 						<div id="dados-usuario">

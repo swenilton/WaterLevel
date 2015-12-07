@@ -73,7 +73,7 @@
 				$('.modal #login').val(dados[3]);
 				$('.modal #perfil').val(dados[4]);
 				$('.modal #ativo').val(dados[5]);
-				$('.modal #foto').val(dados[6]);
+				$('#fotoPerfil').attr('src', 'ctrl?acao=getFoto&id='+id).width(150).height(150);
 			})
 
 		}
@@ -166,7 +166,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
 						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
-							src="${sessionScope.usuarioLogado.foto}" id="perfil" width="40px" /><span
+							src="ctrl?acao=getFoto&id=${sessionScope.usuarioLogado.id}" id="perfil" width="40px" /><span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"
@@ -225,7 +225,7 @@
 									<th><input type="radio" name="user-selected"
 										value="${usuario.id}" /></th>
 									<td>${usuario.id}</td>
-									<td class="center"><img src="${usuario.foto}" id="perfil" /></td>
+									<td class="center"><img src="ctrl?acao=getFoto&id=${usuario.id}" id="perfil" /></td>
 									<td>${usuario.nome}</td>
 									<td>${usuario.email}</td>
 									<td>${usuario.telefone}</td>
@@ -245,7 +245,7 @@
 					<button type='button' class='close' data-dismiss='alert'
 						aria-label='Close'>
 						<span aria-hidden='true'>&times;</span>
-					</button>
+					</button>	
 					<ul>
 						<c:forEach var="erro" items="${erros.erros}">
 							<li>${erro}</li>

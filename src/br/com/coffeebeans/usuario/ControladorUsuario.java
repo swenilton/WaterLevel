@@ -25,7 +25,7 @@ public class ControladorUsuario {
 			// throw new IllegalAnnotationException("Usuario Null");
 		}
 
-		if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) {
+		if (!getUsuarioLogado().getPerfil().equalsIgnoreCase("ADMINISTRADOR")) {
 			throw new PermissaoException();
 		}
 		if (existe(usuario.getLogin())) {
@@ -59,7 +59,7 @@ public class ControladorUsuario {
 		if (usuarioNovo == null) {
 			throw new NullPointerException();
 		}
-		if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) {
+		if (!getUsuarioLogado().getPerfil().equalsIgnoreCase("ADMINISTRADOR")) {
 			throw new PermissaoException();
 		}
 
@@ -80,7 +80,7 @@ public class ControladorUsuario {
 			throw new UsuarioNaoEncontradoException();
 		}
 
-		if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) {
+		if (!getUsuarioLogado().getPerfil().equalsIgnoreCase("ADMINISTRADOR")) {
 			throw new PermissaoException();
 		}
 		if (iusuario.procurar(id).getId() == 1) {

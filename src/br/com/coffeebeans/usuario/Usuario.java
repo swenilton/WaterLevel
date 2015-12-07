@@ -1,5 +1,9 @@
 package br.com.coffeebeans.usuario;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -13,14 +17,6 @@ public class Usuario  {
 	private String ativo;
 	private byte[] foto;
 	private String perfil;
-	
-	public byte[] getFoto() {
-		return foto;
-	}
-
-	public void setFoto(byte[] foto) {
-		this.foto = foto;
-	}
 
 	public Usuario(String nome, String login, String senha, String email,
 			String ativo, String perfil) {
@@ -30,6 +26,14 @@ public class Usuario  {
 		this.email = email;
 		this.ativo = ativo;
 		this.perfil = perfil;
+	}
+	
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
 	}
 
 	public int getId() {
@@ -115,4 +119,21 @@ public class Usuario  {
 	public Usuario() {
 		
 	}
+
+	public static byte[] getBytesFromInputStream(InputStream is) throws IOException
+	{
+	    try (ByteArrayOutputStream os = new ByteArrayOutputStream();)
+	    {
+	        byte[] buffer = new byte[0xFFFF];
+	
+	        for (int len; (len = is.read(buffer)) != -1;)
+	            os.write(buffer, 0, len);
+	
+	        os.flush();
+	
+	        return os.toByteArray();
+	    }
+	}
+
+
 }

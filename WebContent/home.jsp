@@ -32,26 +32,27 @@
 			$('#caixa2.skill div').load('.inner', geraCaixa2());
 		})
 	});*/
-	repositorios = [];
+	//repositorios = [];
 	$(function(){
-		$.post("ctrl?acao=getListaIdRepositorios", function(resposta) {			
-			dados = resposta.split(",");
-			init(dados);
-		});
+		//$.post("ctrl?acao=getListaIdRepositorios", function(resposta) {			
+			//dados = resposta.split(",");
+			init();
+		//});
 	})
-	function init(dados) {
+	function init() {
+		valor = 0;
 		setInterval(function() {
-			for(i = 0; i < dados.length; i++){
-				$.post("ctrl?acao=getLeitura&idRepositorio=" + dados[i], function(retorno) {
-					//valor = retorno;
-					geraCaixa(parseFloat(retorno), dados[i]);
+			//for(var i = 0; i < dados.length; i++){
+				$.post("ctrl?acao=getLeitura&idRepositorio=4", function(retorno) {
+					valor = retorno;				
 				})	
-			}		
+				geraCaixa(parseFloat(valor), 4);
+			//}		
 		}, 2000);
 	}
 
 	function geraCaixa(nivel, id) {
-		var skillBar = $('#caixa'+id+'.skill div').siblings().find('.inner');
+		var skillBar = $('#'+id+' #caixa-'+id+' #skill-'+id+' div').siblings().find('#inner-'+id);
 		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
 		//var profundidade = 19;
 		//var altura = profundidade - nivel;
@@ -63,12 +64,12 @@
 		if (nivel > 0 && nivel < 101) {
 			//var skillVal = percent.toFixed(2) + "%";
 			var skillVal = nivel.toFixed(2) + "%";
-			$('#progress'+id).html("<h1>" + skillVal + "</h1>");
+			$('#progress-'+id).html("<h1>" + skillVal + "</h1>");
 			$(skillBar).animate({
 				height : skillVal
 			}, 1000);
 		} else {
-			$('#progress'+id).html("<h1>Aguarde...</h1>");
+			$('#progress-'+id).html("<h1>Aguarde...</h1>");
 			//$('#progress').html("<br /><img src='img/aguarde3.gif' />");
 			$(skillBar).animate({
 				height : 0
@@ -170,7 +171,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						id="usuario-logado" data-toggle="dropdown" role="button"
 						aria-expanded="false"> <span class="usuario">${sessionScope.usuarioLogado.nome}</span><img
-							src="${sessionScope.usuarioLogado.foto}" id="perfil" /><span
+							src="ctrl?acao=getFoto&id=${sessionScope.usuarioLogado.id}" id="perfil" /><span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" data-toggle="modal"
@@ -225,15 +226,15 @@
 					<div role="tabpanel"
 						class="tab-pane fade in ${id.count == 1 ? 'active' : '' }"
 						id="${repositorio.id }">
-						<section class="caixa">
+						<section class="caixa" id="caixa-${repositorio.id }">
 							<div class="row">
 								<div class="col-md-6">
-									<div class='skill' id="caixa${repositorio.id }">
+									<div class='skill' id="skill-${repositorio.id }">
 										<div class='outer'>
-											<div class='inner'>
+											<div class='inner' id="inner-${repositorio.id }">
 												<div></div>
 											</div>
-											<div class="progress" id="progress${repositorio.id }"></div>
+											<div class="progress" id="progress-${repositorio.id }"></div>
 										</div>
 										<div id='caixa'>
 											<img src='img/caixa-800px.png' class="img-responsive"
@@ -369,7 +370,7 @@
 										<c:forEach var="atividade"
 											items="<%=f.getUltimasAtividades()%>">
 											<tr style="font-size: 12px;">
-												<td class="center"><img src="${atividade.usuario.foto}"
+												<td class="center"><img src="ctrl?acao=getFoto&id=${atividade.usuario.id}"
 													id="perfil" alt="${atividade.usuario.nome}"
 													data-toggle="tooltip" data-placement="left"
 													title="${atividade.usuario.nome}" /></td>
@@ -467,7 +468,7 @@
 									<c:forEach var="atividade"
 										items="<%=f.atividadeRealizadaListar()%>">
 										<tr>
-											<td class="center"><img src="${atividade.usuario.foto}"
+											<td class="center"><img src="ctrl?acao=getFoto&id=${atividade.usuario.id}"
 												id="perfil" alt="${atividade.usuario.nome}"
 												data-toggle="tooltip" data-placement="left"
 												title="${atividade.usuario.nome}" /></td>

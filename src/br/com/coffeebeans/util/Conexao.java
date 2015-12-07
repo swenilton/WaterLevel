@@ -15,9 +15,9 @@ public class Conexao {
 		String senha = "";
 
 		if (sistema == "mysql") {
-			conexao = "jdbc:mysql://localhost/water level";
+			conexao = "jdbc:mysql://localhost/waterlevel";
 			usuario = "root";
-			senha = "181290";
+			senha = "root";
 		} else if (sistema == "oracle") {
 			/*
 			 * conexao = "jdbc:oracle:thin:@0.0.0.0:1521:XE"; usuario = "";
