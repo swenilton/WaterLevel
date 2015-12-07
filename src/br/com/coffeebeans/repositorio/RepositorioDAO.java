@@ -66,7 +66,7 @@ public class RepositorioDAO implements IRepositorioDAO {
 	@Override
 	public List<Repositorio> listar() throws SQLException,
 			RepositorioException {
-		ArrayList<Repositorio> repositorios = new ArrayList<Repositorio>();
+		List<Repositorio> repositorios = new ArrayList<Repositorio>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Repositorio repositorio = null;

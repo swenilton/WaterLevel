@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -22,8 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import com.lowagie.text.List;
 
 import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.bomba.Bomba;
@@ -610,7 +609,7 @@ public class ServletController extends HttpServlet {
 			url = "";
 		} else if (acao.equals("getListaIdRepositorios")) {
 			try {
-				java.util.List<Repositorio> reps = fachada.repositorioListar();
+				List<Repositorio> reps = fachada.repositorioListar();
 				ServletOutputStream os = response.getOutputStream();
 				for(int i = 0; i < reps.size(); i++){
 					if(i == reps.size() - 1)
