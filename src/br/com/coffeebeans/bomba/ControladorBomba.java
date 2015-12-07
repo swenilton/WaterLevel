@@ -2,6 +2,7 @@ package br.com.coffeebeans.bomba;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.BombaJaExistenteException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
@@ -33,7 +34,7 @@ public class ControladorBomba {
 
 	}
 
-	public ArrayList<Bomba> listar() throws SQLException, ListaVaziaException {
+	public List<Bomba> listar() throws SQLException, ListaVaziaException {
 		return iBomba.listar();
 
 	}

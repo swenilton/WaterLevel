@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.RepositorioException;
@@ -41,7 +42,7 @@ public class BombaDAO implements IBombaDAO {
 		}
 	}
 
-	public ArrayList<Bomba> listar() throws SQLException {
+	public List<Bomba> listar() throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Bomba bomba = null;

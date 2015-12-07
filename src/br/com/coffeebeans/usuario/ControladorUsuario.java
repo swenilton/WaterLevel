@@ -24,6 +24,7 @@ public class ControladorUsuario {
 			throw new NullPointerException();
 			// throw new IllegalAnnotationException("Usuario Null");
 		}
+
 		if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) {
 			throw new PermissaoException();
 		}
@@ -78,12 +79,14 @@ public class ControladorUsuario {
 		if (iusuario.procurar(id) == null) {
 			throw new UsuarioNaoEncontradoException();
 		}
-		/*
-		 * if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) { throw
-		 * new PermissaoException(); } if (iusuario.procurar(id).getId() == 1) {
-		 * throw new UnsupportedOperationException(
-		 * "o usuário ADMIN nao pode ser excluido"); }
-		 */
+
+		if (!getUsuarioLogado().getPerfil().equals("ADMINISTRADOR")) {
+			throw new PermissaoException();
+		}
+		if (iusuario.procurar(id).getId() == 1) {
+			throw new UnsupportedOperationException(
+					"o usuário ADMIN nao pode ser excluido");
+		}
 		iusuario.excluir(id);
 	}
 

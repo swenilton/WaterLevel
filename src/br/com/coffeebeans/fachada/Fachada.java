@@ -164,12 +164,12 @@ public class Fachada {
 		return controladorAcionamento.getUltimosAcionamentos();
 	}
 
-	public ArrayList<Bomba> bombaListar() throws SQLException,
+	public List<Bomba> bombaListar() throws SQLException,
 			ListaVaziaException {
 		return controladorBomba.listar();
 	}
 
-	public ArrayList<Repositorio> repositorioListar() throws SQLException,
+	public List<Repositorio> repositorioListar() throws SQLException,
 			RepositorioException {
 		return controladorRepositorio.listar();
 

@@ -122,7 +122,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 				stmt.setString(4, usuario.getEmail());
 				stmt.setString(5, usuario.getTelefone());
 				stmt.setString(6, usuario.getAtivo());
-				stmt.setString(7, usuario.getFoto());
+				stmt.setBytes(7, usuario.getFoto());
 				stmt.setString(8, usuario.getPerfil());
 				stmt.execute();
 			} else {
@@ -161,7 +161,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 							rs.getString("EMAIL"), rs.getString("ATIVO"),
 							rs.getString("PERFIL"));
 					usuario.setId(rs.getInt("ID"));
-					usuario.setFoto(rs.getString("FOTO"));
+					usuario.setFoto(rs.getBytes("FOTO"));
 					usuario.setTelefone(rs.getString("TELEFONE"));
 					usuarios.add(usuario);
 				}
@@ -204,7 +204,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 							rs.getString("EMAIL"), rs.getString("ATIVO"),
 							rs.getString("PERFIL"));
 					usuario.setId(rs.getInt("ID"));
-					usuario.setFoto(rs.getString("FOTO"));
+					usuario.setFoto(rs.getBytes("FOTO"));
 					usuario.setTelefone(rs.getString("TELEFONE"));
 				} /*
 				 * else { throw new
@@ -243,7 +243,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 				stmt.setString(2, usuario.getNome());
 				stmt.setString(3, usuario.getEmail());
 				stmt.setString(4, usuario.getTelefone());
-				stmt.setString(5, usuario.getFoto());
+				stmt.setBytes(5, usuario.getFoto());
 				stmt.setString(6, usuario.getAtivo());
 				stmt.setString(7, usuario.getPerfil());
 				stmt.setInt(8, usuario.getId());

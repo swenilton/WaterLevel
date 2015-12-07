@@ -1,4 +1,5 @@
 package br.com.coffeebeans.usuario;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -10,8 +11,16 @@ public class Usuario  {
 	private String email;
 	private String telefone;
 	private String ativo;
-	private String foto;
+	private byte[] foto;
 	private String perfil;
+	
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
 
 	public Usuario(String nome, String login, String senha, String email,
 			String ativo, String perfil) {
@@ -79,13 +88,13 @@ public class Usuario  {
 		this.ativo = ativo;
 	}
 
-	public String getFoto() {
+	/*public String getFoto() {
 		return foto;
 	}
 
 	public void setFoto(String foto) {
 		this.foto = foto;
-	}
+	}*/
 
 	public String getPerfil() {
 		return perfil;

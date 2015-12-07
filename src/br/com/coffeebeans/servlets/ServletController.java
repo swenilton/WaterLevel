@@ -187,9 +187,9 @@ public class ServletController extends HttpServlet {
 				while (fileContent.available() > 0) {
 					os.write(fileContent.read());
 				}
-				u.setFoto("fotos" + arquivo);
+				//u.setFoto("fotos" + arquivo);
 				fachada.cadastrar(u);
-				sucessos.add("Usuário inserido");
+				sucessos.add("Usuario inserido");
 			} catch (Exception e) {
 				erros.add("Erro ao inserir usuario => " + e.getMessage());
 			}
@@ -239,7 +239,7 @@ public class ServletController extends HttpServlet {
 				os.print(u.getLogin() + ",");
 				os.print(u.getPerfil() + ",");
 				os.print(u.getAtivo() + ",");
-				os.print(u.getFoto());
+				//os.print(u.getFoto());
 				os.close();
 				url = "";
 			} catch (SQLException e) {
@@ -265,12 +265,12 @@ public class ServletController extends HttpServlet {
 			u.setId(id);
 			String arquivo = "";
 			try {
-				File f2 = new File(
+				/*File f2 = new File(
 						System.getProperty("user.dir")
 								+ "/WaterLevel/img/"
 								+ new File(fachada.usuarioProcurar(id)
 										.getFoto()).getName());
-				f2.delete();
+				f2.delete();*/
 				File dir = new File(System.getProperty("user.dir")
 						+ "/WaterLevel/img/");
 				Part filePart = request.getPart("foto");
@@ -294,7 +294,7 @@ public class ServletController extends HttpServlet {
 				while (fileContent.available() > 0) {
 					os.write(fileContent.read());
 				}
-				u.setFoto("fotos" + arquivo);
+				//u.setFoto("fotos" + arquivo);
 				fachada.atualizar(u);
 				sucessos.add("Usuário alterado");
 			} catch (Exception e) {
@@ -320,12 +320,12 @@ public class ServletController extends HttpServlet {
 		} else if (acao.equals("removerUsuario")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
-				File f = new File(
+				/*File f = new File(
 						System.getProperty("user.dir")
 								+ "/WaterLevel/img/"
 								+ new File(fachada.usuarioProcurar(id)
 										.getFoto()).getName());
-				f.delete();
+				f.delete();*/
 				fachada.usuarioRemover(id);
 				response.setStatus(200);
 			} catch (NumberFormatException e) {

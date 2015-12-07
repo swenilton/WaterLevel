@@ -33,6 +33,20 @@ public class ClientWebServiceUser {
 
 			Client client = Client.create(clientConfig);
 
+			
+			//TA FUNCIONANDO
+			
+			/*
+			 * webResource4 = client
+			 * .resource("http://localhost:8080/WaterLevel/WS/user/add");
+			 * 
+			 * Usuario usuario = new Usuario("Jorge", "josiasssssa", "12345",
+			 * "a@b.comsssssa", "SIM", "ADMINISTRADOR");
+			 * 
+			 * byte[] array= new byte[1]; array[0]=1; usuario.setFoto(array);
+			 * post(usuario);
+			 */
+
 			WebResource webResource = client
 					.resource("http://localhost:8080/WaterLevel/WS/user/all");
 
@@ -66,16 +80,6 @@ public class ClientWebServiceUser {
 					new TypeReference<Boolean>() {
 					});
 
-			// TA FUNCIONANDO
-
-			/*
-			 * webResource4 = client
-			 * .resource("http://localhost:8080/WaterLevel/WS/user/add");
-			 * 
-			 * Usuario usuario = new Usuario("Jorge", "josiasssss", "12345",
-			 * "a@b.comsssss", "SIM", "ADMINISTRADOR"); post(usuario);
-			 */
-
 			WebResource webResource5 = client
 					.resource("http://localhost:8080/WaterLevel/WS/user/procurar/1");
 
@@ -89,36 +93,33 @@ public class ClientWebServiceUser {
 
 			// TA FUNCIONANDO
 
-			/*
-			 * webResource6 = client
-			 * .resource("http://localhost:8080/WaterLevel/WS/user/update");
-			 * 
-			 * Usuario usuario3 = new Usuario("Jose", "josiao", "12345",
-			 * "a@b.comm", "SIM", "ADMINISTRADOR");
-			 * 
-			 * usuario3.setId(4); put(usuario3);
-			 */
+			/*webResource6 = client
+					.resource("http://localhost:8080/WaterLevel/WS/user/update");
+
+			Usuario usuario3 = new Usuario("Josef", "josiao", "12345",
+					"a@b.comm", "SIM", "ADMINISTRADOR");
+
+			usuario3.setId(5);
+			put(usuario3);*/
 
 			// TA FUNCIONANDO
-
-			
-			  /*webResource7 = client
+			/*  webResource7 = client
 			  .resource("http://localhost:8080/WaterLevel/WS/user/newPwd");
 			  
 			  Login login = new Login(2, "test");
-			 
+			  
 			  put2(login);*/
 			 
 
 			// TA FUNCIONANDO
 
-			/*
-			 * WebResource webResource8 = client
-			 * .resource("http://localhost:8080/WaterLevel/WS/user/excluir/8");
-			 * 
-			 * ClientResponse response6 = webResource8.type(
-			 * MediaType.APPLICATION_JSON).delete(ClientResponse.class);
-			 */
+			
+			 /* WebResource webResource8 = client
+			  .resource("http://localhost:8080/WaterLevel/WS/user/excluir/10");
+			  
+			  ClientResponse response6 = webResource8.type(
+			  MediaType.APPLICATION_JSON).delete(ClientResponse.class);*/
+			 
 			WebResource webResource9 = client
 					.resource("http://localhost:8080/WaterLevel/WS/user/loginFace/a@b.c");
 
@@ -155,7 +156,7 @@ public class ClientWebServiceUser {
 			System.out.println(existe2);
 			// System.out.println(usuario);
 			System.out.println(usuario2);
-			// System.out.println(usuario3);
+			//System.out.println(usuario3);
 			System.out.println(logou);
 			System.out.println(logou2);
 			System.out.println(senhaCrip);
