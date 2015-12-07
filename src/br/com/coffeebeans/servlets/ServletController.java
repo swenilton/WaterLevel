@@ -626,7 +626,7 @@ public class ServletController extends HttpServlet {
 			url = "";
 		} else if (acao.equals("getListaIdRepositorios")) {
 			try {
-				ArrayList<Repositorio> reps = fachada.repositorioListar();
+				java.util.List<Repositorio> reps = fachada.repositorioListar();
 				ServletOutputStream os = response.getOutputStream();
 				for(int i = 0; i < reps.size(); i++){
 					if(i == reps.size() - 1)
