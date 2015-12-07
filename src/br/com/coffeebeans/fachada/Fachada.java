@@ -32,6 +32,7 @@ import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioJaExistenteException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
 import br.com.coffeebeans.exception.ViolacaoChaveEstrangeiraException;
+import br.com.coffeebeans.leitura.ControladorLeitura;
 import br.com.coffeebeans.repositorio.ControladorRepositorio;
 import br.com.coffeebeans.repositorio.Repositorio;
 import br.com.coffeebeans.usuario.ControladorUsuario;
@@ -45,6 +46,7 @@ public class Fachada {
 	ControladorAcionamento controladorAcionamento;
 	ControladorAtividade controladorAtividade;
 	ControladorAtividadeRealizada controladorAtividadeRealizada;
+	ControladorLeitura controladorLeitura;
 
 	private Fachada() throws Exception {
 		this.controladorRepositorio = new ControladorRepositorio();
@@ -53,7 +55,7 @@ public class Fachada {
 		this.controladorAcionamento = new ControladorAcionamento();
 		this.controladorAtividade = new ControladorAtividade();
 		this.controladorAtividadeRealizada = new ControladorAtividadeRealizada();
-
+		this.controladorLeitura = new ControladorLeitura();
 	}
 
 	public static Fachada getInstance() throws Exception {
@@ -291,6 +293,10 @@ public class Fachada {
 
 	public Bomba bombaProcurar(String descricao) throws SQLException, BombaNaoEncontradaException {
 		return controladorBomba.procurar(descricao);
+	}
+	
+	public double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException{
+		return controladorLeitura.getUltimaLeitura(idRepositorio);
 	}
 
 }

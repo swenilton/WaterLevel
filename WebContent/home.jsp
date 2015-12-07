@@ -25,47 +25,57 @@
 <script type="text/javascript" src="js/toggle.js"></script>
 <script type="text/javascript" src="js/ControllerMenu.js"></script>
 <script type="text/javascript">
-	$(function() {
-		$('[data-toggle="tooltip"]').tooltip();
-		$('#caixa1.skill div').load('.inner', geraCaixa1());
-		$('#caixa2.skill div').load('.inner', geraCaixa2());
-	});
-	/*
-	 $(function() {
-	 setInterval(function() {
-	 $.post("ctrl?acao=nivel", function(retorno) {
-	 //valor = retorno;
-	 geraCaixa1(parseFloat(retorno));
-	 });
-	 geraCaixa2();
-	 }, 2000);
-	 });
+	/*$(function() {
+		$.post("ctrl?acao=getLeitura&id=" + id, function(resposta) {
+			$('[data-toggle="tooltip"]').tooltip();
+			$('#caixa1.skill div').load('.inner', geraCaixa1(resposta));
+			$('#caixa2.skill div').load('.inner', geraCaixa2());
+		})
+	});*/
+	repositorios = [];
+	$(function(){
+		$.post("ctrl?acao=getListaIdRepositorios", function(resposta) {			
+			dados = resposta.split(",");
+			init(dados);
+		});
+	})
+	function init(dados) {
+		setInterval(function() {
+			for(i = 0; i < dados.length; i++){
+				$.post("ctrl?acao=getLeitura&idRepositorio=" + dados[i], function(retorno) {
+					//valor = retorno;
+					geraCaixa(parseFloat(retorno), dados[i]);
+				})	
+			}		
+		}, 2000);
+	}
 
-	 function geraCaixa1(nivel) {
-	 var skillBar = $('#caixa1.skill div').siblings().find('.inner');
-	 //var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
-	 var profundidade = 19;
-	 var altura = profundidade - nivel;
-	 var percent = (altura / profundidade) * 100;
-	 var capacidade = 3.14 * (10 * 10 * profundidade);
-	 var qtd = capacidade * ((altura / profundidade) * 100);
-	 $('#capacidade').text(capacidade + " ml");
-	 $('#qtd').text(qtd.toFixed(2) / 100 + " ml");
-	 if (nivel > 0 && percent < 101) {
-	 var skillVal = percent.toFixed(2) + "%";
-	 $('#progress').html("<h1>" + skillVal + "</h1>");
-	 $(skillBar).animate({
-	 height : skillVal
-	 }, 1000);
-	 } else {
-	 $('#progress').html("<h1>Aguarde...</h1>");
-	 //$('#progress').html("<br /><img src='img/aguarde3.gif' />");
-	 $(skillBar).animate({
-	 height : 0
-	 }, 1000);
-	 }
-	 }
-	 */
+	function geraCaixa(nivel, id) {
+		var skillBar = $('#caixa'+id+'.skill div').siblings().find('.inner');
+		//var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
+		//var profundidade = 19;
+		//var altura = profundidade - nivel;
+		//var percent = (altura / profundidade) * 100;
+		//var capacidade = 3.14 * (10 * 10 * profundidade);
+		//var qtd = capacidade * ((altura / profundidade) * 100);
+		//$('#capacidade').text(capacidade + " ml");
+		//$('#qtd').text(qtd.toFixed(2) / 100 + " ml");
+		if (nivel > 0 && nivel < 101) {
+			//var skillVal = percent.toFixed(2) + "%";
+			var skillVal = nivel.toFixed(2) + "%";
+			$('#progress'+id).html("<h1>" + skillVal + "</h1>");
+			$(skillBar).animate({
+				height : skillVal
+			}, 1000);
+		} else {
+			$('#progress'+id).html("<h1>Aguarde...</h1>");
+			//$('#progress').html("<br /><img src='img/aguarde3.gif' />");
+			$(skillBar).animate({
+				height : 0
+			}, 1000);
+		}
+	}
+	/*
 	function geraCaixa2() {
 		var skillBar = $('#caixa2.skill div').siblings().find('.inner');
 		var skillVal = Math.floor((Math.random() * 100) + 1) + "%";
@@ -74,7 +84,7 @@
 		$(skillBar).animate({
 			height : skillVal
 		}, 1000);
-	}
+	}*/
 
 	$().ready(function() {
 		$("#liga").click(function() {
@@ -113,8 +123,7 @@
 <%
 	Fachada f = Fachada.getInstance();
 	List<Acionamento> acionamentos = f.getUltimosAcionamentos();
-	Usuario u = (Usuario) request.getSession().getAttribute(
-			"usuarioLogado");
+	Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogado");
 	if (u == null) {
 		response.sendRedirect("index.jsp");
 	}
@@ -212,19 +221,19 @@
 			</ul>
 			<div class="tab-content">
 				<c:forEach var="repositorio" items="<%=f.repositorioListar()%>"
-					varStatus="id">
+					varStatus="id" >
 					<div role="tabpanel"
 						class="tab-pane fade in ${id.count == 1 ? 'active' : '' }"
 						id="${repositorio.id }">
 						<section class="caixa">
 							<div class="row">
 								<div class="col-md-6">
-									<div class='skill' id="caixa1">
+									<div class='skill' id="caixa${repositorio.id }">
 										<div class='outer'>
 											<div class='inner'>
 												<div></div>
 											</div>
-											<div class="progress" id="progress"></div>
+											<div class="progress" id="progress${repositorio.id }"></div>
 										</div>
 										<div id='caixa'>
 											<img src='img/caixa-800px.png' class="img-responsive"
@@ -282,7 +291,8 @@
 																Max</label>
 															<div class="input-group col-md-6">
 																<input type="number" class="form-control"
-																	placeholder="Litros" value="${repositorio.limiteMaximo }">
+																	placeholder="Litros"
+																	value="${repositorio.limiteMaximo }">
 																<div class="input-group-addon">litros</div>
 															</div>
 														</div>
@@ -293,9 +303,10 @@
 																Min</label>
 															<div class="input-group col-md-6">
 																<input type="number" class="form-control"
-																	placeholder="Litros" value="${repositorio.limiteMinimo }">
+																	placeholder="Litros"
+																	value="${repositorio.limiteMinimo }">
 																<div class="input-group-addon">litros</div>
-															</div>															
+															</div>
 														</div>
 														<div class="form-group col-md-2">
 															<input type="submit" class="btn btn-success"

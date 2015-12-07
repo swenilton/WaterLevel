@@ -6,10 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
@@ -21,12 +23,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.lowagie.text.List;
+
 import br.com.coffeebeans.atividade.Atividade;
 import br.com.coffeebeans.bomba.Bomba;
 import br.com.coffeebeans.exception.AtividadeNaoEncontradaException;
 import br.com.coffeebeans.exception.BombaNaoEncontradaException;
 import br.com.coffeebeans.exception.DAOException;
 import br.com.coffeebeans.exception.PermissaoException;
+import br.com.coffeebeans.exception.RepositorioException;
 import br.com.coffeebeans.exception.RepositorioNaoEncontradoException;
 import br.com.coffeebeans.exception.UsuarioInativoException;
 import br.com.coffeebeans.exception.UsuarioNaoEncontradoException;
@@ -603,6 +608,38 @@ public class ServletController extends HttpServlet {
 				erros.add("Erro ao alterar bomba => " + e.getMessage());
 			}
 			url = "/consumo-periodico.jsp";
+		} else if (acao.equals("getLeitura")) {
+			int idRepositorio = Integer.parseInt(request.getParameter("idRepositorio"));
+			double leitura = 0;
+			double calc = 0;
+			try {
+				leitura = fachada.getUltimaLeitura(idRepositorio);
+				double altura = fachada.repositorioProcurar(idRepositorio).getProfundidade();
+				calc = (altura - leitura) / altura * 100;
+			} catch (Exception e) {
+				erros.add("Erro ao pegar leitura => " + e.getMessage());
+			}
+			ServletOutputStream os = response.getOutputStream();
+			os.print(calc);
+			os.flush();
+			os.close();
+			url = "";
+		} else if (acao.equals("getListaIdRepositorios")) {
+			try {
+				ArrayList<Repositorio> reps = fachada.repositorioListar();
+				ServletOutputStream os = response.getOutputStream();
+				for(int i = 0; i < reps.size(); i++){
+					if(i == reps.size() - 1)
+						os.print(reps.get(i).getId());
+					else
+						os.print(reps.get(i).getId() + ",");
+				}
+				os.flush();
+				os.close();
+				url = "";
+			} catch (Exception e) {
+				erros.add("Erro ao pegar repositorio => " + e.getMessage());
+			}
 		} else {
 			System.out.println("Erro");
 			url = "/home.jsp";
