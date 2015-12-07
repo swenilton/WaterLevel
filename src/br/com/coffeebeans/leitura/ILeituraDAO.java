@@ -6,6 +6,6 @@ import br.com.coffeebeans.exception.DAOException;
 
 public interface ILeituraDAO {
 	
-	public double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException;
+	public Double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException;
 
 }

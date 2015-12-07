@@ -80,5 +80,21 @@
 		<servlet-name>ServletBomba</servlet-name>
 		<url-pattern>/WS5/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ServletLeitura</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
+		</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>br.com.coffeebeans.leitura</param-value>
+			
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletLeitura</servlet-name>
+		<url-pattern>/WS6/*</url-pattern>
+	</servlet-mapping>
 		
 </web-app> 

@@ -295,7 +295,7 @@ public class Fachada {
 		return controladorBomba.procurar(descricao);
 	}
 	
-	public double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException{
+	public Double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException{
 		return controladorLeitura.getUltimaLeitura(idRepositorio);
 	}
 

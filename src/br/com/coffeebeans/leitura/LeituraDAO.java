@@ -19,7 +19,7 @@ public class LeituraDAO implements ILeituraDAO {
 	}
 
 	@Override
-	public double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException {
+	public Double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException {
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		double retorno = 0;

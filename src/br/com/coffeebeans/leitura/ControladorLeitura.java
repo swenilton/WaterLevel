@@ -12,7 +12,7 @@ public class ControladorLeitura {
 		this.leituraDAO = new LeituraDAO();
 	}
 	
-	public double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException {
+	public Double getUltimaLeitura(int idRepositorio) throws SQLException, DAOException {
 		return this.leituraDAO.getUltimaLeitura(idRepositorio);
 	}
 
